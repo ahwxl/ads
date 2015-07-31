@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="FmProduct">
+  <resultMap id="result" class="com.bplow.netconn.newcms.domain.FmProduct">
+    <result property="id" column="id" columnIndex="1"/>
+    <result property="productName" column="product_name" columnIndex="2"/>
+    <result property="catalogId" column="catalog_id" columnIndex="3"/>
+    <result property="productDesc" column="product_desc" javaType="int" nullValue="0" columnIndex="4"/>
+    <result property="productImageUrl" column="product_image_url" columnIndex="5"/>
+    <result property="isShow" column="is_show" nullValue="0" columnIndex="6"/>
+    <result property="orderId" column="order_id" columnIndex="7"/>
+    <result property="gmtCreate" column="gmt_create" columnIndex="8"/>
+    <result property="gmtModify" column="gmt_modify" columnIndex="9"/>
+  </resultMap>
+
+  <select id="queryProductById" resultMap="result" parameterClass="int">
+    SELECT  id,product_name,catalog_id,product_desc,product_image_url,is_show,order_id,gmt_create,gmt_modify
+    FROM fm_product a
+    where a.id = #id#
+  </select>
+  
+  <select id="queryProductForList" resultMap="result" >
+    SELECT  id,product_name,catalog_id,product_desc,product_image_url,is_show,order_id,gmt_create,gmt_modify
+    FROM fm_product a
+    
+  </select>
+  
+  
+  
+  
+
+</sqlMap>

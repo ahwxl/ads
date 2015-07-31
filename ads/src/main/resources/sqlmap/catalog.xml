@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="FmCatalog">
+  <resultMap id="result" class="com.bplow.netconn.newcms.domain.FmCatalog">
+    <result property="catalogId" column="catalog_id" columnIndex="1"/>
+    <result property="catalogName" column="catalog_name" columnIndex="2"/>
+    <result property="catalogDesc" column="catalog_desc" columnIndex="3"/>
+    <result property="secondName" column="second_name" columnIndex="4"/>
+    <result property="imageSrc" column="image_src" columnIndex="5"/>
+    <result property="orderId" column="order_id"  columnIndex="6"/>
+    <result property="operateDate" column="operate_date" columnIndex="7"/>
+    <result property="isDeleteFlag" column="is_delete_flag" columnIndex="8"/>
+    <result property="catalogType" column="catalog_type" columnIndex="9"/>
+    <result property="parentCatalogId" column="parent_catalog_id" columnIndex="10"/>
+  </resultMap>
+
+  <select id="queryCatalogById" resultMap="result" parameterClass="String">
+    SELECT catalog_id,catalog_name,catalog_desc,second_name,image_src,order_id,operate_date,
+    is_delete_flag,catalog_type,parent_catalog_id
+    FROM fm_catalog a
+    where a.catalog_id = #id#
+  </select>
+  
+  <select id="queryCatalogForList" resultMap="result" >
+    SELECT   catalog_id,catalog_name,catalog_desc,second_name,image_src,order_id,operate_date,
+    is_delete_flag,catalog_type,parent_catalog_id
+    FROM fm_catalog a
+    
+  </select>
+  
+
+</sqlMap>

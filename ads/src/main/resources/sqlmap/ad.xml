@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="AD">
+  <resultMap id="result" class="com.bplow.netconn.query.dao.entity.Ad">
+    <result property="adId" column="ad_id" columnIndex="1"/>
+    <result property="adName" column="ad_name" columnIndex="2"/>
+    <result property="adDesc" column="ad_desc" columnIndex="3"/>
+    <result property="reqNum" column="req_num" javaType="int" nullValue="0" columnIndex="4"/>
+    <result property="adContent" column="ad_content" columnIndex="5"/>
+    <result property="adResNum" column="ad_res_num" nullValue="0" columnIndex="6"/>
+    <result property="customerName" column="customer_name" columnIndex="7"/>
+    <result property="adAddrName" column="ad_addr_name" columnIndex="8"/>
+    <result property="adProperty" column="ad_property" columnIndex="9"/>
+    <result property="orderBy" column="order_by" nullValue="0" columnIndex="10"/>
+    <result property="id" column="id" columnIndex="11"/>
+  </resultMap>
+  
+  <resultMap id="adAccept" class="com.bplow.netconn.query.dao.entity.AdAccept">
+    <result property="id" column="id" columnIndex="1"/>
+    <result property="adName" column="ad_name" columnIndex="2"/>
+    <result property="adAddr" column="ad_addr" columnIndex="3"/>
+    <result property="adUrl" column="ad_url" columnIndex="4"/>
+  </resultMap>
+
+  <select id="queryAdById" resultMap="result" parameterClass="int">
+    SELECT  id,  ad_id,  ad_name,  ad_desc,  req_num, ad_content,  ad_res_num,  customer_name,  ad_addr_name,ad_property,  order_by 
+    FROM tb_ad a
+    where a.id = #id#
+  </select>
+  
+  <select id="queryAdForList" resultMap="result" >
+    SELECT   ad_id,  ad_name,  ad_desc,  req_num,  ad_content,  ad_res_num,  customer_name,  ad_addr_name, ad_property,  order_by ,id
+    FROM tb_ad a
+    
+  </select>
+  
+  <select id="queryAdAccept" resultMap="adAccept">
+    SELECT  id,adName,adAddr,adUrl
+    FROM tb_ad_accept a
+    
+  </select>
+  
+  <insert id="insertAdAccept">
+    insert into tb_ad(ad_name,ad_addr,ad_url)
+    values(#adName#,#adAddr#,#adUrl#)
+  </insert>
+  
+
+  <insert id="insertAd">
+    insert into tb_ad( ad_id,  ad_name,  ad_desc,  req_num,  ad_content,  ad_res_num,  customer_name,  ad_addr_name,  order_by ) 
+    values (#adId#, #adName#, #adDesc#, #reqNum#,#adContent#, #adResNum#, #customerName#, #adAddrName#, #orderBy#)
+  </insert>
+  
+  <delete id="delAd">
+    DELETE FROM tb_ad WHERE  id= #id#
+  </delete>
+  
+  <update id="updateAd">
+    update from tb_ad a set a.id = #id#
+  </update>
+  
+  
+  
+
+</sqlMap>

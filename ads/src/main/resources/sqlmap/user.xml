@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Account">
+  <resultMap id="result" class="com.bplow.netconn.query.dao.entity.User">
+    <result property="id" column="ID" columnIndex="1"/>
+    <result property="userId" column="user_id" columnIndex="2"/>
+     <result property="userName" column="user_name" columnIndex="3"/>
+      <result property="userPassword" column="user_password" columnIndex="4"/>
+  </resultMap>
+
+  <select id="getUserForList" resultMap="result">
+    select ACCOUNT.NAME, ACCOUNT.EMAIL
+    from ACCOUNT
+    where ACCOUNT.EMAIL = #value#
+  </select>  
+
+  <insert id="insertUser">
+    insert into user (id,  user_id,  user_name,  user_password ) values (#id#, #userId#, #userName#, #userPassword#)
+  </insert>
+
+</sqlMap>

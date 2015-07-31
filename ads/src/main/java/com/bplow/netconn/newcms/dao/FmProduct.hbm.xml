@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-12 12:19:33 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="FmProduct" table="fm_product" catalog="newcms">
+        <id name="productId" type="java.lang.Long">
+            <column name="product_id" />
+            <generator class="identity" />
+        </id>
+        <property name="productName" type="string">
+            <column name="product_name" length="200" />
+        </property>
+        <property name="catalogId" type="string">
+            <column name="catalog_id" length="32" />
+        </property>
+        <property name="productDesc" type="string">
+            <column name="product_desc" length="300" />
+        </property>
+        <property name="productImageUrl" type="string">
+            <column name="product_image_url" length="200" />
+        </property>
+        <property name="isShow" type="java.lang.Character">
+            <column name="is_show" length="1">
+                <comment>0&#210;&#254;&#178;&#216;&#163;&#172;1&#213;&#185;&#202;&#190;</comment>
+            </column>
+        </property>
+        <property name="orderId" type="java.lang.Integer">
+            <column name="order_id" />
+        </property>
+        <property name="gmtCreate" type="timestamp">
+            <column name="gmt_create" length="19" />
+        </property>
+        <property name="gmtModify" type="timestamp">
+            <column name="gmt_modify" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

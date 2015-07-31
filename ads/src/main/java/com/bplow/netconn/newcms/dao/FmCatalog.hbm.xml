@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-12 12:19:33 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="FmCatalog" table="fm_catalog" catalog="newcms">
+        <id name="catalogId" type="string">
+            <column name="catalog_id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="catalogName" type="string">
+            <column name="catalog_name" length="100" />
+        </property>
+        <property name="catalogDesc" type="string">
+            <column name="catalog_desc" length="2000" />
+        </property>
+        <property name="secondName" type="string">
+            <column name="second_name" length="100">
+                <comment>&#184;&#177;&#177;&#234;&#204;&#226;</comment>
+            </column>
+        </property>
+        <property name="imageSrc" type="string">
+            <column name="image_src" length="100" />
+        </property>
+        <property name="orderId" type="java.lang.Integer">
+            <column name="order_id" />
+        </property>
+        <property name="operateDate" type="date">
+            <column name="operate_date" length="10" />
+        </property>
+        <property name="isDeleteFlag" type="java.lang.Character">
+            <column name="is_delete_flag" length="1" />
+        </property>
+        <property name="catalogType" type="string">
+            <column name="catalog_type" length="2" />
+        </property>
+        <property name="parentCatalogId" type="string">
+            <column name="parent_catalog_id" length="32" />
+        </property>
+    </class>
+</hibernate-mapping>

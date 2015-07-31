@@ -1,0 +1,8 @@
+/target/
+/.settings/
+.classpath
+.project
+.settings/
+/A1.log
+/http.log
+/velocity.log

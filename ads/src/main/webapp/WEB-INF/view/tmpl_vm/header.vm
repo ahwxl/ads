@@ -1,0 +1,3 @@
+#set( $serverIp = "115.28.240.191" )
+#set( $domainName = "115.28.240.191" )
+#set( $ctx = "ads" )

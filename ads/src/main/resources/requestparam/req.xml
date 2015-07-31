@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cartoon><Message id="2015040914055117438"><CPReq id="CPReq"><version>1.0.1</version><date>20150409 14:05:51</date><instId>ALIPAY</instId><certId>ALIPAY2007072500</certId><serialNo>2015040916569162440</serialNo><signNo>201410306226880966007477</signNo><charge>0</charge><amount>2</amount><currency>156</currency><extension><name>limitType</name><value>LARGE</value></extension></CPReq></Message></Cartoon>

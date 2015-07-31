@@ -1,0 +1,64 @@
+/*-------------banner--------------------*/
+#banner {
+	width:960px;
+	height:400px;
+	margin:0 auto;
+	position:relative;
+}
+.slides_container {
+	overflow:hidden;
+	width:960px;
+	height:400px;
+	position:relative;
+	display:none;
+}
+.slides_container li {
+	width:960px;
+	height:400px;
+	display:block;
+}
+/* Next/prev buttons*/
+#banner .next, #banner .prev {
+	position:absolute;
+	top:175px;
+	left:-30px;
+	width:30px;
+	height:50px;
+	display:block;
+	background: url(../images/prev.png) no-repeat;
+}
+#banner .prev:hover {
+	background: url(../images/prevHover.png) no-repeat;
+}
+#banner .next {
+	left:960px;
+	background: url(../images/next.png) no-repeat;
+}
+#banner .next:hover {
+	background: url(../images/nextHover.png) no-repeat;
+}
+/*	Pagination*/
+.pagination {
+	position:absolute;
+	bottom:10px;
+	left:450px;
+	z-index:999;
+}
+.pagination li {
+	float:left;
+	margin:0 1px;
+	list-style:none;
+}
+.pagination li a {
+	display:block;
+	width:12px;
+	height:0;
+	padding-top:12px;
+	background-image:url(../images/pagination.png);
+	background-position:0 0; text-indent:9999px;
+	float:left;
+	overflow:hidden;
+}
+.pagination li.current a {
+	background-position:0 -12px;
+}

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="GBK"?>
+<table name="fsb_testcase_log">
+
+	<method name="insert" paramtype="object">
+		<sql>
+        <![CDATA[
+             INSERT INTO fsb_testcase_log 
+	(id, 
+	testcase_id, 
+	testcase_data_id, 
+	test_type, 
+	operator_id, 
+	ispass, 
+	exec_time, 
+	gmt_create, 
+	gmt_modify, 
+	send_time, 
+	return_time, 
+	check_log_id,
+	projectId,
+	serialNo
+	)
+			  values (?,?,?,?,?,?,?,sysdate,sysdate,?,?,?,?,?)
+        ]]>
+		</sql>
+		<sqlmap>
+		  <![CDATA[
+        insert  into fsb_testcase_log(id,testcase_id,testcase_data_id,test_type,operator_id,ispass,exec_time,gmt_create,gmt_modify,send_time,return_time,check_log_id,projectId,serialNo) values (#id#, #testcaseId#, #testcaseDataId#, #testType#, #operatorId#, #ispass#, #execTime#, sysdate(), sysdate(), #sendTime#, #returnTime#, #checkLogId#,#projectId#,#serialNo#)		
+		<selectKey resultClass="int" type="post" keyProperty="id">
+            select LAST_INSERT_ID() as value
+         </selectKey>
+		]]>
+		</sqlmap>
+	</method>
+	<method name="selectById">
+		<sql>
+        <![CDATA[
+             select * from  fsb_testcase_log where id=?
+        ]]>
+		</sql>
+	</method>
+	<method name="selectByIds" multiplicity="many">
+		<extraparams>
+			<param name="ids" javatype="java.util.List" />
+		</extraparams>
+		<sqlmap>
+        <![CDATA[
+             select * from  fsb_testcase_log where 1=1
+             <iterate open="(" close=")" conjunction="," prepend=" and id in ">  
+			#[]#
+			</iterate>
+        ]]>
+		</sqlmap>
+		<sql>
+        <![CDATA[
+             select * from  fsb_testcase_log 
+        ]]>
+		</sql>
+	</method>
+	
+	<method name="selectByTestcaseIdsAndIspass" multiplicity="many">
+		<extraparams>
+			<param name="ids" javatype="java.util.List" />		
+		</extraparams>
+		<sqlmap>	
+		<![CDATA[
+          select 
+            *
+           from fsb_testcase_log
+           <dynamic prepend="where">
+          		<isNotNull prepend="and" property="ids">
+	          		 testcase_id in 
+					<iterate property="ids" open="(" close=")" conjunction=",">
+					    ${cdata-start}
+					           #ids[]#
+					     ${cdata-end}
+					</iterate>   
+				</isNotNull>    
+	          	<isNotEqual prepend="AND" property="ispass" compareValue="0">
+          			ispass=#ispass#      		
+          		</isNotEqual>
+				<isNotEqual prepend="AND" property="projectId" compareValue="0">
+          			projectId=#projectId#      		
+          		</isNotEqual>
+         	</dynamic>
+         	${cdata-start}
+         		order by gmt_modify desc
+         	${cdata-end}
+			]]>
+		</sqlmap>
+		<sql>
+        <![CDATA[
+             select * from  fsb_testcase_log where ispass=? and projectId=?
+        ]]>
+		</sql>
+	</method>
+	
+					
+					
+	<method name="selectByIspass" multiplicity="many">
+		<sql>
+        <![CDATA[
+             select * from  fsb_testcase_log where ispass=?
+        ]]>
+		</sql>
+	</method>
+	
+	<method name="selectByIspassAndSerialNo" multiplicity="many">
+		<sql>
+        <![CDATA[
+             select * from  fsb_testcase_log where ispass=? and serialNo=?
+        ]]>
+		</sql>
+	</method>
+	
+	<method name="selectByIspassAndTestcaseId" multiplicity="many">
+		<sql>
+        <![CDATA[
+             select * from  fsb_testcase_log where ispass=? and testcase_id=?
+        ]]>
+		</sql>
+	</method>
+	
+	
+	<method name="update"  paramtype="object">
+		<sql>
+			<![CDATA[			
+UPDATE fsb_testcase_log 
+	SET
+	testcase_id = ?  , 
+	testcase_data_id = ?  , 
+	test_type = ?  , 
+	operator_id = ?  , 
+	ispass = ?  , 
+	exec_time = ? , 
+	gmt_create = ?  , 
+	gmt_modify = ?  , 
+	send_time = ?  , 
+	return_time = ?  , 
+	check_log_id = ? , 
+	projectId = ?  , 
+	serialNo =? 
+	
+	WHERE
+	id = ? 
+			]]>
+		</sql>
+	</method>
+	
+<method name="updateIspassById">
+		<sql>
+			<![CDATA[			
+UPDATE fsb_testcase_log 
+	SET
+	ispass = ? 	
+	WHERE
+	id = ? 
+			]]>
+		</sql>
+	</method>
+	
+</table>

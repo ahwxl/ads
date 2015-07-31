@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-12 12:19:33 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="FmFreemarktmpl" table="fm_freemarktmpl" catalog="newcms">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="tmplName" type="string">
+            <column name="tmpl_name" length="100">
+                <comment>&#196;&#163;&#176;&#229;</comment>
+            </column>
+        </property>
+        <property name="tmplCnt" type="string">
+            <column name="tmpl_cnt" length="4000">
+                <comment>&#196;&#163;&#176;&#229;&#196;&#218;&#200;&#221;</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

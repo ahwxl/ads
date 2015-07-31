@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-7-12 12:19:33 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="FmContent" table="fm_content" catalog="newcms">
+        <id name="id" type="string">
+            <column name="id" length="32" />
+            <generator class="assigned" />
+        </id>
+        <property name="cntCaption" type="string">
+            <column name="cnt_caption" length="200" />
+        </property>
+        <property name="secondCaption" type="string">
+            <column name="second_caption" length="200" />
+        </property>
+        <property name="content" type="binary">
+            <column name="content" />
+        </property>
+        <property name="operateUserId" type="string">
+            <column name="operate_user_id" length="32" />
+        </property>
+        <property name="operateDate" type="date">
+            <column name="operate_date" length="10" />
+        </property>
+        <property name="isDeleteFlag" type="java.lang.Character">
+            <column name="is_delete_flag" length="1" />
+        </property>
+        <property name="orderId" type="java.lang.Integer">
+            <column name="order_id" />
+        </property>
+        <property name="clickNum" type="java.lang.Integer">
+            <column name="click_num" />
+        </property>
+        <property name="catalogId" type="string">
+            <column name="catalog_id" length="32" />
+        </property>
+    </class>
+</hibernate-mapping>
