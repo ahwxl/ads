@@ -1,11 +1,13 @@
 package com.bplow.netconn.query.service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 
 import com.bplow.netconn.query.dao.entity.Ad;
+import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
 
 public interface Adservice {
@@ -39,5 +41,29 @@ public interface Adservice {
 	public void updateAd(Ad ad) throws SQLException;
 	
 	public void delAd(Ad ad) throws SQLException;
+	
+	/**
+	 * 批量插入客户数据
+	 * @param in
+	 * @param customerData
+	 * @throws SQLException
+	 */
+	public void batchAddCustomerData(InputStream in,CustomerData customerData) throws SQLException, IOException;
+	
+	/**
+	 * 查询客户数据 for chart
+	 * @param customerData
+	 * @return
+	 * @throws SQLException
+	 */
+	public String queryCustomerDataForChar(CustomerData customerData)throws SQLException;
+	
 
+	/**
+	 * 查询客户数据
+	 * @param customerData
+	 * @return
+	 * @throws SQLException
+	 */
+	public String queryCustomerData(CustomerData customerData)throws SQLException;
 }

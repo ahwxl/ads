@@ -1,6 +1,7 @@
 package com.bplow.netconn.query.web;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -14,10 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bplow.netconn.base.json.JsonHelper;
 import com.bplow.netconn.query.dao.entity.Ad;
+import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
 import com.bplow.netconn.query.service.Adservice;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -107,6 +111,41 @@ public class AdControler {
 		
 		return "ok";
 	}
+	
+	@RequestMapping(value = "/ad/uploadCustemFileAction", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String uploadFile(@RequestParam("file") MultipartFile file,
+			CustomerData customer, Map<String, Object> model)
+			throws IOException {
+
+		InputStream in = file.getInputStream();
+
+		return "{}";
+	}
+	
+	@RequestMapping(value = "/ad/queryCustemDataAction", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String queryCustomerDataAction(){
+		
+		
+		return "{}";
+	}
+	
+	@RequestMapping(value = "/ad/queryCustemDataPage", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String showCusterDataPage(){
+		
+		
+		
+		return "";
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

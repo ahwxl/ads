@@ -1,13 +1,20 @@
 package com.bplow.netconn.query.service.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +26,7 @@ import com.bplow.netconn.base.tmpl.VelocityHelper;
 import com.bplow.netconn.base.utils.TraceNoGenerater;
 import com.bplow.netconn.query.dao.AdDao;
 import com.bplow.netconn.query.dao.entity.Ad;
+import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
 import com.bplow.netconn.query.service.Adservice;
 import com.bplow.netconn.query.service.TmplCntCacheService;
@@ -48,6 +56,8 @@ public class AdServiceImpl implements Adservice{
 	private final String  basecdnurl ="http://115.28.240.191/ads/SC";//http://115.28.240.191:8080/ads/SC
 	
 	private final String  baseurl ="http://115.28.240.191/ads/SC";//http://115.28.240.191:8080/ads/SC
+	
+	private int  MY_MINIMUM_COLUMN_COUNT = 6;
 	
 	@Override
 	public Ad getAdById(String id) {
@@ -185,4 +195,60 @@ public class AdServiceImpl implements Adservice{
 		adDao.delAd(ad.getId());
 	}
 
+	@Override
+	public void batchAddCustomerData(InputStream in, CustomerData customerData)
+			throws SQLException, IOException {
+		//读取excel数据
+		NPOIFSFileSystem fs = new NPOIFSFileSystem(in);
+		HSSFWorkbook wb = new HSSFWorkbook(fs.getRoot(), true);
+		Sheet sheet = wb.getSheetAt(0);
+		Row row = sheet.getRow(0);
+		int num = sheet.getPhysicalNumberOfRows();
+		int rowStart  = sheet.getFirstRowNum();
+		int rowEnd   = sheet.getLastRowNum();
+		
+		List data = new ArrayList();
+		for (int rowNum = rowStart; rowNum < rowEnd; rowNum++) {
+			Row r = sheet.getRow(rowNum);
+			if (r == null) {
+				continue;
+			}
+
+			int lastColumn = Math.max(r.getLastCellNum(),
+					MY_MINIMUM_COLUMN_COUNT);
+			CustomerData customertmp = new CustomerData();
+
+			for (int cn = 0; cn < lastColumn; cn++) {
+				Cell c = r.getCell(cn, Row.RETURN_BLANK_AS_NULL);
+				if (c == null) {
+					customertmp.setCustomerName(c.getStringCellValue());
+				} else {
+					
+				}
+			}
+			data.add(customertmp);
+		}
+		
+		//批量插入数据库
+		adDao.batchInsertCustomerData(data);
+		
+	}
+
+	@Override
+	public String queryCustomerDataForChar(CustomerData customerData)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String queryCustomerData(CustomerData customerData)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+	
 }
