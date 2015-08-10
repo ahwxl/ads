@@ -1,0 +1,489 @@
+#parse( "tmpl_vm/header.vm" )
+<script type="text/javascript">
+ /**
+  * @module name 媒体统计数据展示
+  * @module desc 
+  * @author  wxl
+  * @create  date 20150808
+  * @modify  man ***
+  * @modify  date ***
+  */
+  Ext.namespace('CustomerDataMng', 'CustomerDataMng.customerDataListMng');
+
+
+ //create application
+CustomerDataMng.customerDataListMng = function() {
+   // do NOT access DOM from here; elements don't exist yet
+
+   //此处定义私有属性变量
+   //var dragZone1, dragZone2;
+
+   //此处定义私有方法
+
+   //共有区
+   return {
+       //此处定义共有属性变量
+       
+
+       //共有方法
+       init: function() {
+     	  
+           //定义一些初始化行为
+    	   //获取id为"docs-文章管理"的面板
+    	    var aimobj = Ext.mainScreem.findById('docs-媒体数据');
+    	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
+    	    aimobj.setLayout(lyobj);//应用布局对象
+
+
+
+    	    aimobj.add(CustomerDataMng.customerDataListMng.mygrid);//添加列表面板
+    	    aimobj.add(CustomerDataMng.customerDataListMng.chartPanel);//添加chart container
+    	    //aimobj.add(CustomerDataMng.customerDataListMng.aDgridForm);
+    	    aimobj.doLayout();//展示页面
+    	    
+    	    //加载列表数据
+    	    CustomerDataMng.customerDataListMng.store.load();
+       }
+   };
+ }(); // end of app
+ 
+ 
+ 
+//数据集加载对象，给grid用的
+ CustomerDataMng.customerDataListMng.store = new Ext.data.JsonStore({
+        root: 'dataroot',
+        totalProperty: 'totalCount',
+        remoteSort: true,
+        fields: [
+            'id', 'customerId', 'customerName', 'adAddr','showNum','clickNum','income','uploadData'
+        ],
+        url: 'ad/queryCustemDataAction'
+    });
+
+    //添加grid 数据加载前事件
+    CustomerDataMng.customerDataListMng.store.on("beforeload",function (selfstore){
+    	//将form面板的查询参数  封装成  store 能接受的对象
+    	var tmpCnf = Ext.urlDecode(Ext.Ajax.serializeForm(CustomerDataMng.customerDataListMng.searchPanel.getForm().getEl()));
+    	tmpCnf.start = 0;//从哪一条记录开始
+    	tmpCnf.limit = 10;//查询条数
+    	selfstore.baseParams=tmpCnf;
+
+    });
+    
+    
+    //表单查询条件面板
+CustomerDataMng.customerDataListMng.searchPanel =new Ext.FormPanel({
+     	height:35,
+     	frame:false,
+     	border:false,
+     	id:"customerDataSearchForm",
+     	layout:"hbox",
+     	layoutConfig:{padding:"5",align:"middle"},
+     	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
+     	items:[{text:"媒体名称"},
+     	       {xtype:"textfield",name:"customerName",value:''},
+     	       {text:"日期"},
+     	       {xtype:"textfield",name:"uploadData1",value:''},
+     	       {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
+     	                	//CustomerDataMng.customerDataListMng.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
+     	                	//alert(Ext.Ajax.serializeForm(CustomerDataMng.customerDataListMng.searchPanel.getForm().getEl()) );
+     	                	CustomerDataMng.customerDataListMng.store.load();
+     	                   }
+     	       }
+     	       ]});
+
+CustomerDataMng.customerDataListMng.mygrid = new Ext.grid.GridPanel({
+        //width:700,
+        //height:500,
+        //autoHeight: true,
+        //title:'分页演示',
+        tbar:[{
+            text:'打开',
+            id:"tlb_edit",
+            iconCls:'edit'
+        }
+        ],
+        listeners:{
+        'render':function () {
+			CustomerDataMng.customerDataListMng.searchPanel.render(this.tbar);
+			        }
+		},
+        store:  CustomerDataMng.customerDataListMng.store,
+        //renderTo: 'tree-div',
+        //closable:true,
+        trackMouseOver:true,
+        //disableSelection:true,
+        region : 'center',
+        loadMask: true,
+        //sm: CustomerDataMng.customerDataListMng.sm,
+        // grid columns
+        columns:[
+        {
+            //id: 'topic', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+            header: "媒体名称",
+            dataIndex: 'customerName',
+            width: 150,
+            //renderer: renderTopic,
+            sortable: true
+        },{
+            header: "广告位置",
+            dataIndex: 'adAddr',
+            width: 100,
+            //hidden: true,
+            sortable: true
+        },{
+            header: "展示量",
+            dataIndex: 'showNum',
+            width: 70,
+            align: 'right',
+            sortable: true
+        },{
+            header: "点击量",
+            dataIndex: 'clickNum',
+            width: 150,
+            sortable: true
+        },{
+            id: 'income',
+            header: "收入",
+            dataIndex: 'income',
+            width: 150,
+            sortable: true
+        },{
+            id: '日期',
+            header: "日期",
+            dataIndex: 'uploadData',
+            width: 150,
+            sortable: true
+        }],
+
+        // customize view config
+        viewConfig: {
+            forceFit:true,
+            enableRowBody:false,
+            showPreview:false,
+            getRowClass : function(record, rowIndex, p, store){
+                if(this.showPreview){
+                    p.body = '<p>'+record.data.cnt_id+'</p>';
+                    return 'x-grid3-row-expanded';
+                }
+                return 'x-grid3-row-collapsed';
+            }
+        },
+
+        // paging bar on the bottom
+        bbar: new Ext.PagingToolbar({
+            pageSize: 10,
+            store:  CustomerDataMng.customerDataListMng.store,
+            displayInfo: true,
+            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            emptyMsg: "No topics to display",
+            items:[
+                '-', {
+                pressed: false,
+                enableToggle:true,
+                //text: 'Show Preview',
+                cls: 'x-btn-text-icon details',
+                toggleHandler: function(btn, pressed){
+                    //var view = mygrid.getView();
+                    //view.showPreview = pressed;
+                    //view.refresh();
+                }
+            }]
+        })
+    });
+
+CustomerDataMng.customerDataListMng.gridForm = new Ext.FormPanel({
+        id: 'ad-company-form',
+        region : 'east',
+        layout : 'form',  
+        collapsible : true,
+        frame: true,
+        labelAlign: 'left',
+        title: '参数',
+        bodyStyle:'padding:5px',
+        height: 300,
+        width: 200
+        });
+
+CustomerDataMng.customerDataListMng.aDgridForm = new Ext.FormPanel({
+        id: 'ad-company-form-OUT',
+        region : 'south',
+        layout : 'form',  
+        collapsible : true,
+        frame: true,
+        labelAlign: 'left',
+        title: '输出',
+        bodyStyle:'padding:5px',
+        height: 200,
+        //width: 200,
+        items: [{
+                fieldLabel: '输出',
+                xtype:'textarea',
+                height: 150,
+                width: 800,
+                id   :'ad_out_ta',
+                name: 'ad_out_ta'
+            }
+        ]
+        });
+
+
+
+/*
+CustomerDataMng.customerDataListMng.aDgridForm.getForm().submit({
+   url:'ad/showad',  
+   waitMsg:"正在提交表单数据，请稍候。。。。。。",  
+   failure:function(form, action){  
+   Ext.MessageBox.alert('警告', action.result.errors);  
+},   
+success: function(form, action){   
+Ext.MessageBox.alert('信息', action.result.msg);  
+}   
+});*/
+
+var showadcomp = returnmif({id:'预览',title:'预览',region:'center',src:'ad/showad'});
+var tabs = new Ext.TabPanel({
+            region: 'center',
+            margins:'3 3 3 0', 
+            activeTab: 0,
+            defaults:{autoScroll:true},
+
+            items:[showadcomp]
+        });
+
+var win = new Ext.Window({
+            title: '发布',
+            closable:true,
+            id : 'id_window_comp',
+            width:600,
+            height:350,
+            border:false,
+            plain:true,
+            layout: 'fit',
+            items: [tabs]
+        });
+
+       // win.show(this);
+
+
+
+
+/*
+Ext.Ajax.request({
+   url: 'foo.php',
+   success: function(){
+      alert('secuss');
+   },
+   failure: function(){
+      alert('failer');
+   },
+   headers: {
+       'my-header': 'foo'
+   },
+   params: { ad_id:ad_id }
+});
+*/
+
+
+
+
+var customerDataChart = new Ext.ux.HighChart({
+        layout:'fit',
+        border: true,
+        chartConfig: {
+        chart: {
+            type: 'column',
+            height:385
+        },
+        title: {
+            text: 'Monthly Average Rainfall'
+        },
+        xAxis: {
+            categories: [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Rainfall (mm)'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+        }, {
+            name: 'New York',
+            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+        }, {
+            name: 'London',
+            data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+        }, {
+            name: 'Berlin',
+            data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+
+        }]
+    }});
+
+
+
+CustomerDataMng.customerDataListMng.chartPanel = new Ext.Panel({
+    id: 'chart-container',
+    region : 'north',
+    //monitorResize: true, // relay on browser resize
+    title: '',
+    width:'100%',
+    height: 400,
+    tbar:[
+        {
+            text:'新建任务',
+            iconCls:'add',
+            id:'bn_newwork',
+            menu:{
+                xtype:'menu',
+                id:'mn_worklist',
+                items:[{ title: 'Box 1',text:'最近一周',fieldLabel: '最近一周'},
+                { title: 'Box 1',text:'最近一个月',fieldLabel: '最近一个月'}
+                ]
+            }
+        }
+    ],
+    //autoWidth: true,
+    //layout: 'hbox',
+    defaults: {
+        flex: 1
+    },
+    items: [customerDataChart
+    ],
+    listeners:{
+     afterrender:function(panel) {
+        
+        //loadChart();
+     }
+   }
+})
+
+
+
+Ext.onReady(function(){
+
+    var graphWin = new Ext.Window({
+        title: 'Resizeable Graph Window',
+        resizeable: true,
+        width: 800,
+        height: 450,
+        items: [
+            {
+                xtype: 'button',
+                text: 'Add line',
+                handler: function(){
+                    var add = {
+                        name: 'London',
+                        data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                    };
+                    Ext.getCmp('thechart').chart.addSeries(add,true);
+                }
+            },
+            new Ext.ux.HighChart({
+                titleCollapse: true,
+                layout:'fit',
+                border: true,
+                id: 'thechart',
+                chartConfig: {
+                    chart: {
+                        id: 'thechart',
+                        defaultSeriesType: 'line',
+                        margin: [50, 150, 60, 80]
+                    },
+                    title: {
+                        text: 'Monthly Average Temperature',
+                        style: {
+                            margin: '10px 100px 0 0' // center it
+                        }
+                    },
+                    subtitle: {
+                        text: 'Source: WorldClimate.com',
+                        style: {
+                            margin: '0 100px 0 0' // center it
+                        }
+                    },
+                    xAxis: {
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        title: {
+                            text: 'Month'
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Temperature (°C)'
+                        },
+                        plotLines: [
+                            {
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }
+                        ]
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            return '<b>'+ this.series.name +'</b><br/>'+
+                                this.x +': '+ this.y +'°C';
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        style: {
+                            left: 'auto',
+                            bottom: 'auto',
+                            right: '10px',
+                            top: '100px'
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Tokyo',
+                            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                        }
+                    ]
+                }
+            })
+        ]
+    });
+    //graphWin.show();
+});
+
+
+
+Ext.onReady(CustomerDataMng.customerDataListMng.init, CustomerDataMng.customerDataListMng);
+</script>

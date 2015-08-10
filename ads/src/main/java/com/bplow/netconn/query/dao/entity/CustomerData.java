@@ -10,15 +10,15 @@ public class CustomerData implements java.io.Serializable{
 	private static final long serialVersionUID = -908213410685326754L;
 	
 	private Integer id;
-	private String  customerId;
-	private String  customerName;
-	private String  adAddr;
-	private Long    showNum;
-	private Long    clickNum;
-	private Long    income;
-	private Date    uploadData;
-	private Date    gmtCreate;
-	private Date    gmtModify;
+	private String customerId;
+	private String customerName;
+	private String adAddr;
+	private Double showNum;
+	private Double clickNum;
+	private Double income;
+	private Date uploadData;
+	private Date gmtCreate;
+	private Date gmtModify;
 	
 	
 	public CustomerData() {
@@ -49,24 +49,31 @@ public class CustomerData implements java.io.Serializable{
 	public void setAdAddr(String adAddr) {
 		this.adAddr = adAddr;
 	}
-	public Long getShowNum() {
+
+	public Double getShowNum() {
 		return showNum;
 	}
-	public void setShowNum(Long showNum) {
+
+	public void setShowNum(Double showNum) {
 		this.showNum = showNum;
 	}
-	public Long getClickNum() {
+
+	public Double getClickNum() {
 		return clickNum;
 	}
-	public void setClickNum(Long clickNum) {
+
+	public void setClickNum(Double clickNum) {
 		this.clickNum = clickNum;
 	}
-	public Long getIncome() {
+
+	public Double getIncome() {
 		return income;
 	}
-	public void setIncome(Long income) {
+
+	public void setIncome(Double income) {
 		this.income = income;
 	}
+
 	public Date getUploadData() {
 		return uploadData;
 	}

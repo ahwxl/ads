@@ -3,6 +3,7 @@ package com.bplow.netconn.query.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +21,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import com.bplow.netconn.base.json.JsonHelper;
 import com.bplow.netconn.base.tmpl.VelocityHelper;
 import com.bplow.netconn.base.utils.TraceNoGenerater;
 import com.bplow.netconn.query.dao.AdDao;
@@ -30,9 +35,10 @@ import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
 import com.bplow.netconn.query.service.Adservice;
 import com.bplow.netconn.query.service.TmplCntCacheService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service("adService")
-@Transactional
+//@Transactional
 public class AdServiceImpl implements Adservice{
 
 	private static Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
@@ -52,6 +58,9 @@ public class AdServiceImpl implements Adservice{
 	
 	@Autowired
 	private VelocityHelper velocityHelper;
+	
+	@Autowired
+	private TransactionTemplate transactionTemplate;
 	
 	private final String  basecdnurl ="http://115.28.240.191/ads/SC";//http://115.28.240.191:8080/ads/SC
 	
@@ -202,13 +211,13 @@ public class AdServiceImpl implements Adservice{
 		NPOIFSFileSystem fs = new NPOIFSFileSystem(in);
 		HSSFWorkbook wb = new HSSFWorkbook(fs.getRoot(), true);
 		Sheet sheet = wb.getSheetAt(0);
-		Row row = sheet.getRow(0);
-		int num = sheet.getPhysicalNumberOfRows();
+		//Row row = sheet.getRow(0);
+		//int num = sheet.getPhysicalNumberOfRows();
 		int rowStart  = sheet.getFirstRowNum();
 		int rowEnd   = sheet.getLastRowNum();
 		
-		List data = new ArrayList();
-		for (int rowNum = rowStart; rowNum < rowEnd; rowNum++) {
+		final List<CustomerData> data = new ArrayList<CustomerData>();
+		for (int rowNum = rowStart+1; rowNum < rowEnd; rowNum++) {
 			Row r = sheet.getRow(rowNum);
 			if (r == null) {
 				continue;
@@ -220,18 +229,36 @@ public class AdServiceImpl implements Adservice{
 
 			for (int cn = 0; cn < lastColumn; cn++) {
 				Cell c = r.getCell(cn, Row.RETURN_BLANK_AS_NULL);
-				if (c == null) {
+				if(cn== 0 && null != c){
+					customertmp.setUploadData(c.getDateCellValue());
+				}if(cn== 1 && null != c){
 					customertmp.setCustomerName(c.getStringCellValue());
-				} else {
-					
+				}if(cn== 2 && null != c){
+					customertmp.setAdAddr(c.getStringCellValue());
+				}if(cn== 3 && null != c){
+					customertmp.setShowNum( c.getNumericCellValue());
+				}if(cn== 4 && null != c){
+					customertmp.setClickNum(c.getNumericCellValue());
+				}if(cn== 5 && null != c){
+					customertmp.setIncome(c.getNumericCellValue());
 				}
 			}
 			data.add(customertmp);
 		}
-		
-		//批量插入数据库
-		adDao.batchInsertCustomerData(data);
-		
+		wb.close();
+		fs.close();
+		// 批量插入数据库
+		this.transactionTemplate.execute(new TransactionCallback<Object>() {
+			public Object doInTransaction(TransactionStatus status) {
+				try {
+					adDao.batchInsertCustomerData(data);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return true;
+			}
+		});
+
 	}
 
 	@Override
@@ -243,9 +270,16 @@ public class AdServiceImpl implements Adservice{
 
 	@Override
 	public String queryCustomerData(CustomerData customerData)
-			throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+			throws SQLException, JsonProcessingException, UnsupportedEncodingException {
+		List list = adDao.queryCustomerData(customerData);
+		Map map = new HashMap();
+		map.put("dataroot", list);
+		
+		return JsonHelper.convertToStr(map);
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 
 	

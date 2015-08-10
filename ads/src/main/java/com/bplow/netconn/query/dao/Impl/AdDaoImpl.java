@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.bplow.netconn.base.dao.HQLEntity;
 import com.bplow.netconn.query.dao.AdDao;
 import com.bplow.netconn.query.dao.entity.Ad;
 import com.bplow.netconn.query.dao.entity.Columns;
@@ -29,10 +31,10 @@ public class AdDaoImpl implements AdDao{
 
 	private static Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
 	
-	private String queryCustomerData ="select customer_id,customer_name,ad_addr,show_num,click_num,income,upload_data,gmt_create,gmt_modify  from tb_customer_data where a.customer_id = ? ";
+	private String queryCustomerData ="select id,customer_id,customer_name,ad_addr,show_num,click_num,income,upload_data,gmt_create,gmt_modify  from tb_customer_data a  ";
 	
 	private String insertCustomerData = "insert into tb_customer_data(	customer_id ,	customer_name ,	ad_addr ,	show_num ,	click_num ,	income ,	upload_data ,	gmt_create ,	gmt_modify ) values"
-			+ "(?,?,?,?,?,?,?,now,now)";
+			+ "(?,?,?,?,?,?,?,now(),now())";
 	
 	@Autowired
 	private SqlMapClient sqlMapClient;
@@ -86,9 +88,9 @@ public class AdDaoImpl implements AdDao{
 						ps.setString(1, data.get(i).getCustomerId());
 						ps.setString(2, data.get(i).getCustomerName());
 						ps.setString(3, data.get(i).getAdAddr());
-						ps.setLong(4, data.get(i).getShowNum());
-						ps.setLong(5, data.get(i).getClickNum());
-						ps.setLong(6, data.get(i).getIncome());
+						ps.setDouble(4, data.get(i).getShowNum());
+						ps.setDouble(5, data.get(i).getClickNum());
+						ps.setDouble(6, data.get(i).getIncome());
 						ps.setDate(7, new java.sql.Date(data.get(i).getUploadData().getTime()));
 					}
 
@@ -101,19 +103,28 @@ public class AdDaoImpl implements AdDao{
 
 	@Override
 	public List queryCustomerData(CustomerData customer) throws SQLException {
-		return jdbcTemplate.query(queryCustomerData, new RowMapper<CustomerData>() {
+		HQLEntity hqlEntity = new HQLEntity(queryCustomerData);
+		hqlEntity.append(" where a.customer_id = ? ","1");
+		//媒体名称
+		if(StringUtils.isNotBlank(customer.getCustomerName())){
+			hqlEntity.append(" and a.customer_name like ? ",customer.getCustomerName());
+		}
+
+		hqlEntity.append("limit 0,10");
+		logger.info("查询媒体数据SQL[{}]",hqlEntity.gethqlSql());
+		return jdbcTemplate.query(hqlEntity.gethqlSql(), new RowMapper<CustomerData>() {
             public CustomerData mapRow(ResultSet rs, int rowNum) throws SQLException {
             	CustomerData customer = new CustomerData();
             	customer.setCustomerId(rs.getString("customer_id"));
             	customer.setCustomerName(rs.getString("customer_name"));
             	customer.setAdAddr(rs.getString("ad_addr"));
-            	customer.setClickNum(rs.getLong("click_num"));
-            	customer.setShowNum(rs.getLong("show_num"));
-            	customer.setIncome(rs.getLong("income"));
+            	customer.setClickNum(rs.getDouble("click_num"));
+            	customer.setShowNum(rs.getDouble("show_num"));
+            	customer.setIncome(rs.getDouble("income"));
             	customer.setUploadData(rs.getDate("upload_data"));
                 return customer;
             }
-        });
+        },hqlEntity.getParamObjArray());
 	}
 
 }

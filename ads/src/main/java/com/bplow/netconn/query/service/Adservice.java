@@ -3,12 +3,14 @@ package com.bplow.netconn.query.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.List;
 
 import com.bplow.netconn.query.dao.entity.Ad;
 import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface Adservice {
 	
@@ -65,5 +67,5 @@ public interface Adservice {
 	 * @return
 	 * @throws SQLException
 	 */
-	public String queryCustomerData(CustomerData customerData)throws SQLException;
+	public String queryCustomerData(CustomerData customerData)throws SQLException,JsonProcessingException, UnsupportedEncodingException;
 }

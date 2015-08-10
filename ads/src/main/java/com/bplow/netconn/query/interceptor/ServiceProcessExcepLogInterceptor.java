@@ -21,6 +21,7 @@ public class ServiceProcessExcepLogInterceptor implements MethodInterceptor, Ser
 			obj = invocation.proceed();
 		} catch (Exception e) {
 			log.error("服务执行异常", e);
+			e.printStackTrace();
 		}
 		//log.info("执行类{}，方法名{} end",className,methodName);
 		return obj;

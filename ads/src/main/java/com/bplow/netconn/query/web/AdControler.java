@@ -116,28 +116,46 @@ public class AdControler {
 	@ResponseBody
 	public String uploadFile(@RequestParam("file") MultipartFile file,
 			CustomerData customer, Map<String, Object> model)
-			throws IOException {
+			throws IOException, SQLException {
 
 		InputStream in = file.getInputStream();
+		
+		adService.batchAddCustomerData(in, customer);
 
-		return "{}";
+		return "{success:true,info:'操作成功!'}";
 	}
 	
 	@RequestMapping(value = "/ad/queryCustemDataAction", produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String queryCustomerDataAction(){
+	public String queryCustomerDataAction(CustomerData customerData, Map<String, Object> model) throws SQLException, JsonProcessingException, UnsupportedEncodingException{
+		
+		String jsonstr = adService.queryCustomerData(customerData);
+		
+		return jsonstr;
+	}
+	
+	@RequestMapping(value = "/ad/queryCustemDataForChart", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String queryCustomerDataForChart(){
 		
 		
 		return "{}";
 	}
 	
 	@RequestMapping(value = "/ad/queryCustemDataPage", produces = "text/html;charset=UTF-8")
-	@ResponseBody
 	public String showCusterDataPage(){
 		
 		
 		
-		return "";
+		return "ad/customerDataView";
+	}
+	
+	@RequestMapping(value = "/ad/uploadCustemDataPage", produces = "text/html;charset=UTF-8")
+	public String uploadCusterDataPage(){
+		
+		
+		
+		return "ad/uploadCustomerData";
 	}
 	
 	

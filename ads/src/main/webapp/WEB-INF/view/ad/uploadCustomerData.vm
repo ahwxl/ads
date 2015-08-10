@@ -1,0 +1,115 @@
+<script type="text/javascript">
+ /**
+  * @module name 上传客户数据
+  * @module desc 
+  * @author  wxl
+  * @create  date 20150808
+  * @modify  man ***
+  * @modify  date ***
+  */
+Ext.namespace('CustomerDataMng', 'CustomerDataMng.uploadCustomerDataMng');
+
+
+ //create application
+CustomerDataMng.uploadCustomerDataMng = function() {
+   // do NOT access DOM from here; elements don't exist yet
+
+   //此处定义私有属性变量
+   //var dragZone1, dragZone2;
+
+   //此处定义私有方法
+
+   //共有区
+   return {
+       //此处定义共有属性变量
+       
+
+       //共有方法
+       init: function() {
+     	  
+           //定义一些初始化行为
+    	   //获取id为"docs-文章管理"的面板
+    	    var aimobj = Ext.mainScreem.findById('docs-上传客户数据');
+    	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
+    	    aimobj.setLayout(lyobj);//应用布局对象
+
+
+
+    	    //aimobj.add(ArticleMng.articleListMng.catalogTree);//添加目录树面板
+    	    aimobj.add(CustomerDataMng.uploadCustomerDataMng.customAddForm);//添加列表面板
+    	    //aimobj.add(ArticleMng.articleListMng.gridForm);//添加form
+    	    //aimobj.add(ArticleMng.articleListMng.aDgridForm);
+    	    aimobj.doLayout();//展示页面
+    	    
+    	    //加载列表数据
+    	    //ArticleMng.articleListMng.store.load();
+       }
+   };
+ }(); // end of app 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+/**
+ * 创建目录树对象
+ */
+ CustomerDataMng.uploadCustomerDataMng.customAddForm = new Ext.FormPanel({
+        labelWidth: 75, // label settings here cascade unless overridden
+        url:'ad/addAdAction',
+        frame:true,
+        title: '添加客户',
+        region: 'center',
+        bodyStyle:'padding:5px 5px 0',
+        //width: 350,
+        defaults: {width: 230},
+        fileUpload:true,
+        defaultType: 'textfield',
+
+        items: [{
+                fieldLabel: '客户编号',
+                name: 'adId',
+                allowBlank:false
+            },{
+          	xtype:'fileuploadfield',
+        	name:'file',
+        	id:'file',
+        	fieldLabel: '上传数据',
+        	buttonText: '选择文件'
+            }
+        ]
+});
+
+
+ CustomerDataMng.uploadCustomerDataMng.customAddForm.addButton({
+        text: 'Submit',
+        disabled:false,
+        handler: function(){
+            CustomerDataMng.uploadCustomerDataMng.customAddForm.getForm().submit(
+                {url:'ad/uploadCustemFileAction', 
+                success:function(response,action){
+                   //for(var a in recieveData){
+                   //alert(action.response.info);
+                   Ext.Msg.alert('系统提示',response.responseText);
+                   //}
+                   
+                },
+                failure:function(){
+                alert('上传失败');
+                },
+                waitMsg:'保存中...', 
+                submitEmptyText: false}
+            );
+        }
+    });
+
+
+Ext.onReady(CustomerDataMng.uploadCustomerDataMng.init, CustomerDataMng.uploadCustomerDataMng);
+</script>

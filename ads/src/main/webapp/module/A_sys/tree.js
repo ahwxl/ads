@@ -3,6 +3,10 @@
                 {"href":"ad/customer","text":"客户管理","id":"客户管理","isClass":true,"iconCls":"icon-cls","cls":"cls","leaf":true}
 				,
                 {"href":"ad/addAdPage","text":"添加客户","id":"添加客户","isClass":true,"iconCls":"icon-cls","cls":"cls","leaf":true}
+				,
+                {"href":"ad/queryCustemDataPage","text":"媒体数据","id":"媒体数据","isClass":true,"iconCls":"icon-cls","cls":"cls","leaf":true}
+				,
+                {"href":"ad/uploadCustemDataPage","text":"上传客户数据","id":"上传客户数据","isClass":true,"iconCls":"icon-cls","cls":"cls","leaf":true}
 				/*,
 				{"href":"SC/main","text":"上传模板","id":"上传模板","isClass":true,"iconCls":"icon-cls","cls":"cls","leaf":true}
 				,
