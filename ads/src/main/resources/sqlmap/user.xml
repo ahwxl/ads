@@ -7,6 +7,12 @@
      <result property="userName" column="user_name" columnIndex="3"/>
       <result property="userPassword" column="user_password" columnIndex="4"/>
   </resultMap>
+  
+  <resultMap id="resultUser" class="com.bplow.netconn.systemmng.dao.entity.User">
+    <result property="id" column="ID" columnIndex="1"/>
+    <result property="userName" column="user_name" columnIndex="2"/>
+    <result property="status" column="status" columnIndex="3"/>
+  </resultMap>
 
   <select id="getUserForList" resultMap="result">
     select ACCOUNT.NAME, ACCOUNT.EMAIL
@@ -17,5 +23,11 @@
   <insert id="insertUser">
     insert into user (id,  user_id,  user_name,  user_password ) values (#id#, #userId#, #userName#, #userPassword#)
   </insert>
+  
+  
+  <select id="queryUserByPwd" resultMap="resultUser">
+    select a.id,a.user_name,a.status from sys_user a
+    where a.user_name = #username# and a.user_pwd =#userpwd#
+  </select>  
 
 </sqlMap>

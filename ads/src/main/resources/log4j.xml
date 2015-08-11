@@ -41,26 +41,26 @@
   </appender>
 
   <category name="com.bplow.netconn">
-    <priority value="debug,info" />
+    <priority value="info" />
     <appender-ref ref="httpProcess" />
   </category>
   <category name="org.springframework.web">
-    <priority value="debug,info" />
+    <priority value="info" />
     <appender-ref ref="STDOUT" />
   </category>
   
   <logger name="system_error" additivity="false">
-     <priority value="WARN,INFO" />
+     <priority value="INFO" />
      <appender-ref ref="error" />
   </logger>
   
   <logger name="system_request" additivity="false">
-     <priority value="WARN,INFO" />
+     <priority value="INFO" />
      <appender-ref ref="userRequest" />
   </logger>
   
   <logger name="common-digest" additivity="false">
-     <priority value="WARN,INFO" />
+     <priority value="INFO" />
      <appender-ref ref="digest" />
   </logger>
   
