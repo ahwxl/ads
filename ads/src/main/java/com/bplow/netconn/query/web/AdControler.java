@@ -2,17 +2,24 @@ package com.bplow.netconn.query.web;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +31,7 @@ import com.bplow.netconn.query.dao.entity.Ad;
 import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
 import com.bplow.netconn.query.service.Adservice;
+import com.bplow.netconn.systemmng.dao.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
@@ -33,7 +41,6 @@ public class AdControler {
 	private Adservice adService;
 	
 	private String domainName ="115.28.240.191";
-	
 	
 	/**
 	 * 客户列表
@@ -122,13 +129,17 @@ public class AdControler {
 		
 		adService.batchAddCustomerData(in, customer);
 
-		return "{success:true,info:'操作成功!'}";
+		return "{success:true,info:'上传成功!'}";
 	}
 	
 	@RequestMapping(value = "/ad/queryCustemDataAction", produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String queryCustomerDataAction(CustomerData customerData, Map<String, Object> model) throws SQLException, JsonProcessingException, UnsupportedEncodingException{
-		
+	public String queryCustomerDataAction(HttpServletRequest request,CustomerData customerData, Map<String, Object> model) throws SQLException, JsonProcessingException, UnsupportedEncodingException{
+		User loginUser = (User)request.getSession().getAttribute("lgu");
+		if(null != loginUser){
+			customerData.setLoginUserId(loginUser.getUserName());
+			customerData.setOrganizeId(loginUser.getOrgnatizeId());
+		}
 		String jsonstr = adService.queryCustomerData(customerData);
 		
 		return jsonstr;
@@ -136,10 +147,17 @@ public class AdControler {
 	
 	@RequestMapping(value = "/ad/queryCustemDataForChart", produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String queryCustomerDataForChart(){
-		
-		
-		return "{}";
+	public String queryCustomerDataForChart(CustomerData customerData,
+			Map<String, Object> model,HttpServletRequest request) throws SQLException, Exception, UnsupportedEncodingException {
+		User loginUser = (User)request.getSession().getAttribute("lgu");
+		if(null != loginUser){
+			customerData.setLoginUserId(loginUser.getUserName());
+			customerData.setOrganizeId(loginUser.getOrgnatizeId());
+		}
+
+		String chartjson = adService.queryCustomerDataForChar(customerData);
+
+		return chartjson;
 	}
 	
 	@RequestMapping(value = "/ad/queryCustemDataPage", produces = "text/html;charset=UTF-8")
@@ -158,7 +176,15 @@ public class AdControler {
 		return "ad/uploadCustomerData";
 	}
 	
-	
+	@RequestMapping(value = "/ad/exportCustemData", produces = "application/vnd.ms-excel;charset=utf-8")
+	public void exportCusterDataPage(Map<String, Object> model,CustomerData customerData,
+			HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename="+ new String((UUID.randomUUID().toString().replace("-", "") + ".xls").getBytes(), "iso-8859-1"));
+		OutputStream out =response.getOutputStream();
+		adService.exportCustomerData(customerData,out);
+	} 
 	
 	
 	

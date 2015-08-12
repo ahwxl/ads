@@ -14,6 +14,8 @@ public class User {
 	private Date   gmtModify;
 	private Date   loginDate;
 	
+	private String orgnatizeId;
+	
 	public User() {
 		super();
 	}
@@ -88,6 +90,14 @@ public class User {
 
 	public void setLoginDate(Date loginDate) {
 		this.loginDate = loginDate;
+	}
+
+	public String getOrgnatizeId() {
+		return orgnatizeId;
+	}
+
+	public void setOrgnatizeId(String orgnatizeId) {
+		this.orgnatizeId = orgnatizeId;
 	}
 	
 	

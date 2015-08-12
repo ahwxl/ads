@@ -58,7 +58,7 @@ public interface Adservice {
 	 * @return
 	 * @throws SQLException
 	 */
-	public String queryCustomerDataForChar(CustomerData customerData)throws SQLException;
+	public String queryCustomerDataForChar(CustomerData customerData)throws SQLException,JsonProcessingException, UnsupportedEncodingException;
 	
 
 	/**
@@ -68,4 +68,8 @@ public interface Adservice {
 	 * @throws SQLException
 	 */
 	public String queryCustomerData(CustomerData customerData)throws SQLException,JsonProcessingException, UnsupportedEncodingException;
+	
+	
+	public void   exportCustomerData(CustomerData customerData,OutputStream out)throws SQLException, Exception;
+	
 }

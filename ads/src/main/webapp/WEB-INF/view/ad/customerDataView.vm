@@ -81,14 +81,31 @@ CustomerDataMng.customerDataListMng.searchPanel =new Ext.FormPanel({
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
      	items:[{text:"媒体名称"},
-     	       {xtype:"textfield",name:"customerName",value:''},
-     	       {text:"日期"},
-     	       {xtype:"textfield",name:"uploadData1",value:''},
+     	       {xtype:"textfield",name:"customerName",value:'',editable:true},
+     	       {text:"查询日期"},
+     	       {xtype:"datefield",name:"startDate",value:'',format:'Y-m-d'},
+     	       {text:"至"},
+     	       {
+		            id:'date_begin',
+		            width:100,
+		            name:'endDate',
+		            //editable:false,
+		            format:'Y-m-d',
+		            xtype:'datefield'
+		        },
      	       {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
      	                	//CustomerDataMng.customerDataListMng.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
      	                	//alert(Ext.Ajax.serializeForm(CustomerDataMng.customerDataListMng.searchPanel.getForm().getEl()) );
      	                	CustomerDataMng.customerDataListMng.store.load();
+     	                	//更新chart
+     	                	reloadChartData();
      	                   }
+     	       },
+     	       {xtype:"button",text:"导         出",scope:this,handler:function (){
+     	          var tmpCnf = Ext.Ajax.serializeForm(CustomerDataMng.customerDataListMng.searchPanel.getForm().getEl());
+     	          window.location = "ad/exportCustemData?"+tmpCnf;
+     	       }
+     	       
      	       }
      	       ]});
 
@@ -268,11 +285,21 @@ var win = new Ext.Window({
 
 
 
-/*
+/*加载chart数据*/
+function reloadChartData(){
+var tmpCnf = Ext.urlDecode(Ext.Ajax.serializeForm(CustomerDataMng.customerDataListMng.searchPanel.getForm().getEl()));
+//alert(Ext.Ajax.serializeForm(CustomerDataMng.customerDataListMng.searchPanel.getForm().getEl()));
 Ext.Ajax.request({
-   url: 'foo.php',
-   success: function(){
-      alert('secuss');
+   url: 'ad/queryCustemDataForChart?'+tmpCnf,
+   success: function(response, options){
+      var respObj = Ext.util.JSON.decode(response.responseText);
+      //alert(respObj.xAxis.categories[0]);
+      //var hchart = Ext.getCmp('thechart2').chart;
+      //hchart.removeSerie(0,true);
+      //hchart.addSeries(respObj.series[0],true);
+      //Ext.getCmp('thechart2').chart.xAxis[0].setCategories( respObj.xAxis.categories,true);
+      //hchart.addAxis(respObj.xAxis);
+      showChart(respObj.xAxis,respObj.series);
    },
    failure: function(){
       alert('failer');
@@ -280,79 +307,57 @@ Ext.Ajax.request({
    headers: {
        'my-header': 'foo'
    },
-   params: { ad_id:ad_id }
+   params: tmpCnf
 });
-*/
+
+}
 
 
 
+
+/*图形展示*/
+function showChart(_xAxis,_series){
 
 var customerDataChart = new Ext.ux.HighChart({
         layout:'fit',
         border: true,
+        id: 'thechart2',
         chartConfig: {
         chart: {
             type: 'column',
             height:385
         },
         title: {
-            text: 'Monthly Average Rainfall'
+            text: '媒体收益'
         },
-        xAxis: {
-            categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec'
-            ],
-            crosshair: true
-        },
+        xAxis: _xAxis,
         yAxis: {
             min: 0,
             title: {
-                text: 'Rainfall (mm)'
+                text: '金额 (元)'
             }
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.1f} 元</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true
         },
+        series:_series,
         plotOptions: {
             column: {
                 pointPadding: 0.2,
                 borderWidth: 0
             }
-        },
-        series: [{
-            name: 'Tokyo',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-        }, {
-            name: 'New York',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-        }, {
-            name: 'London',
-            data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-        }, {
-            name: 'Berlin',
-            data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
-        }]
+        }
     }});
+Ext.getCmp('chart-container').remove('thechart2');
+Ext.getCmp('chart-container').add(customerDataChart);
+Ext.getCmp('chart-container').doLayout(true);
+}
+
 
 
 
@@ -365,14 +370,17 @@ CustomerDataMng.customerDataListMng.chartPanel = new Ext.Panel({
     height: 400,
     tbar:[
         {
-            text:'新建任务',
+            text:'选择日期',
             iconCls:'add',
             id:'bn_newwork',
             menu:{
                 xtype:'menu',
                 id:'mn_worklist',
-                items:[{ title: 'Box 1',text:'最近一周',fieldLabel: '最近一周'},
-                { title: 'Box 1',text:'最近一个月',fieldLabel: '最近一个月'}
+                items:[{ title: 'Box 1',text:'最近一周',fieldLabel: '最近一周',
+                       handler:function (){
+                         reloadChartData();
+                       }
+                }
                 ]
             }
         }
@@ -382,11 +390,11 @@ CustomerDataMng.customerDataListMng.chartPanel = new Ext.Panel({
     defaults: {
         flex: 1
     },
-    items: [customerDataChart
+    items: [
     ],
     listeners:{
      afterrender:function(panel) {
-        
+        reloadChartData();
         //loadChart();
      }
    }

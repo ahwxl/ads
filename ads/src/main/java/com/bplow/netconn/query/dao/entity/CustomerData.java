@@ -2,6 +2,8 @@ package com.bplow.netconn.query.dao.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CustomerData implements java.io.Serializable{
 	
 	/**
@@ -16,9 +18,19 @@ public class CustomerData implements java.io.Serializable{
 	private Double showNum;
 	private Double clickNum;
 	private Double income;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date uploadData;
 	private Date gmtCreate;
 	private Date gmtModify;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date startDate;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date endDate;
+	
+	
+	//扩展字段
+	private String organizeId;
+	private String loginUserId;
 	
 	
 	public CustomerData() {
@@ -91,6 +103,38 @@ public class CustomerData implements java.io.Serializable{
 	}
 	public void setGmtModify(Date gmtModify) {
 		this.gmtModify = gmtModify;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getOrganizeId() {
+		return organizeId;
+	}
+
+	public void setOrganizeId(String organizeId) {
+		this.organizeId = organizeId;
+	}
+
+	public String getLoginUserId() {
+		return loginUserId;
+	}
+
+	public void setLoginUserId(String loginUserId) {
+		this.loginUserId = loginUserId;
 	}
 
 	

@@ -2,15 +2,24 @@ package com.bplow.netconn.base.chart;
 
 public class XAxis {
 	
-	private String [] categories;
+	private Object [] categories;
 	private boolean   crosshair = true;
+	
+	
+	
+	public XAxis(String[] categories, boolean crosshair) {
+		super();
+		this.categories = categories;
+		this.crosshair = crosshair;
+	}
+	
 	public XAxis() {
 		super();
 	}
-	public String[] getCategories() {
+	public Object[] getCategories() {
 		return categories;
 	}
-	public void setCategories(String[] categories) {
+	public void setCategories(Object[] categories) {
 		this.categories = categories;
 	}
 	public boolean isCrosshair() {

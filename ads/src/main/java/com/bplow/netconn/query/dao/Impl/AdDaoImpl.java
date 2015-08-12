@@ -31,7 +31,7 @@ public class AdDaoImpl implements AdDao{
 
 	private static Logger logger = LoggerFactory.getLogger(AdDaoImpl.class);
 	
-	private String queryCustomerData ="select id,customer_id,customer_name,ad_addr,show_num,click_num,income,upload_data,gmt_create,gmt_modify  from tb_customer_data a  ";
+	private String queryCustomerData ="select a.id,a.customer_id,a.customer_name,a.ad_addr,a.show_num,a.click_num,a.income,a.upload_data,a.gmt_create,a.gmt_modify  from tb_customer_data a  ";
 	
 	private String insertCustomerData = "insert into tb_customer_data(	customer_id ,	customer_name ,	ad_addr ,	show_num ,	click_num ,	income ,	upload_data ,	gmt_create ,	gmt_modify ) values"
 			+ "(?,?,?,?,?,?,?,now(),now())";
@@ -104,13 +104,23 @@ public class AdDaoImpl implements AdDao{
 	@Override
 	public List queryCustomerData(CustomerData customer) throws SQLException {
 		HQLEntity hqlEntity = new HQLEntity(queryCustomerData);
-		hqlEntity.append(" where a.customer_id = ? ","1");
+		if(!"admin".equals(customer.getLoginUserId())){
+			hqlEntity.append(" left join sys_organize_user_rel b on a.customer_id = b.organize_id where b.user_id = ? ",customer.getLoginUserId());
+		}else{
+			hqlEntity.append(" where 1 = 1 ");
+		}
 		//媒体名称
 		if(StringUtils.isNotBlank(customer.getCustomerName())){
-			hqlEntity.append(" and a.customer_name like ? ",customer.getCustomerName());
+			hqlEntity.append(" and a.customer_name like ? ","%"+customer.getCustomerName()+"%");
+		}
+		if(null != customer.getStartDate()){
+			hqlEntity.append(" and a.upload_data >= ? ",customer.getStartDate());
+		}
+		if(null != customer.getEndDate()){
+			hqlEntity.append(" and a.upload_data <= ? ",customer.getEndDate());
 		}
 
-		hqlEntity.append("limit 0,10");
+		hqlEntity.append(" order by a.upload_data limit 0,100");//limit 0,10
 		logger.info("查询媒体数据SQL[{}]",hqlEntity.gethqlSql());
 		return jdbcTemplate.query(hqlEntity.gethqlSql(), new RowMapper<CustomerData>() {
             public CustomerData mapRow(ResultSet rs, int rowNum) throws SQLException {

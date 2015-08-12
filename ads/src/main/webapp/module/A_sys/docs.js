@@ -25,13 +25,15 @@ ApiPanel = function() {
         collapseMode:'mini',
         loader: new Ext.tree.TreeLoader({
 			preloadChildren: true,
+			dataUrl:'obtainMenu',
 			clearOnLoad: false
 		}),
         root: new Ext.tree.AsyncTreeNode({
             text:'Ext JS',
             id:'root',
-            expanded:true,
-            children:Docs.classData
+            //children:Docs.classData,
+            expanded:true
+            
          }),
         collapseFirst:false
     });

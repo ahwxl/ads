@@ -12,7 +12,7 @@
 <script type="text/javascript" src="resources/js/ext-3.4.0/ext-all.js"></script>
 
 
-<title>AD后台管理</title>
+<title>登陆</title>
 </head>
 <body scroll="no">
 
@@ -42,6 +42,7 @@ Ext.onReady(function() {
 	// 根据Cookie里面存放的CSS style来动态改变id为text的样式
 	var file = Ext.state.Manager.get('style');
 	Ext.util.CSS.swapStyleSheet('test', 'resources/css/' + file);
+	var picnum = Math.floor(Math.random()*(3-1+1)+1);
 	// 定义表单
 	var loginForm = new Ext.FormPanel({
 		labelAlign : 'top',
@@ -49,16 +50,16 @@ Ext.onReady(function() {
 		monitorValid : true,// 把有formBind:true的按钮和验证绑定
 		id : 'login',
 		bodyStyle : 'padding:5px 5px 0',
-		width : 400,
+		width : 600,
 		// 定义表单元素
 		// 指定容器中的元素
 		items : [{
 			layout : 'table', // 把整个空间划分成两列
 			items : [{
-						width : 180,
-						html : '<img src="resources/images/House.jpg" width=170/>' // 左边列放一个logo
+						width : 300,
+						html : '<img src="resources/images/lgn'+picnum+'.jpg" width=270/>' // 左边列放一个logo
 					}, {
-						width : 180,
+						width : 300,
 						layout : 'form', // 右边列再分成上下两行
 						items : [{
 									xtype : 'textfield',
@@ -146,9 +147,9 @@ Ext.onReady(function() {
 		// 把该面板绑定于wins这个DIV对象上
 		// el : 'wins',
 		// 窗口面板标题
-		title : '登陆系统',
+		title : '聚邑网络欢迎您',
 		// 窗口面板宽度
-		width : 400,
+		width : 600,
 		// 不容许任意伸缩大小
 		resizable : false,
 		// 高度

@@ -6,18 +6,23 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.bplow.netconn.base.chart.HgChartConf;
+import com.bplow.netconn.base.chart.Serie;
+import com.bplow.netconn.base.chart.XAxis;
 import com.bplow.netconn.base.json.JsonHelper;
 import com.bplow.netconn.base.tmpl.VelocityHelper;
 import com.bplow.netconn.base.utils.DateUtil;
@@ -229,6 +237,7 @@ public class AdServiceImpl implements Adservice{
 			int lastColumn = Math.max(r.getLastCellNum(),
 					MY_MINIMUM_COLUMN_COUNT);
 			CustomerData customertmp = new CustomerData();
+			customertmp.setCustomerId(customerData.getCustomerId());
 
 			for (int cn = 0; cn < lastColumn; cn++) {
 				Cell c = r.getCell(cn, Row.RETURN_BLANK_AS_NULL);
@@ -266,20 +275,48 @@ public class AdServiceImpl implements Adservice{
 
 	@Override
 	public String queryCustomerDataForChar(CustomerData customerData)
-			throws SQLException {
+			throws SQLException, JsonProcessingException, UnsupportedEncodingException {
 		
 		List<CustomerData> list = adDao.queryCustomerData(customerData);
 		Map<String,CustomerData> datamap = new HashMap<String,CustomerData>();
 		Set<String> xset = new HashSet<String>();
 		Set<String> yset = new HashSet<String>();
+		
+		HgChartConf hgChartConf =new HgChartConf();
+		
+		
+		XAxis xAxis = new XAxis();
+		
+		hgChartConf.setxAxis(xAxis);
 		for(CustomerData cdata : list){
 			xset.add(DateUtil.datetoStr(cdata.getUploadData()));//获取x轴
 			yset.add(cdata.getCustomerName());//获取y轴
 			datamap.put(cdata.getCustomerName()+DateUtil.datetoStr(cdata.getUploadData()), cdata);
 		}
+		final TreeSet<String> xsetSort = new TreeSet(xset);
+		xsetSort.comparator();
+		xAxis.setCategories(xsetSort.toArray());//设置x轴
+		hgChartConf.setSeries(new Serie[yset.size()]);//多少系
 		
+		int seriesnum = 0;
+		for(String yname : yset){//遍历系
+			Serie xaxis = new Serie(yname,new Object[xset.size()]);//x系
+			int i = 0;
+			for(String xname : xsetSort){//填充系的数据
+				CustomerData tmpCustomer = datamap.get(yname+xname);
+				if(null != tmpCustomer){
+					xaxis.getData()[i] = tmpCustomer.getIncome();
+				}
+				i ++;
+			}
+			hgChartConf.getSeries()[seriesnum] = xaxis;
+			seriesnum++;
+		}//遍历系统
+		
+		String chartjsondata = JsonHelper.convertToStr(hgChartConf);
 
-		return null;
+	    log.info("json chart data:[{}]",chartjsondata);
+		return chartjsondata;
 	}
 
 	@Override
@@ -291,10 +328,65 @@ public class AdServiceImpl implements Adservice{
 		
 		return JsonHelper.convertToStr(map);
 	}
+	
+	
+	@Override
+	public void exportCustomerData(CustomerData customerData,OutputStream out) throws SQLException, Exception {
+		List<CustomerData> list = adDao.queryCustomerData(customerData);
+		
+		Workbook wb = new HSSFWorkbook();
+	    //Workbook wb = new XSSFWorkbook();
+	    CreationHelper createHelper = wb.getCreationHelper();
+	    Sheet sheet = wb.createSheet("new sheet");
+
+	    // Create a row and put some cells in it. Rows are 0 based.
+	    Row row = sheet.createRow(0);
+	    String tableheader[] =new String[]{"时间","媒体","广告位","展示量","点击","收益"};
+	    CellStyle cellStyle = wb.createCellStyle();
+	    cellStyle.setDataFormat(
+	        createHelper.createDataFormat().getFormat("yyyy/m/d"));
+	    //设置表头
+	    for(int i = 0;i < tableheader.length;i++){
+	    	Cell tmpcell = row.createCell(i);
+	    	tmpcell.setCellValue(tableheader[i]);
+	    }
+	    int startrow = 1;
+	    for(CustomerData cData : list){
+	    	Row _row = sheet.createRow(startrow);
+	    	for(int j=0;j<tableheader.length;j++ ){
+	    		Cell tmpcell = _row.createCell(j);
+	    		if(j == 0){
+	    			tmpcell.setCellStyle(cellStyle);
+	    			tmpcell.setCellValue(cData.getUploadData() );
+	    		}else if(j == 1){
+	    			tmpcell.setCellValue(cData.getCustomerName());
+	    		}else if(j == 2){
+	    			tmpcell.setCellValue(cData.getAdAddr());
+	    		}else if(j == 3){
+	    			tmpcell.setCellValue(cData.getShowNum());
+	    		}else if(j == 4){
+	    			tmpcell.setCellValue(cData.getClickNum());
+	    		}else if(j == 5){
+	    			tmpcell.setCellValue(cData.getIncome());
+	    		}
+	    	}
+	    	startrow ++;
+	    }
+	    
+		
+	    wb.write(out);
+	    wb.close();
+	    //out.flush();
+	    out.close();
+	}
+	
+	
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
+
+
 
 	
 	

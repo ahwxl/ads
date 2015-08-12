@@ -75,7 +75,7 @@ CustomerDataMng.uploadCustomerDataMng = function() {
 
         items: [{
                 fieldLabel: '客户编号',
-                name: 'adId',
+                name: 'customerId',
                 allowBlank:false
             },{
           	xtype:'fileuploadfield',
@@ -97,7 +97,7 @@ CustomerDataMng.uploadCustomerDataMng = function() {
                 success:function(response,action){
                    //for(var a in recieveData){
                    //alert(action.response.info);
-                   Ext.Msg.alert('系统提示',response.responseText);
+                   Ext.Msg.alert('系统提示',action.result.info);
                    //}
                    
                 },
