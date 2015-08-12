@@ -47,7 +47,7 @@ public class LoginVerifyFilter
         } else
         {
         	p.setHeader("Content-Type", "text/html; charset=UTF-8");
-            String script = (new StringBuilder("<script language='javascript'>alert('\u5C0A\u656C\u7684\u7528\u6237,\u7531\u4E8E\u957F\u65F6\u95F4\u6CA1\u6709\u64CD\u4F5C,\u5BFC\u81F4\u7CFB\u7EDF\u8D85\u65F6\u8BF7\u91CD\u65B0\u767B\u9646\u7CFB\u7EDF!');top.location.href='")).append(r.getContextPath()).append("/login/loginPage.action'</script>").toString();
+            String script = (new StringBuilder("<script language='javascript'>alert('\u5C0A\u656C\u7684\u7528\u6237,\u7531\u4E8E\u957F\u65F6\u95F4\u6CA1\u6709\u64CD\u4F5C,\u5BFC\u81F4\u7CFB\u7EDF\u8D85\u65F6\u8BF7\u91CD\u65B0\u767B\u9646\u7CFB\u7EDF!');top.location.href='")).append(r.getContextPath()).append("/login'</script>").toString();
             //script = new String(script.getBytes("GBK"), "ISO8859-1");
             script = new String (script.getBytes("UTF-8"), "ISO8859-1");
             p.getOutputStream().print(script);

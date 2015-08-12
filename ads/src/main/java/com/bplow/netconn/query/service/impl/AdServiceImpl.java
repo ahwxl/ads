@@ -7,8 +7,10 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -28,6 +30,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bplow.netconn.base.json.JsonHelper;
 import com.bplow.netconn.base.tmpl.VelocityHelper;
+import com.bplow.netconn.base.utils.DateUtil;
 import com.bplow.netconn.base.utils.TraceNoGenerater;
 import com.bplow.netconn.query.dao.AdDao;
 import com.bplow.netconn.query.dao.entity.Ad;
@@ -264,7 +267,18 @@ public class AdServiceImpl implements Adservice{
 	@Override
 	public String queryCustomerDataForChar(CustomerData customerData)
 			throws SQLException {
-		// TODO Auto-generated method stub
+		
+		List<CustomerData> list = adDao.queryCustomerData(customerData);
+		Map<String,CustomerData> datamap = new HashMap<String,CustomerData>();
+		Set<String> xset = new HashSet<String>();
+		Set<String> yset = new HashSet<String>();
+		for(CustomerData cdata : list){
+			xset.add(DateUtil.datetoStr(cdata.getUploadData()));//获取x轴
+			yset.add(cdata.getCustomerName());//获取y轴
+			datamap.put(cdata.getCustomerName()+DateUtil.datetoStr(cdata.getUploadData()), cdata);
+		}
+		
+
 		return null;
 	}
 

@@ -22,6 +22,14 @@ public class UserLoginAction {
 	@Qualifier("sysUserServiceImpl")
 	private UserService userService;
 	
+	@RequestMapping(value="/login")
+	public String doLogin(Map<String, Object> model,HttpServletRequest request){
+		
+		
+		return "login";
+	}
+	
+	
 	@RequestMapping(value="/loginAction",method = RequestMethod.POST)
 	@ResponseBody
 	public String doWelcome(Map<String, Object> model,User user,HttpServletRequest request){
@@ -31,6 +39,16 @@ public class UserLoginAction {
 		}
 		
 		return returnjson;
+	}
+	
+	@RequestMapping(value="/loginOut")
+	public String doLoginOut(Map<String, Object> model,User user,HttpServletRequest request){
+		String returnjson = "{success:true,info:'密码错误'}";
+		if(userService.loginOutAction(user, request)){
+			returnjson = "{success:true,info:'ok'}";
+		}
+		
+		return "redirect:login";
 	}
 
 }

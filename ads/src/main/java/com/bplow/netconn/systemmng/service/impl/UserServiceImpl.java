@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
 			User returnuser =userDao.queryUserByIdAddPwd(user);
 			
 			if(null != returnuser){//登陆成功
-				request.getSession().setAttribute("urid", returnuser);
+				request.getSession().setAttribute(sid, returnuser);
 				loginResult =true;
 			}
 			
@@ -38,6 +38,12 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		return loginResult;
+	}
+
+	@Override
+	public boolean loginOutAction(User user, HttpServletRequest request) {
+		request.getSession().removeAttribute(sid);
+		return true;
 	}
 
 }

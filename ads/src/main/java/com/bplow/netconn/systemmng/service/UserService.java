@@ -7,5 +7,7 @@ import com.bplow.netconn.systemmng.dao.entity.User;
 public interface UserService {
 	
 	boolean loginAction(User user,HttpServletRequest request);
+	
+	boolean loginOutAction(User user,HttpServletRequest request);
 
 }

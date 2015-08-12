@@ -53,7 +53,7 @@
         <filter-class>com.bplow.netconn.base.filter.LoginVerifyFilter</filter-class>
         <init-param>
             <param-name>pass</param-name>
-			<param-value>/module/;/resources/;/static/</param-value>
+			<param-value>/module/;/resources/;/static/;/login</param-value>
         </init-param>
     </filter>
     <filter-mapping>
