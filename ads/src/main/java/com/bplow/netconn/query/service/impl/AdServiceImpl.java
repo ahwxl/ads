@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -73,9 +74,10 @@ public class AdServiceImpl implements Adservice{
 	@Autowired
 	private TransactionTemplate transactionTemplate;
 	
-	private final String  basecdnurl ="http://115.28.240.191/ads/SC";//http://115.28.240.191:8080/ads/SC
-	
-	private final String  baseurl ="http://115.28.240.191/ads/SC";//http://115.28.240.191:8080/ads/SC
+	@Value("${basecdnurl}")
+	private String  basecdnurl ;//http://115.28.240.191:8080/ads/SC
+	@Value("${baseurl}")
+	private String  baseurl ;//http://115.28.240.191:8080/ads/SC
 	
 	private int  MY_MINIMUM_COLUMN_COUNT = 6;
 	

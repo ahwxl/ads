@@ -44,7 +44,7 @@ public class TmplCntCacheServiceImpl implements TmplCntCacheService,Initializing
 	public void init(){
         cache = cacheMananger.getCache("tmplCache");
 		refreshAll();
-		logger.info("缓存初始化");
+		logger.info("缓存初始化完成");
 	}
 	
 	@Override

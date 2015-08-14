@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
@@ -10,10 +11,18 @@
     <context:annotation-config /> 
     
     <!-- <tx:annotation-driven /> -->
-    
-    <context:property-placeholder location="classpath*:spring/*.properties"/>
 
-	<!-- tomcat jdbc 连接池 -->
+
+	<beans profile="development">
+		<context:property-placeholder location="classpath*:spring/*.properties" />
+
+	</beans>
+
+	<beans profile="production">
+		<context:property-placeholder
+			ignore-resource-not-found="true" location="classpath*:/application.properties" />
+	</beans>
+    
 	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
 		<!-- Connection Info -->
 		<property name="driverClassName" value="${jdbc.driver}" />

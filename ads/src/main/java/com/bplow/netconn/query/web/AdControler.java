@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -40,7 +41,8 @@ public class AdControler {
 	@Autowired
 	private Adservice adService;
 	
-	private String domainName ="115.28.240.191";
+	@Value("${domainName}")
+	private String domainName ;
 	
 	/**
 	 * 客户列表
