@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-  <appender name="digest" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File"   value="../logs/digest.log" />
-    <param name="Append" value="true" />
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="[%d][%t]-%m%n"/>
-    </layout>
-  </appender>
-  
-  <appender name="httpProcess" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File"   value="../logs/http.log" />
-    <param name="Append" value="true" />
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
-    </layout>
-  </appender>
-  
-  <appender name="error" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File"   value="../logs/error.log" />
-    <param name="Append" value="true" />
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
-    </layout>
-  </appender>
+	<appender name="digest" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="../logs/digest.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d][%t]-%m%n" />
+		</layout>
+	</appender>
+
+	<appender name="error" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="../logs/error.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+	</appender>
 
 	<appender name="userRequest" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="File" value="../logs/request.log" />
@@ -32,40 +24,37 @@
 			<param name="ConversionPattern" value="%d [%t] - %m%n" />
 		</layout>
 	</appender>
-  
-  
-  <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
-    </layout>
-  </appender>
 
-  <category name="com.bplow.netconn">
-    <priority value="info" />
-    <appender-ref ref="httpProcess" />
-  </category>
-  <category name="org.springframework.web">
-    <priority value="info" />
-    <appender-ref ref="STDOUT" />
-  </category>
-  
-  <logger name="system_error" additivity="false">
-     <priority value="INFO" />
-     <appender-ref ref="error" />
-  </logger>
-  
-  <logger name="system_request" additivity="false">
-     <priority value="INFO" />
-     <appender-ref ref="userRequest" />
-  </logger>
-  
-  <logger name="common-digest" additivity="false">
-     <priority value="INFO" />
-     <appender-ref ref="digest" />
-  </logger>
-  
-  <root>
-    <priority value ="info" />
-    <appender-ref ref="STDOUT" />
-  </root>
+
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="system_error" additivity="false">
+		<priority value="INFO" />
+		<appender-ref ref="error" />
+	</logger>
+
+	<logger name="system_request" additivity="false">
+		<priority value="INFO" />
+		<appender-ref ref="userRequest" />
+	</logger>
+
+	<logger name="common-digest" additivity="false">
+		<priority value="INFO" />
+		<appender-ref ref="digest" />
+	</logger>
+
+	<root>
+		<priority value="info" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+	<category name="org.springframework.web">
+		<priority value="info" />
+		<appender-ref ref="STDOUT" />
+	</category>
+
 </log4j:configuration>

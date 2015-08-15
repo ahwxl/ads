@@ -41,9 +41,6 @@ public class AdControler {
 	@Autowired
 	private Adservice adService;
 	
-	@Value("${domainName}")
-	private String domainName ;
-	
 	/**
 	 * 客户列表
 	 * @return
@@ -79,7 +76,7 @@ public class AdControler {
 		model.put("id", id);
 		model.put("ext", ext);
 		//domainName = "localhost:8080";
-		model.put("domainName", domainName);
+		model.put("domainName", adService.getDomainName());//服务器域名和端口号（端口号可以空）
     	
     	return "ad/showAd";
     }
@@ -186,13 +183,9 @@ public class AdControler {
         response.setHeader("Content-Disposition", "attachment;filename="+ new String((UUID.randomUUID().toString().replace("-", "") + ".xls").getBytes(), "iso-8859-1"));
 		OutputStream out =response.getOutputStream();
 		adService.exportCustomerData(customerData,out);
-	} 
-	
-	
-	
-	
-	
-	
+	}
+
+
 	
 
 }

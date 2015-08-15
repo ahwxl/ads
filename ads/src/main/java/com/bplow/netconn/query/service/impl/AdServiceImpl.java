@@ -46,6 +46,7 @@ import com.bplow.netconn.query.dao.entity.Ad;
 import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
 import com.bplow.netconn.query.service.Adservice;
+import com.bplow.netconn.query.service.LogConfigService;
 import com.bplow.netconn.query.service.TmplCntCacheService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -73,11 +74,15 @@ public class AdServiceImpl implements Adservice{
 	
 	@Autowired
 	private TransactionTemplate transactionTemplate;
+	@Autowired
+	private LogConfigService logConfigService;
 	
 	@Value("${basecdnurl}")
 	private String  basecdnurl ;//http://115.28.240.191:8080/ads/SC
 	@Value("${baseurl}")
 	private String  baseurl ;//http://115.28.240.191:8080/ads/SC
+	
+	private @Value("${domainName}") String domainName ;
 	
 	private int  MY_MINIMUM_COLUMN_COUNT = 6;
 	
@@ -128,8 +133,6 @@ public class AdServiceImpl implements Adservice{
 		String [] adArray = ext.split("\\|");
 		String [] customerIdArray = id.split("_");
 		
-		
-		
 		if(StringUtils.isNotBlank(cnidx)){
 			int cnidxnum = Integer.parseInt(cnidx);
 			if(cnidxnum <= adArray.length){
@@ -137,7 +140,9 @@ public class AdServiceImpl implements Adservice{
 			}
 			if(cnidxnum <= customerIdArray.length){
 				String customIdStr = customerIdArray[cnidxnum-1];
-				customId = Integer.parseInt(customIdStr);
+				if(StringUtils.isNotBlank(customIdStr)){
+					customId = Integer.parseInt(customIdStr);
+				}
 			}
 		}
 		
@@ -176,8 +181,10 @@ public class AdServiceImpl implements Adservice{
 		String str = "(function (win, doc) {"
 				+ exeNum + "(0,'" + adName
 				+ "',"+property+")})(window, document);";
-		logger.info("customName:{},property：{},executeJS:{}",adName,property,str);
-		log.info("REQUEST:[{},{},{}]",traceNo,adName,property);
+		if(logConfigService.enableLog()){
+			logger.info("customName:{},property：{},executeJS:{}",adName,property,str);
+			log.info("REQUEST:[{},{},{}]",traceNo,adName,property);
+		}
 		return str;
 	}
 
@@ -386,6 +393,30 @@ public class AdServiceImpl implements Adservice{
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+
+	public String getBasecdnurl() {
+		return basecdnurl;
+	}
+
+	public void setBasecdnurl(String basecdnurl) {
+		this.basecdnurl = basecdnurl;
+	}
+
+	public String getBaseurl() {
+		return baseurl;
+	}
+
+	public void setBaseurl(String baseurl) {
+		this.baseurl = baseurl;
+	}
+
+	public String getDomainName() {
+		return domainName;
+	}
+
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
 
 
