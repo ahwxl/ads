@@ -157,12 +157,12 @@ public class AdServiceImpl implements Adservice{
 		property = ad.getAdProperty();//属性
 		
 		//property.replaceAll("_id", adId);
-		Map map = new HashMap();
+		Map<String,String> map = new HashMap<String,String>();
 		
 		if(adId.contains("_")){
 			String paraArray [] = adId.split("_");
 			for(int i = 0;i < paraArray.length;i++){
-				map.put("A"+i, paraArray[i]);
+				map.put("A"+i, paraArray[i].replace("$","_"));
 			}
 		}else{
 			map.put("id", adId);
