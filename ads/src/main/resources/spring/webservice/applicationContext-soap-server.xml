@@ -14,6 +14,7 @@
 
 	<bean id="exportService" class="com.bplow.netconn.query.service.impl.ExportServiceImpl" >
 	 <property name="tmplCntCacheService" ref="tmplCntCacheService"></property>
+	 <property name="logConfigService" ref="logConfigService"></property>
 	</bean>
     
 </beans>

@@ -72,4 +72,5 @@ public interface Adservice {
 	
 	public void   exportCustomerData(CustomerData customerData,OutputStream out)throws SQLException, Exception;
 	
+	public String  getDomainName();
 }

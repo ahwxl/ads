@@ -5,6 +5,7 @@ import javax.jws.WebService;
 import org.apache.cxf.feature.Features;
 
 import com.bplow.netconn.query.service.ExportService;
+import com.bplow.netconn.query.service.LogConfigService;
 import com.bplow.netconn.query.service.TmplCntCacheService;
 
 
@@ -14,17 +15,41 @@ import com.bplow.netconn.query.service.TmplCntCacheService;
 public class ExportServiceImpl implements ExportService{
 	
 	private TmplCntCacheService tmplCntCacheService;
+	
+	private LogConfigService logConfigService;
 
 	@Override
 	public void refreshAllCache() {
 		tmplCntCacheService.init();
 	}
+	
+	@Override
+	public void switchEnableLogFlag() {
+		logConfigService.switchOpenLog();
+		
+	}
+	
+	@Override
+	public void addBlackName(String blackName) {
+		logConfigService.addBlackName(blackName);
+	}
+
+
+	@Override
+	public void setMaxLogNum(int logNum) {
+		logConfigService.setMaxErrorLogNum(logNum);
+	}
 
 	public void setTmplCntCacheService(TmplCntCacheService tmplCntCacheService) {
 		this.tmplCntCacheService = tmplCntCacheService;
 	}
-	
-	
-	
+
+	public void setLogConfigService(LogConfigService logConfigService) {
+		this.logConfigService = logConfigService;
+	}
+
+
+
+
 
 }

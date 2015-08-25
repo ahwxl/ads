@@ -13,6 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <springframework.version>4.1.6.RELEASE</springframework.version>
     <jettyVersion>9.0.2.v20130417</jettyVersion>
+    <jettyV>8.1.9.v20130131</jettyV>
     <dandelion.version>0.10.1</dandelion.version>
     <tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
     <tomcat.servlet.version>7.0.30</tomcat.servlet.version>

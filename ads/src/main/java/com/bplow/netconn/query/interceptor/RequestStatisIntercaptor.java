@@ -14,6 +14,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import com.bplow.netconn.base.utils.TraceNoGenerater;
+import com.bplow.netconn.query.service.LogConfigService;
 
 
 public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
@@ -22,6 +23,9 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	TraceNoGenerater traceNoGenerater;
 	
 	Logger log = LoggerFactory.getLogger("system_request");
+	
+	@Autowired
+	private LogConfigService logConfigService;
 
 	public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) throws Exception {
@@ -34,6 +38,7 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	        String remoteIp  = request.getRemoteHost();
 	        String remoteUrl = request.getRequestURI();
 	        String refer     = request.getHeader("Referer");
+	        String qstr = request.getQueryString();
 	        /*Enumeration<String> referenum  = request.getHeaderNames();
 	        while(referenum.hasMoreElements()){
 	        	String tmp = referenum.nextElement();
@@ -43,9 +48,10 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	        	log.info("header:{}={}",tmp,headervalue);
 	        }*/
 	        //AccessRequired annotation = method.getAnnotation(AccessRequired.class);
-	        log.info("REQUEST:[{},{},{},{},{}]",method.getName(),remoteIp,remoteUrl,refer,traceNo);
+	        if(logConfigService.enableLog()){
+	        	log.info("REQUEST:[{},{},{},{},{},{}]",method.getName(),remoteIp,remoteUrl,qstr,refer,traceNo);
+	        }
 		}
-		
         // 没有注解通过拦截
         return true;
     }
