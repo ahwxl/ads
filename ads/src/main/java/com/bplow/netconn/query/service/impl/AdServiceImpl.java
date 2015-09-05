@@ -96,8 +96,10 @@ public class AdServiceImpl implements Adservice{
 
 	@Override
 	public String obtionBaseScript(ReqForm reqForm,String tplPath) {
-		logger.info("获取基础JS:{}",reqForm);
-		String traceNo = traceNoGenerater.getNo();
+		if (logConfigService.enableLog()) {
+			logger.info("获取基础JS:{}", reqForm);
+		}
+		//String traceNo = traceNoGenerater.getNo();
 		Map map = new HashMap();
 		map.put("basecdnurl", basecdnurl);
 		map.put("baseurl", baseurl);
