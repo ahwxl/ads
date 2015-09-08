@@ -301,8 +301,8 @@ public class AdServiceImpl implements Adservice{
 		hgChartConf.setxAxis(xAxis);
 		for(CustomerData cdata : list){
 			xset.add(DateUtil.datetoStr(cdata.getUploadData()));//获取x轴
-			yset.add(cdata.getCustomerName());//获取y轴
-			datamap.put(cdata.getCustomerName()+DateUtil.datetoStr(cdata.getUploadData()), cdata);
+			yset.add(cdata.getCustomerName()+cdata.getAdAddr());//获取y轴
+			datamap.put(cdata.getCustomerName()+cdata.getAdAddr()+DateUtil.datetoStr(cdata.getUploadData()), cdata);
 		}
 		final TreeSet<String> xsetSort = new TreeSet(xset);
 		xsetSort.comparator();
@@ -391,7 +391,22 @@ public class AdServiceImpl implements Adservice{
 	    out.close();
 	}
 	
-	
+	@Override
+	public boolean delMediaData(final Integer[] id) {
+		this.transactionTemplate.execute(new TransactionCallback<Object>() {
+			public Object doInTransaction(TransactionStatus status) {
+				try {
+					adDao.delMediaData(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+				return true;
+			}
+		});
+		
+		return true;
+	}
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;

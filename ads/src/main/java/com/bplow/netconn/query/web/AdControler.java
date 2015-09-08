@@ -178,11 +178,47 @@ public class AdControler {
 	@RequestMapping(value = "/ad/exportCustemData", produces = "application/vnd.ms-excel;charset=utf-8")
 	public void exportCusterDataPage(Map<String, Object> model,CustomerData customerData,
 			HttpServletRequest request, HttpServletResponse response) throws Exception{
-		
+		User loginUser = (User)request.getSession().getAttribute("lgu");
+		if(null != loginUser){
+			customerData.setLoginUserId(loginUser.getUserName());
+			customerData.setOrganizeId(loginUser.getOrgnatizeId());
+		}
 		response.setContentType("application/vnd.ms-excel;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename="+ new String((UUID.randomUUID().toString().replace("-", "") + ".xls").getBytes(), "iso-8859-1"));
 		OutputStream out =response.getOutputStream();
 		adService.exportCustomerData(customerData,out);
+	}
+	
+	@RequestMapping(value = "/ad/mediaDataMng", produces = "application/vnd.ms-excel;charset=utf-8")
+	public String mediaDataMng(Map<String, Object> model,CustomerData customerData,
+			HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+
+
+		return "ad/mediaDataMng";
+	}
+	
+	@RequestMapping(value = "/ad/delMediaDataAction", produces = "text/html;charset=UTF-8")
+	@ResponseBody
+    public String delMediaDataAction(Map<String, Object> model,Ad reqForm,
+			HttpServletRequest request, HttpServletResponse respose) throws SQLException{
+		Integer [] idarray = null;
+		String idarraystr = reqForm.getDataIdArray();
+		String [] strarray = idarraystr.split(",");
+		boolean result = false;
+		if(strarray.length > 0){
+			idarray = new Integer[strarray.length];
+		}
+		for(int i =0;i<strarray.length;i++ ){
+			idarray[i] = Integer.parseInt(strarray[i]);
+		}
+		if(null != idarray){
+			result = adService.delMediaData(idarray);
+		}
+		if(result){
+			return "{success:true,info:'操作成功!'}";
+		}
+		return "{success:true,info:'操作成功!'}";
 	}
 
 

@@ -19,6 +19,7 @@ public class Ad implements java.io.Serializable{
 	private String adProperty;
 	private int orderBy;
 	
+	private String dataIdArray;
 	
 	public Ad() {
 		super();
@@ -132,6 +133,16 @@ public class Ad implements java.io.Serializable{
 
 	public void setOrderBy(int orderBy) {
 		this.orderBy = orderBy;
+	}
+
+
+	public String getDataIdArray() {
+		return dataIdArray;
+	}
+
+
+	public void setDataIdArray(String dataIdArray) {
+		this.dataIdArray = dataIdArray;
 	}
 	
 	

@@ -36,5 +36,7 @@ public interface AdDao {
 	 * @throws SQLException
 	 */
 	public List queryCustomerData(CustomerData customer)throws SQLException;
+	
+	public void delMediaData(Integer[] id);
 
 }

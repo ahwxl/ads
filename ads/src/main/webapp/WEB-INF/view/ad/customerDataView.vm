@@ -189,7 +189,7 @@ CustomerDataMng.customerDataListMng.mygrid = new Ext.grid.GridPanel({
 
         // paging bar on the bottom
         bbar: new Ext.PagingToolbar({
-            pageSize: 10,
+            pageSize: 100,
             store:  CustomerDataMng.customerDataListMng.store,
             displayInfo: true,
             displayMsg: 'Displaying topics {0} - {1} of {2}',

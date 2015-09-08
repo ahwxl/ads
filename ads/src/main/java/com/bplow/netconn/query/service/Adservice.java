@@ -73,4 +73,10 @@ public interface Adservice {
 	public void   exportCustomerData(CustomerData customerData,OutputStream out)throws SQLException, Exception;
 	
 	public String  getDomainName();
+	/**
+	 * 删除媒体数据
+	 * @param id
+	 * @return
+	 */
+	public boolean delMediaData(Integer[] id);
 }

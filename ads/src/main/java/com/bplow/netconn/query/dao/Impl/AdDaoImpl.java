@@ -125,9 +125,10 @@ public class AdDaoImpl implements AdDao{
 		return jdbcTemplate.query(hqlEntity.gethqlSql(), new RowMapper<CustomerData>() {
             public CustomerData mapRow(ResultSet rs, int rowNum) throws SQLException {
             	CustomerData customer = new CustomerData();
+            	customer.setId(rs.getInt("id"));
             	customer.setCustomerId(rs.getString("customer_id"));
             	customer.setCustomerName(rs.getString("customer_name"));
-            	customer.setAdAddr(rs.getString("ad_addr"));
+            	customer.setAdAddr(rs.getString("ad_addr")==null?"":rs.getString("ad_addr"));
             	customer.setClickNum(rs.getDouble("click_num"));
             	customer.setShowNum(rs.getDouble("show_num"));
             	customer.setIncome(rs.getDouble("income"));
@@ -135,6 +136,19 @@ public class AdDaoImpl implements AdDao{
                 return customer;
             }
         },hqlEntity.getParamObjArray());
+	}
+
+	@Override
+	public void delMediaData(final Integer[] id) {
+		jdbcTemplate.batchUpdate(" DELETE FROM  tb_customer_data  where id = ? ", new BatchPreparedStatementSetter() {
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						ps.setInt(1, id[i]);
+					}
+					public int getBatchSize() {
+						return id.length;
+					}
+		});
 	}
 
 }
