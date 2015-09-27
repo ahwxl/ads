@@ -48,6 +48,11 @@ public class ExportServiceImpl implements ExportService{
 		this.logConfigService = logConfigService;
 	}
 
+	@Override
+	public void switchSendMsgLog() {
+		logConfigService.switchSendMsgLog();
+	}
+
 
 
 

@@ -41,5 +41,11 @@ public interface LogConfigService {
 	 * @return
 	 */
 	boolean enableLog();
+	/**
+	 * 切换日志发送开关
+	 */
+	void switchSendMsgLog();
+	
+	boolean canSendMsgLog();
 
 }

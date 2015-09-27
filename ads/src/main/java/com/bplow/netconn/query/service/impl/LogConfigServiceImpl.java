@@ -16,6 +16,9 @@ public class LogConfigServiceImpl implements LogConfigService{
 	
 	private boolean enableLog = true;
 	
+	private boolean sendEnable = true;
+	
+
 	private Set<String> blackNameSet = new HashSet<String>();
 	
 	@Override
@@ -57,12 +60,26 @@ public class LogConfigServiceImpl implements LogConfigService{
 		}else{
 			enableLog = true;
 		}
-		
 	}
 
 	@Override
 	public boolean enableLog() {
 		return enableLog;
+	}
+
+	@Override
+	public void switchSendMsgLog() {
+		if(sendEnable){
+			sendEnable = false;
+		}else{
+			sendEnable = true;
+		}
+		
+	}
+
+	@Override
+	public boolean canSendMsgLog() {
+		return sendEnable;
 	}
 	
 

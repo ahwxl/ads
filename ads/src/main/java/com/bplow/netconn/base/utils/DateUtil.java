@@ -36,6 +36,8 @@ public class DateUtil {
 			"yyyy-MM-dd HH:mm:ss");
 
 	public static final String FmtDate = "yyyy-MM-dd";
+	
+	public static final String FmtDayDate = "yyyyMMdd";
 
 	public static final String FmtTime = "HH:mm:ss";
 
@@ -52,6 +54,17 @@ public class DateUtil {
         String curDate = sdf.format(new Date());
         return curDate;
     }
+    /**
+     * 返回当前日期 yyyyMMdd
+     * @return
+     */
+    public static String currDayStr(){
+    	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+                "yyyyMMdd");
+    	 String curDate = sdf.format(new Date());
+         return curDate;
+    }
+    
     
     public static String datetoStr(Date date) {
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(

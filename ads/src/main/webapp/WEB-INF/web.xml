@@ -52,7 +52,7 @@
         <filter-name>dandelionFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!-- 登陆验证 -->
+    <!-- 登陆验证 
     <filter>
         <filter-name>LoginVerifyFilter</filter-name>
         <filter-class>com.bplow.netconn.base.filter.LoginVerifyFilter</filter-class>
@@ -64,7 +64,7 @@
     <filter-mapping>
         <filter-name>LoginVerifyFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
 	<filter>
 		<filter-name>encodingFilter</filter-name>

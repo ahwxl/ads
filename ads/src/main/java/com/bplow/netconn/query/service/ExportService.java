@@ -23,5 +23,7 @@ public interface ExportService {
 	 * 
 	 */
 	void addBlackName(String blackName);
+	
+	void switchSendMsgLog();
 
 }
