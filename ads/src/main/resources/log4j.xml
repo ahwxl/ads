@@ -10,10 +10,10 @@
 	</appender>
 	
 	<appender name="mediaDigest" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="../logs/mediaDigest.log" />
+		<param name="File" value="../logbak/mediaDigest.log" />
 		<param name="Append" value="true" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%d][%m%n]" />
+			<param name="ConversionPattern" value="[%d][%m]%n" />
 		</layout>
 	</appender>
 

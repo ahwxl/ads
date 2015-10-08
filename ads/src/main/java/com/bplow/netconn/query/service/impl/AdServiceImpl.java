@@ -58,6 +58,8 @@ public class AdServiceImpl implements Adservice{
 	
 	private static Logger log    =  LoggerFactory.getLogger("common-digest");
 	
+	private static Logger mlog   =  LoggerFactory.getLogger("media-digest");
+	
 	@Autowired
 	TraceNoGenerater traceNoGenerater;
 	@Autowired
@@ -183,6 +185,8 @@ public class AdServiceImpl implements Adservice{
 		String str = "(function (win, doc) {"
 				+ exeNum + "(0,'" + adName
 				+ "',"+property+")})(window, document);";
+		/*媒体编号、广告id、回流、广告位*/
+		mlog.info("{},{},{},{},{}",adId,adName,cnidx,reqForm.getRefUrl(),reqForm.getSessionId());
 		if(logConfigService.enableLog()){
 			logger.info("customName:{},property：{},executeJS:{}",adName,property,str);
 			log.info("REQUEST:[{},{},{}]",traceNo,adName,property);

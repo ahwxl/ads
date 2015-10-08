@@ -52,7 +52,7 @@
 		<property name="notifyTopic" ref="advancedNotifyTopic" />
 	</bean>
 
-	<!-- 异步接收Queue消息Container -->
+	<!-- 异步接收Queue消息Container 
 	<bean id="advancedQueueContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="advancedConnectionFactory" />
 		<property name="destination" ref="advancedNotifyQueue" />
@@ -60,7 +60,7 @@
 		<property name="concurrentConsumers" value="5" />
 		<property name="maxConcurrentConsumers" value="10" />
 		<property name="sessionAcknowledgeModeName" value="CLIENT_ACKNOWLEDGE" />
-	</bean>
+	</bean>-->
 
 	<!-- 异步接收Topic消息Container 
 	<bean id="advancedTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
@@ -71,8 +71,8 @@
 		<property name="subscriptionDurable" value="true" />
 	</bean>-->
 
-	<!-- 异步接收消息处理类 -->
+	<!-- 异步接收消息处理类 
 	<bean id="advancedNotifyMessageListener" class="com.bplow.netconn.statistics.listener.NotifyReqMessageListener" >
 	    <property name="statisDayService" ref="statisDayService"></property>
-	</bean>
+	</bean>-->
 </beans>

@@ -47,7 +47,7 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	        String remoteUrl = request.getRequestURI();
 	        String refer     = request.getHeader("Referer");
 	        String qstr      = request.getQueryString();
-	        String cnidx  = request.getParameter("cnidx");
+	        String cnidx     = request.getParameter("cnidx");
 	        /*Enumeration<String> referenum  = request.getHeaderNames();
 	        while(referenum.hasMoreElements()){
 	        	String tmp = referenum.nextElement();
@@ -57,7 +57,7 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	        	log.info("header:{}={}",tmp,headervalue);
 	        }*/
 	        //AccessRequired annotation = method.getAnnotation(AccessRequired.class);
-	        long starttime = System.currentTimeMillis();
+	        //long starttime = System.currentTimeMillis();
 	        if(null != cnidx && logConfigService.canSendMsgLog()){
 	        	haddleCallBack(request);
 	        }

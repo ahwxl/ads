@@ -3,7 +3,9 @@ package com.bplow.netconn.query.service.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.BootstrapWith;
 
 import com.bplow.netconn.query.service.LogConfigService;
 
@@ -14,10 +16,14 @@ public class LogConfigServiceImpl implements LogConfigService{
 	
 	private int currentLogNum = 0;
 	
-	private boolean enableLog = true;
+	private boolean enableLog = false;
 	
-	private boolean sendEnable = true;
+	private boolean sendEnable = false;
 	
+
+	public void setSendEnable(Boolean sendEnable) {
+		this.sendEnable = sendEnable;
+	}
 
 	private Set<String> blackNameSet = new HashSet<String>();
 	

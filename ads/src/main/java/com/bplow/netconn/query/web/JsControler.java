@@ -109,8 +109,12 @@ public class JsControler {
 			HttpServletRequest request, HttpServletResponse respose) throws IOException, SQLException {
 		respose.setContentType("text/javascript");
 		respose.setCharacterEncoding("UTF-8");
-		
+		String refer = request.getHeader("Referer");
+		String sessionId = request.getSession().getId();
+		reqForm.setRefUrl(refer);
+		reqForm.setSessionId(sessionId);
 		OutputStream os =respose.getOutputStream();
+		
 		String str = adService.executeMethod(reqForm, os);
 		if(null != str){
 			InputStream in = IOUtils.toInputStream(str);

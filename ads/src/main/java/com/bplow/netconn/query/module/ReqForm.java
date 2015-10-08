@@ -6,7 +6,8 @@ public class ReqForm {
 	private String c;
 	private String ext;
 	private String cnidx;
-	
+	private String refUrl;//媒体地址
+	private String sessionId;
 	
 	public ReqForm() {
 		super();
@@ -34,6 +35,20 @@ public class ReqForm {
 	}
 	public void setC(String c) {
 		this.c = c;
+	}
+	
+	public String getRefUrl() {
+		return refUrl;
+	}
+	public void setRefUrl(String refUrl) {
+		this.refUrl = refUrl;
+	}
+	
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 	@Override
 	public String toString() {
