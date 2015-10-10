@@ -23,11 +23,11 @@ import com.bplow.netconn.statistics.service.SendReqService;
 @Service
 public class SendReqServiceImpl implements SendReqService{
 
-	@Autowired
-	@Qualifier("advancedJmsTemplate")
+	//@Autowired
+	//@Qualifier("advancedJmsTemplate")
 	private JmsTemplate jmsTemplate;
-	@Autowired
-	@Qualifier("advancedNotifyQueue")
+	//@Autowired
+	//@Qualifier("advancedNotifyQueue")
 	private Destination notifyQueue;
 	
 	@Override

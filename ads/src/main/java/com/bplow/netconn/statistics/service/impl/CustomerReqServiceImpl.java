@@ -21,7 +21,7 @@ public class CustomerReqServiceImpl implements customerReqService{
 	
 	private static Logger logger = LoggerFactory.getLogger(CustomerReqServiceImpl.class);
 	
-	ThreadPoolExecutor executor=(ThreadPoolExecutor)Executors.newFixedThreadPool(2);
+	ThreadPoolExecutor executor= null /*(ThreadPoolExecutor)Executors.newFixedThreadPool(2)*/;
 
 	/**
 	 * 

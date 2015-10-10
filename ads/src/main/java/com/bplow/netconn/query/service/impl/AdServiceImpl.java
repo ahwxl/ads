@@ -109,6 +109,7 @@ public class AdServiceImpl implements Adservice{
 		map.put("id",reqForm.getId());
 		map.put("version", 7);
 		map.put("target", "AD_Sellbuyads");
+		map.put("over", "commp.min.js");
 		String str = null;
 		String tplcnt = null;
 		Object tmplcntObj = tmplCntCacheService.getTmplByKey(tplPath);

@@ -32,7 +32,7 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	private LogConfigService logConfigService;
 	@Autowired
 	private customerReqService customerReqService;
-	@Autowired
+	//@Autowired
 	private SendReqService sendReqService;
 
 	public boolean preHandle(HttpServletRequest request,
