@@ -55,7 +55,6 @@ public class JsControler {
 		
 		respose.setContentType("text/javascript");
 		respose.setCharacterEncoding("UTF-8");
-		BufferedWriter bw = new BufferedWriter(new StringWriter());
 
 		OutputStream out = respose.getOutputStream();
 		String baseJsPath = "/js/base.min.js";

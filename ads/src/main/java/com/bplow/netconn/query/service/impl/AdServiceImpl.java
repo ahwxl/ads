@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -187,8 +186,8 @@ public class AdServiceImpl implements Adservice{
 				+ exeNum + "(0,'" + adName
 				+ "',"+property+")})(window, document);";
 		/*媒体编号、广告id、回流、广告位*/
-		mlog.info("{},{},{},{},{}",adId,adName,cnidx,reqForm.getRefUrl(),reqForm.getSessionId());
 		if(logConfigService.enableLog()){
+		    mlog.info("{},{},{},{},{}",adId,adName,cnidx,reqForm.getRefUrl(),reqForm.getSessionId());
 			logger.info("customName:{},property：{},executeJS:{}",adName,property,str);
 			log.info("REQUEST:[{},{},{}]",traceNo,adName,property);
 		}
