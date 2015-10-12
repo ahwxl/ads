@@ -9,6 +9,6 @@
 
 	<!-- Special objects setting. -->
 	<!-- Refresh demoCache every hour，按Cache实际大小而不是Element数量进行限制，超过限制后不保存到磁盘。 -->
-	<cache name="tmplCache" maxBytesLocalHeap="100M" eternal="false" timeToIdleSeconds="0"
+	<cache name="tmplCache" maxBytesLocalHeap="150M" eternal="false" timeToIdleSeconds="0"
 		timeToLiveSeconds="0" overflowToDisk="false" />
 </ehcache>

@@ -118,5 +118,19 @@ public class TmplCntCacheServiceImpl implements TmplCntCacheService,Initializing
 		}
 		return cnt;
 	}
+	
+	public void putQueryStrForCache(String key,String tmpCnt){
+		cache.put(key, tmpCnt);
+	}
+	
+	public String getRenderTmpFromCache(String key){
+		Object tmplcnt = null;
+		Cache.ValueWrapper tmplcntobj = cache.get(key);
+		if(null != tmplcntobj ){
+			tmplcnt = tmplcntobj.get();
+		}
+		
+		return (String)tmplcnt;
+	}
 
 }

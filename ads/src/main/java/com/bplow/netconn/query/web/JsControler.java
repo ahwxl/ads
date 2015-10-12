@@ -50,24 +50,23 @@ public class JsControler {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/SC/base", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public void obtainScript(Map<String, Object> model,ReqForm reqForm,
+	@ResponseBody
+	public String obtainScript(Map<String, Object> model,ReqForm reqForm,
 			HttpServletRequest request, HttpServletResponse respose) throws IOException {
-		
 		respose.setContentType("text/javascript");
 		respose.setCharacterEncoding("UTF-8");
-
-		OutputStream out = respose.getOutputStream();
+		String queryStr = request.getQueryString();
+		reqForm.setQueryStr(queryStr);
 		String baseJsPath = "/js/base.min.js";
 		//InputStream in = this.getClass().getResourceAsStream("");
 		String str = adService.obtionBaseScript(reqForm, baseJsPath);
 		//InputStream im = IOUtils.toInputStream("(function(a){alert(a)})('你好a')","UTF-8");
+		/*OutputStream out = respose.getOutputStream();
 		InputStream im = IOUtils.toInputStream(str);
-		
 		IOUtils.copy(im, out);
-		
-		//in.close();
 		out.flush();
-		out.close();
+		out.close();*/
+		return str;
 
 	}
 	
@@ -110,6 +109,8 @@ public class JsControler {
 		respose.setCharacterEncoding("UTF-8");
 		String refer = request.getHeader("Referer");
 		String sessionId = request.getSession().getId();
+		String queryStr = request.getQueryString();
+		reqForm.setQueryStr(queryStr);
 		reqForm.setRefUrl(refer);
 		reqForm.setSessionId(sessionId);
 		OutputStream os =respose.getOutputStream();

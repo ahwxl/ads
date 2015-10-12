@@ -27,7 +27,7 @@ import com.bplow.netconn.statistics.service.StatisDayService;
  * @author qian
  *
  */
-@Service("statisDayService")
+//@Service("statisDayService")
 public class StatisDayServiceImpl implements StatisDayService{
 	
 	private static Logger logger = LoggerFactory.getLogger("media-digest");

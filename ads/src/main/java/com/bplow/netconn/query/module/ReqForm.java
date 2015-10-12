@@ -8,6 +8,7 @@ public class ReqForm {
 	private String cnidx;
 	private String refUrl;//媒体地址
 	private String sessionId;
+	private String queryStr;
 	
 	public ReqForm() {
 		super();
@@ -49,6 +50,13 @@ public class ReqForm {
 	}
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
+	}
+	
+	public String getQueryStr() {
+		return queryStr;
+	}
+	public void setQueryStr(String queryStr) {
+		this.queryStr = queryStr;
 	}
 	@Override
 	public String toString() {

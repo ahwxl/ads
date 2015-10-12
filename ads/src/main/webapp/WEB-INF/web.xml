@@ -7,7 +7,7 @@
 		classpath:applicationContext-myclient.xml
 		</param-value>
 	</context-param>
-    <!--   development-->
+    <!--  development   -->
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
 		<param-value>production</param-value>
@@ -84,7 +84,7 @@
 	</filter-mapping>
     
 	<session-config>
-		<session-timeout>1200</session-timeout>
+		<session-timeout>1</session-timeout>
 	</session-config>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

@@ -97,34 +97,46 @@ public class AdServiceImpl implements Adservice{
 
 	@Override
 	public String obtionBaseScript(ReqForm reqForm,String tplPath) {
-		if (logConfigService.enableLog()) {
+		/*if (logConfigService.enableLog()) {
 			logger.info("获取基础JS:{}", reqForm);
-		}
+		}*/
 		//String traceNo = traceNoGenerater.getNo();
-		Map map = new HashMap();
-		map.put("basecdnurl", basecdnurl);
-		map.put("baseurl", baseurl);
-		map.put("ext", reqForm.getExt());
-		map.put("id",reqForm.getId());
-		map.put("version", 7);
-		map.put("target", "AD_Sellbuyads");
-		map.put("over", "commp.min.js");
-		String str = null;
-		String tplcnt = null;
-		Object tmplcntObj = tmplCntCacheService.getTmplByKey(tplPath);
-		if(tmplcntObj != null){
-			tplcnt = (String)tmplcntObj;
+		
+		/**
+		 * 从缓存中获取，如果没有继续执行
+		 */
+		String tmplStr = tmplCntCacheService.getRenderTmpFromCache(reqForm.getQueryStr());
+		if(null != tmplStr){
+			return tmplStr;
+		}else{
+			Map map = new HashMap();
+			map.put("basecdnurl", basecdnurl);
+			map.put("baseurl", baseurl);
+			map.put("ext", reqForm.getExt());
+			map.put("id",reqForm.getId());
+			map.put("version", 7);
+			map.put("target", "AD_Sellbuyads");
+			map.put("over", "commp.min.js");
+			String tplcnt = null;
+			Object tmplcntObj = tmplCntCacheService.getTmplByKey(tplPath);
+			if(tmplcntObj != null){
+				tplcnt = (String)tmplcntObj;
+			}
+			try {
+				tmplStr = velocityHelper.renderStr(map, tplcnt);
+				tmplCntCacheService.putQueryStrForCache(reqForm.getQueryStr(), tmplStr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			str = velocityHelper.renderStr(map, tplcnt);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return str;
+		
+		return tmplStr;
 	}
 
 	@Override
 	public String executeMethod(ReqForm reqForm,OutputStream os) throws SQLException {
+		/*先从缓存中获取，获取不到，继续执行*/
+		
 		String traceNo = traceNoGenerater.getNo();
 		String id     = reqForm.getId();
 		String exeNum = reqForm.getC();
@@ -156,10 +168,8 @@ public class AdServiceImpl implements Adservice{
 		
 		//Ad ad = adDao.queryAd(customId);
 		Ad ad = (Ad)tmplCntCacheService.getTmplByKey(customId+"");
-		
 		adName = ad.getAdId();//客户id
 		property = ad.getAdProperty();//属性
-		
 		//property.replaceAll("_id", adId);
 		Map<String,String> map = new HashMap<String,String>();
 		
@@ -174,21 +184,13 @@ public class AdServiceImpl implements Adservice{
 		
 		property = velocityHelper.renderStr(map, property);
 		
-		/*if("1".equals(cnidx)){
-			adName = "MZADX";
-			property = "{'l':'6298'}";
-		}else{
-			adName = "YOUDAO";
-			property = "{'slotid':'1387'}";
-		}*/
-		
 		String str = "(function (win, doc) {"
 				+ exeNum + "(0,'" + adName
 				+ "',"+property+")})(window, document);";
 		/*媒体编号、广告id、回流、广告位*/
+		mlog.info("{},{},{},{},{}",adId,adName,cnidx,reqForm.getRefUrl(),reqForm.getSessionId());
 		if(logConfigService.enableLog()){
-		    mlog.info("{},{},{},{},{}",adId,adName,cnidx,reqForm.getRefUrl(),reqForm.getSessionId());
-			logger.info("customName:{},property：{},executeJS:{}",adName,property,str);
+			//logger.info("customName:{},property：{},executeJS:{}",adName,property,str);
 			log.info("REQUEST:[{},{},{}]",traceNo,adName,property);
 		}
 		return str;

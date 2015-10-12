@@ -1,6 +1,6 @@
 package com.bplow.netconn.statistics.service.impl;
 
-import javax.jms.Destination;
+/*import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
@@ -9,7 +9,7 @@ import javax.jms.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
+import org.springframework.jms.core.MessageCreator;*/
 import org.springframework.stereotype.Service;
 
 import com.bplow.netconn.statistics.domain.CustomerReq;
@@ -20,10 +20,10 @@ import com.bplow.netconn.statistics.service.SendReqService;
  * @author qian
  *
  */
-@Service
-public class SendReqServiceImpl implements SendReqService{
+//@Service
+public class SendReqServiceImpl /*implements SendReqService*/{
 
-	//@Autowired
+	/*//@Autowired
 	//@Qualifier("advancedJmsTemplate")
 	private JmsTemplate jmsTemplate;
 	//@Autowired
@@ -48,6 +48,6 @@ public class SendReqServiceImpl implements SendReqService{
 			}
 		});
 
-	}
+	}*/
 
 }

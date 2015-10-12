@@ -16,7 +16,7 @@ import com.bplow.netconn.statistics.task.CustomerReqTask;
  * @author qian
  *
  */
-@Service
+//@Service
 public class CustomerReqServiceImpl implements customerReqService{
 	
 	private static Logger logger = LoggerFactory.getLogger(CustomerReqServiceImpl.class);

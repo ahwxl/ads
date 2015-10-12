@@ -5,9 +5,9 @@
  *******************************************************************************/
 package com.bplow.netconn.base.jms;
 
-import javax.jms.MapMessage;
+/*import javax.jms.MapMessage;
 import javax.jms.Message;
-import javax.jms.MessageListener;
+import javax.jms.MessageListener;*/
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +19,14 @@ import org.slf4j.LoggerFactory;
  * 
  * @author calvin
  */
-public class AdvancedNotifyMessageListener implements MessageListener {
+public class AdvancedNotifyMessageListener /*implements MessageListener*/ {
 
 	private static Logger logger = LoggerFactory.getLogger(AdvancedNotifyMessageListener.class);
 
 	/**
 	 * MessageListener回调函数.
 	 */
-	@Override
+	/*@Override
 	public void onMessage(Message message) {
 		try {
 			MapMessage mapMessage = (MapMessage) message;
@@ -37,5 +37,5 @@ public class AdvancedNotifyMessageListener implements MessageListener {
 		} catch (Exception e) {
 			logger.error("处理消息时发生异常.", e);
 		}
-	}
+	}*/
 }

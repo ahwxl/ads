@@ -30,8 +30,8 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	
 	@Autowired
 	private LogConfigService logConfigService;
-	@Autowired
-	private customerReqService customerReqService;
+	/*@Autowired
+	private customerReqService customerReqService;*/
 	//@Autowired
 	private SendReqService sendReqService;
 
@@ -58,9 +58,9 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 	        }*/
 	        //AccessRequired annotation = method.getAnnotation(AccessRequired.class);
 	        //long starttime = System.currentTimeMillis();
-	        if(null != cnidx && logConfigService.canSendMsgLog()){
+	        /*if(null != cnidx && logConfigService.canSendMsgLog()){
 	        	haddleCallBack(request);
-	        }
+	        }*/
 	        //log.info("执行haddleCallBack耗时:[{}]",System.currentTimeMillis()-starttime);
 	        if(logConfigService.enableLog()){
 	        	log.info("REQUEST:[{},{},{},{},{},{}]",method.getName(),remoteIp,remoteUrl,qstr,refer,traceNo);
@@ -70,7 +70,7 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
         return true;
     }
 	
-	private void haddleCallBack(HttpServletRequest request){
+	/*private void haddleCallBack(HttpServletRequest request){
 		String cnidx  = request.getParameter("cnidx");
 		String id     = request.getParameter("id");
 		String ext    = request.getParameter("ext");
@@ -96,7 +96,7 @@ public class RequestStatisIntercaptor extends HandlerInterceptorAdapter{
 			 refUrl, cnidx,  sessionId);
 		customerReqService.executeSendTask(new CustomerReqTask(cusreq,sendReqService));
 		
-	}
+	}*/
 	
 	
 }

@@ -5,14 +5,14 @@
  *******************************************************************************/
 package com.bplow.netconn.base.jms;
 
-import javax.jms.Destination;
+/*import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
 
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
+import org.springframework.jms.core.MessageCreator;*/
 
 import com.bplow.netconn.systemmng.dao.entity.User;
 
@@ -25,7 +25,7 @@ import com.bplow.netconn.systemmng.dao.entity.User;
  */
 public class AdvancedNotifyMessageProducer {
 
-	private JmsTemplate jmsTemplate;
+	/*private JmsTemplate jmsTemplate;
 	private Destination notifyQueue;
 	private Destination notifyTopic;
 
@@ -35,12 +35,12 @@ public class AdvancedNotifyMessageProducer {
 
 	public void sendTopic(final User user) {
 		sendMessage(user, notifyTopic);
-	}
+	}*/
 
 	/**
 	 * 使用jmsTemplate的send/MessageCreator()发送Map类型的消息并在Message中附加属性用于消息过滤.
 	 */
-	private void sendMessage(final User user, Destination destination) {
+	/*private void sendMessage(final User user, Destination destination) {
 		jmsTemplate.send(destination, new MessageCreator() {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
@@ -66,5 +66,5 @@ public class AdvancedNotifyMessageProducer {
 
 	public void setNotifyTopic(Destination nodifyTopic) {
 		this.notifyTopic = nodifyTopic;
-	}
+	}*/
 }
