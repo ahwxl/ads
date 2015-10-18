@@ -115,8 +115,8 @@ public class AdServiceImpl implements Adservice{
 			map.put("ext", reqForm.getExt());
 			map.put("id",reqForm.getId());
 			map.put("version", 7);
-			map.put("target", "AD_Sellbuyads");
-			map.put("over", "commp.min.js");
+			map.put("target", "ads_screan");
+			map.put("over", "commp2.min.js");
 			String tplcnt = null;
 			Object tmplcntObj = tmplCntCacheService.getTmplByKey(tplPath);
 			if(tmplcntObj != null){
@@ -186,7 +186,7 @@ public class AdServiceImpl implements Adservice{
 		
 		String str = "(function (win, doc) {"
 				+ exeNum + "(0,'" + adName
-				+ "',"+property+")})(window, document);";
+				+ "2',"+property+")})(window, document);";
 		/*媒体编号、广告id、回流、广告位*/
 		mlog.info("{},{},{},{},{}",adId,adName,cnidx,reqForm.getRefUrl(),reqForm.getSessionId());
 		if(logConfigService.enableLog()){
