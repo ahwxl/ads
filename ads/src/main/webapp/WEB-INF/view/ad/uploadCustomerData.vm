@@ -73,11 +73,31 @@ CustomerDataMng.uploadCustomerDataMng = function() {
         fileUpload:true,
         defaultType: 'textfield',
 
-        items: [{
+        items: [/*{
                 fieldLabel: '客户编号',
                 name: 'customerId',
                 allowBlank:false
-            },{
+            },*/
+            new Ext.form.ComboBox({
+                fieldLabel: '客户编号',
+                name: 'customerName',
+                hiddenName:'customerId',
+			    typeAhead: true,
+			    triggerAction: 'all',
+			    lazyRender:true,
+			    allowBlank:false,
+			    mode: 'local',
+			    store: new Ext.data.ArrayStore({
+			        //id: 0,
+			        fields: [
+			            'myId',
+			            'displayText'
+			        ],
+			        data: [[2, '梦岛小说网'],[3, '今晚网'],[4, '第一视频'],[5, ' 天涯'],[6, ' 星岛环球网'],[7, 'IT168'],[8, '泡泡网'],[9, '米胖旅游网'],[10, '太平洋女性'],[11, '太平洋电脑'],[12, '太平洋游戏'],[13, '太平洋汽车'],[14, '播视网'],[15, '妆品网'],[16, '荆楚网'],[17, '华数TV网']]
+			    }),
+			    valueField: 'myId',
+			    displayField: 'displayText'
+			}),{
           	xtype:'fileuploadfield',
         	name:'file',
         	id:'file',

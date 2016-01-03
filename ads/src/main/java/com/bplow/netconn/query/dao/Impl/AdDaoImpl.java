@@ -110,6 +110,13 @@ public class AdDaoImpl implements AdDao{
 			hqlEntity.append(" where 1 = 1 ");
 		}
 		//媒体名称
+		if(StringUtils.isNotBlank(customer.getCustomerId())){
+			hqlEntity.append(" and a.customer_id = ? ",customer.getCustomerId());
+		}
+		//广告位
+		if(StringUtils.isNotBlank(customer.getAdAddr())){
+			hqlEntity.append(" and a.ad_addr like ? ","%"+customer.getAdAddr()+"%");
+		}
 		if(StringUtils.isNotBlank(customer.getCustomerName())){
 			hqlEntity.append(" and a.customer_name like ? ","%"+customer.getCustomerName()+"%");
 		}
@@ -120,7 +127,7 @@ public class AdDaoImpl implements AdDao{
 			hqlEntity.append(" and a.upload_data <= ? ",customer.getEndDate());
 		}
 
-		hqlEntity.append(" order by a.upload_data limit 0,100");//limit 0,10
+		hqlEntity.append(" order by a.upload_data desc limit 0,100");//limit 0,10
 		logger.info("查询媒体数据SQL[{}]",hqlEntity.gethqlSql());
 		return jdbcTemplate.query(hqlEntity.gethqlSql(), new RowMapper<CustomerData>() {
             public CustomerData mapRow(ResultSet rs, int rowNum) throws SQLException {

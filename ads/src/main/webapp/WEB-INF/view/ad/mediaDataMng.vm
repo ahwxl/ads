@@ -182,8 +182,30 @@ MediaDataMng.viewDataOpt.searchPanel =new Ext.FormPanel({
      	layout:"hbox",
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
-     	          items:[{text:"媒体名称"},
-     	       {xtype:"textfield",name:"customerName",value:'',editable:true},
+     	          items:[
+     	           {text:"媒体编号"},
+	     	       new Ext.form.ComboBox({
+	                fieldLabel: '客户编号',
+	                name: '_customerId',
+	                hiddenName:'customerId',
+				    typeAhead: true,
+				    triggerAction: 'all',
+				    lazyRender:true,
+				    allowBlank:false,
+				    mode: 'local',
+				    store: new Ext.data.ArrayStore({
+				        //id: 0,
+				        fields: [
+				            'myId',
+				            'displayText'
+				        ],
+				        data: [[2, '梦岛小说网'],[3, '今晚网'],[4, '第一视频'],[5, ' 天涯'],[6, ' 星岛环球网'],[7, 'IT168'],[8, '泡泡网'],[9, '米胖旅游网'],[10, '太平洋女性'],[11, '太平洋电脑'],[12, '太平洋游戏'],[13, '太平洋汽车'],[14, '播视网'],[15, '妆品网'],[16, '荆楚网'],[17, '华数TV网']]
+				    }),
+				    valueField: 'myId',
+				    displayField: 'displayText'
+				}),
+     	       {text:"广告位"},
+     	       {xtype:"textfield",name:"adAddr",value:'',editable:true},
      	       {text:"查询日期"},
      	       {xtype:"datefield",name:"startDate",value:'',format:'Y-m-d'},
      	       {text:"至"},
@@ -201,7 +223,7 @@ MediaDataMng.viewDataOpt.searchPanel =new Ext.FormPanel({
      	                	MediaDataMng.viewDataOpt.store.load();
      	                   }
      	       },
-     	       {xtype:"button",text:"删除",scope:this,handler:function (){
+     	       {xtype:"button",text:" 删 除 ",scope:this,handler:function (){
      	          //var tmpCnf = Ext.Ajax.serializeForm(CustomerDataMng.customerDataListMng.searchPanel.getForm().getEl());
      	          //window.location = "ad/exportCustemData?"+tmpCnf;
      	          var sm = MediaDataMng.viewDataOpt.mygrid.getSelectionModel();
@@ -223,7 +245,11 @@ MediaDataMng.viewDataOpt.searchPanel =new Ext.FormPanel({
 					});
      	            //
      	       }
-     	       
+     	       },
+     	       {xtype:"button",text:"导出数据",scope:this,handler:function (){
+     	          var tmpCnf = Ext.Ajax.serializeForm(MediaDataMng.viewDataOpt.searchPanel.getForm().getEl());
+     	          window.location = "ad/exportCustemData?"+tmpCnf;
+     	       }
      	       }
      	                 ]});
     

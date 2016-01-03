@@ -14,15 +14,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.velocity.VelocityView;
 
+import com.bplow.netconn.systemmng.dao.entity.User;
+
 
 @Controller
 public class QueryControler {
 
 	
 	@RequestMapping(value="/home",method = RequestMethod.GET)
-	public String doWelcome(Map<String, Object> model){
+	public String doWelcome(Map<String, Object> model,HttpServletRequest request){
 		
-		
+		User loginUser = (User)request.getSession().getAttribute("lgu");
+		if(null != loginUser){
+			request.setAttribute("userName", loginUser.getUserName());
+			model.put("userName", loginUser.getUserName());
+		}
 		
 		return "index";
 	}

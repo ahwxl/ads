@@ -267,7 +267,7 @@ MainPanel = function(){
 
         items: {
             id:'welcome-panel',
-            title: 'API Home',
+            title: '首页',
             //autoLoad: {url: 'welcome.html', callback: this.initSearch, scope: this},
             //html:'abc',
             contentEl :'screem',

@@ -83,7 +83,11 @@ CustomerDataMng.customerDataListMng.searchPanel =new Ext.FormPanel({
      	items:[{text:"媒体名称"},
      	       {xtype:"textfield",name:"customerName",value:'',editable:true},
      	       {text:"查询日期"},
-     	       {xtype:"datefield",name:"startDate",value:'',format:'Y-m-d'},
+     	       {xtype:"datefield",name:"startDate",value:'',format:'Y-m-d',listeners:{
+     	         afterrender:function(field){
+     	           field.setValue(new Date().getFirstDateOfMonth());
+     	         }
+     	       }},
      	       {text:"至"},
      	       {
 		            id:'date_begin',

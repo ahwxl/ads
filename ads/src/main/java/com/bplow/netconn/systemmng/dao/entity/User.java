@@ -2,15 +2,25 @@ package com.bplow.netconn.systemmng.dao.entity;
 
 import java.util.Date;
 
-public class User {
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.bplow.netconn.base.dao.domain.PageImpl;
+import com.bplow.netconn.base.json.CustomDateSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+public class User extends PageImpl{
 	
 	private Integer id;
+	private String userId;
 	private String userName;
 	private String userPwd;
 	private String Email;
 	private String phoneNo;
 	private String status;
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private Date   gmtCreate;
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private Date   gmtModify;
 	private Date   loginDate;
 	
@@ -68,6 +78,7 @@ public class User {
 		this.status = status;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8") 
 	public Date getGmtCreate() {
 		return gmtCreate;
 	}
@@ -76,6 +87,7 @@ public class User {
 		this.gmtCreate = gmtCreate;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8") 
 	public Date getGmtModify() {
 		return gmtModify;
 	}
@@ -84,6 +96,7 @@ public class User {
 		this.gmtModify = gmtModify;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8") 
 	public Date getLoginDate() {
 		return loginDate;
 	}
@@ -99,7 +112,14 @@ public class User {
 	public void setOrgnatizeId(String orgnatizeId) {
 		this.orgnatizeId = orgnatizeId;
 	}
-	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	
 
 }

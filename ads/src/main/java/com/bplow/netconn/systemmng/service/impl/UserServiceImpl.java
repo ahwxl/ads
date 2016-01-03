@@ -1,20 +1,34 @@
 package com.bplow.netconn.systemmng.service.impl;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.bplow.netconn.base.dao.pagination.IPagination;
+import com.bplow.netconn.base.json.JsonHelper;
 import com.bplow.netconn.systemmng.dao.UserDao;
 import com.bplow.netconn.systemmng.dao.entity.User;
 import com.bplow.netconn.systemmng.service.UserService;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 @Service("sysUserServiceImpl")
 public class UserServiceImpl implements UserService{
+	
+	private static Logger log    =  LoggerFactory.getLogger("common-digest");
 
 	@Autowired
 	@Qualifier("sysUserDaoImpl")
@@ -45,5 +59,89 @@ public class UserServiceImpl implements UserService{
 		request.getSession().removeAttribute(sid);
 		return true;
 	}
+
+	/**
+	 * 用户列表分页查询
+	 */
+	public String queryUserListForPagination(User user) throws SQLException {
+		IPagination page = userDao.queryUserForPagination(user);
+		Map map = new HashMap();
+		map.put("dataroot", page.getResults());
+		String strobj = null;
+		try {
+			strobj = JsonHelper.convertToStr(map);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return strobj;
+	}
+	
+	/**
+	 * 查询用户信息
+	 */
+	public String queryUserById(User user) throws SQLException {
+		User userTmp = userDao.queryUserById(user);
+		String strobj = null;
+		try {
+			strobj = JsonHelper.convertToStr(userTmp);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return strobj;
+	}
+
+	/**
+	 * 查询用户
+	 * @throws SQLException 
+	 */
+	public String queryUserList(User user) throws SQLException {
+		
+		IPagination pagination = userDao.queryUserForPagination(user);
+		String str = null;
+		try {
+			str = pagination.getJsonByList();
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		log.info(str);
+		return str;
+	}
+
+	/**
+	 * 添加用户
+	 * @throws SQLException 
+	 */
+	public Integer addUser(User user) throws SQLException {
+		userDao.addUser(user);
+		return null;
+	}
+
+	/**
+	 * 删除用户
+	 * @throws SQLException 
+	 */
+	public Integer delUser(User user) throws SQLException {
+		userDao.delUser(user);
+		return null;
+	}
+
+	/**
+	 * 修改用户
+	 * @throws SQLException 
+	 */
+	public Integer modifyUser(User user) throws SQLException {
+		userDao.modifyUser(user);
+		return null;
+	}
+	
+	
 
 }

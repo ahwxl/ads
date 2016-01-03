@@ -41,14 +41,14 @@ Ext.onReady(function() {
 
 	// 根据Cookie里面存放的CSS style来动态改变id为text的样式
 	var file = Ext.state.Manager.get('style');
-	Ext.util.CSS.swapStyleSheet('test', 'resources/css/' + file);
+	//Ext.util.CSS.swapStyleSheet('test', 'resources/css/' + file);
 	var picnum = Math.floor(Math.random()*(3-1+1)+1);
 	// 定义表单
 	var loginForm = new Ext.FormPanel({
 		labelAlign : 'top',
 		frame : true,
 		monitorValid : true,// 把有formBind:true的按钮和验证绑定
-		id : 'login',
+		id : '_loginform',
 		bodyStyle : 'padding:5px 5px 0',
 		width : 600,
 		// 定义表单元素
@@ -75,18 +75,28 @@ Ext.onReady(function() {
 									xtype : 'textfield',
 									name : 'userPwd',
 									fieldLabel : '密码',
-									allowBlank : false,
+									//allowBlank : false,
 									width : 140,
 									blankText : '密码不能为空',
-									inputType : 'password'
+									inputType : 'password',
+									listeners: {
+					                specialkey: function(field, e){
+					                    // e.HOME, e.END, e.PAGE_UP, e.PAGE_DOWN,
+					                    // e.TAB, e.ESC, arrow keys: e.LEFT, e.RIGHT, e.UP, e.DOWN
+					                    if (e.getKey() == e.ENTER) {
+					                        Ext.getCmp("_submitbtn").getEl().dom.click();
+					                    }
+					                }
+					            }
 								}]
 					}]
 
 		}],
 		buttons : [{
 			text : '登陆',
+			id:'_submitbtn',
 			formBind : true,
-			type : 'submit',
+			type : 'submit',//button
 			// 定义表单提交事件
 			handler : function() {
 				if (loginForm.form.isValid()) {// 验证合法后使用加载进度条

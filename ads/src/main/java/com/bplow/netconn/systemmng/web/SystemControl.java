@@ -26,7 +26,8 @@ public class SystemControl {
                     " {'href':'ad/addAdPage','text':'添加客户','id':'添加客户','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true},"+
                     "{'href':'ad/queryCustemDataPage','text':'媒体数据','id':'媒体数据','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true},"+
                     "{'href':'ad/mediaDataMng','text':'媒体数据管理','id':'媒体数据管理','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true},"+
-                   "  {'href':'ad/uploadCustemDataPage','text':'上传客户数据','id':'上传客户数据','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}"+
+                    "{'href':'sys/userList','text':'系统用户','id':'系统用户','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true},"+
+                    "{'href':'ad/uploadCustemDataPage','text':'上传客户数据','id':'上传客户数据','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}"+
      				"]}"+
      		"]";
 		}else if(null == loginUser){

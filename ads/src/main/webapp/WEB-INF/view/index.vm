@@ -35,7 +35,7 @@
     <!--<img style="margin-left: 5px" src="" alt="Ext JS API Documentation" height="50" width="210" />-->
     <div style="float:left;width:300px;"><h1 class="sys_logo_bg"><!-- 协作管理平台 --></h1></div>
     <div style="float:right; margin-top: 15px;margin-right: 10px;color: #CCC">
-                    <a href="#" onclick="updateUserPassWordWin()" >欢迎</a> | 
+                    <a href="#" onclick="updateUserPassWordWin()" >欢迎$userName</a> | 
         <a href="loginOut" style="padding:5px">退出</a> | 
         <a href="http://www.jys-media.com/" style="padding:5px" target="_black">联系我们</a>
         <input type="hidden" value="" id="userName">
