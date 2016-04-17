@@ -86,8 +86,8 @@ public class RmtShellExecutor {
     public static void main(String[] args) {
 
         String usr = "root";
-        String password = "Hjjt2009";
-        String serverIP = "115.28.240.191";
+        String password = "Wang6789355";
+        String serverIP = "115.28.182.166";
         String shPath = "/home/wangxiaolei/ccbin/staticCallbackNum.sh";
 
         RmtShellExecutor exe = new RmtShellExecutor(serverIP, usr, password);

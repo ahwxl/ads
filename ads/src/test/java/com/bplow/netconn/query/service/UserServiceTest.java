@@ -29,7 +29,7 @@ public class UserServiceTest {
 	public void getUserListTest() throws SQLException, UnsupportedEncodingException{
 		String mytext = java.net.URLEncoder.encode(":");
 		User user = new User();
-		user.setId("测试2");
+		//user.setId("测试2");
 		user.setUserId("ibatis");
 		userService.insertUser(user);
 	}

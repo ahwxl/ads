@@ -25,6 +25,8 @@
             base-package="com.bplow.netconn.newcms.web"/>
     <context:component-scan
             base-package="com.bplow.netconn.systemmng.web"/>
+    <context:component-scan
+            base-package="com.bplow.netconn.aom.web"/>
 
     <!-- <mvc:annotation-driven conversion-service="conversionService"/> -->
 	<mvc:annotation-driven>
@@ -40,6 +42,7 @@
         (see header.jsp for more details) -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:resources mapping="/module/**" location="/module/"/>
     <!-- uses WebJars so Javascript and CSS libs can be declared as Maven dependencies (Bootstrap, jQuery...) 
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>-->
 

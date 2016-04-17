@@ -229,13 +229,13 @@ a:hover {
     display:none;
 }
 
-#doc-body .x-tab-panel-body {
+/* #doc-body .x-tab-panel-body {
     background:#fff url(images/default/form/text-bg.gif) repeat-x 0 0;
 }
 #doc-body .x-panel-body, #doc-body .body-wrap {
     background:transparent !important;
 }
-
+ */
 
 /*
 .icon-cls {
@@ -356,9 +356,9 @@ h3.home-title {
     background-image: url(brick.png) !important;
 }
 
-.x-viewport body {
+/* .x-viewport body {
   background: #ededed url(hd-bg.png) repeat-x !important;
-}
+} */
 
 .x-border-layout-ct {
   background:none;
@@ -740,7 +740,7 @@ div.hr {
     line-height:18px;
 }
 /*wxl  20120526*/
-.sys_logo_bg{background:url(../images/logo_01.png) no-repeat;height: 69px;margin:5px 5px 0px 10px;}
+.sys_logo_bg{background:url(../images/ads_logo3.jpg) no-repeat;height: 69px;margin:1px 5px 0px 5px;}
 .ubtn{cursor:pointer;color:blue;}
 .msg .x-box-mc {
     font-size:14px;
