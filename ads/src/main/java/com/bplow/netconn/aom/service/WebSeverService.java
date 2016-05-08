@@ -1,0 +1,49 @@
+/**
+ * 
+ */
+package com.bplow.netconn.aom.service;
+
+import java.sql.SQLException;
+
+import com.bplow.netconn.aom.dao.entity.TbWebServer;
+
+/**
+ * @desc 
+ * @author wangxiaolei
+ * @date 2016年4月23日 下午12:41:24
+ */
+public interface WebSeverService {
+	
+	/**
+	 * 
+	 * @param tbWebServer
+	 * @return
+	 */
+	public String queryWebServerList(TbWebServer tbWebServer)throws SQLException;
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public TbWebServer queryWebServerById(String id)throws SQLException;
+	
+	/**
+	 * 
+	 * @param tbWebServer
+	 */
+	public void addWebServer(TbWebServer tbWebServer)throws SQLException;
+	
+	/**
+	 * 
+	 * @param tbWebServer
+	 */
+	public void updateWebServer(TbWebServer tbWebServer)throws SQLException;
+	
+	/**
+	 * 
+	 * @param tbWebServer
+	 */
+	public void deleteWebServer(TbWebServer tbWebServer)throws SQLException;
+	
+}

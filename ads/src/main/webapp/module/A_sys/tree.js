@@ -16,6 +16,11 @@
 				,
                 {"href":"ckfinder/_samples/standalone.html","text":"图片管理","id":"图片管理","isClass":true,"iconCls":"icon-cls","cls":"cls","leaf":true,'frameType':'mif'}
 				*/
+				,
+				{"id":"atuomanage","iconCls":"icon-docs","text":"运维管理","singleClickExpand":true,"leaf":false,"children":[
+                  {"href":"aom/serverHost","text":"客户管理","id":"主机管理","isClass":true,"iconCls":"icon-cls","cls":"cls","leaf":true}
+				]
+				}
 				]}
 		]
 		;

@@ -59,7 +59,7 @@
 		<priority value="INFO" />
 		<appender-ref ref="mediaDigest" />
 	</logger>
-
+	
 	<root>
 		<priority value="info" />
 		<appender-ref ref="STDOUT" />
@@ -69,5 +69,15 @@
 		<priority value="info" />
 		<appender-ref ref="STDOUT" />
 	</category>
+	
+	<category name="com.ibatis">
+        <priority value="debug"/>
+        <appender-ref ref="STDOUT" />
+    </category>
+    
+    <category name="com.ibatis.common.jdbc.SimpleDataSource">
+        <priority value="debug"/>
+        <appender-ref ref="STDOUT" />
+    </category>
 
 </log4j:configuration>

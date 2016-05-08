@@ -14,7 +14,7 @@ import javax.jms.Session;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;*/
 
-import com.bplow.netconn.systemmng.dao.entity.User;
+import com.bplow.netconn.systemmng.dao.entity.SysUser;
 
 /**
  * JMS用户变更消息生产者.

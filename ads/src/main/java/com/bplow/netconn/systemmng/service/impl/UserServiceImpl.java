@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.base.json.JsonHelper;
 import com.bplow.netconn.systemmng.dao.UserDao;
-import com.bplow.netconn.systemmng.dao.entity.User;
+import com.bplow.netconn.systemmng.dao.entity.SysUser;
 import com.bplow.netconn.systemmng.service.UserService;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserService{
 	private String sid ="lgu";
 	
 	@Override
-	public boolean loginAction(User user,HttpServletRequest request) {
+	public boolean loginAction(SysUser user,HttpServletRequest request) {
 		Boolean loginResult = false;
 		try {
-			User returnuser =userDao.queryUserByIdAddPwd(user);
+			SysUser returnuser =userDao.queryUserByIdAddPwd(user);
 			
 			if(null != returnuser){//登陆成功
 				request.getSession().setAttribute(sid, returnuser);
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public boolean loginOutAction(User user, HttpServletRequest request) {
+	public boolean loginOutAction(SysUser user, HttpServletRequest request) {
 		request.getSession().removeAttribute(sid);
 		return true;
 	}
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 用户列表分页查询
 	 */
-	public String queryUserListForPagination(User user) throws SQLException {
+	public String queryUserListForPagination(SysUser user) throws SQLException {
 		IPagination page = userDao.queryUserForPagination(user);
 		Map map = new HashMap();
 		map.put("dataroot", page.getResults());
@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService{
 	/**
 	 * 查询用户信息
 	 */
-	public String queryUserById(User user) throws SQLException {
-		User userTmp = userDao.queryUserById(user);
+	public String queryUserById(SysUser user) throws SQLException {
+		SysUser userTmp = userDao.queryUserById(user);
 		String strobj = null;
 		try {
 			strobj = JsonHelper.convertToStr(userTmp);
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService{
 	 * 查询用户
 	 * @throws SQLException 
 	 */
-	public String queryUserList(User user) throws SQLException {
+	public String queryUserList(SysUser user) throws SQLException {
 		
 		IPagination pagination = userDao.queryUserForPagination(user);
 		String str = null;
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService{
 	 * 添加用户
 	 * @throws SQLException 
 	 */
-	public Integer addUser(User user) throws SQLException {
+	public Integer addUser(SysUser user) throws SQLException {
 		userDao.addUser(user);
 		return null;
 	}
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService{
 	 * 删除用户
 	 * @throws SQLException 
 	 */
-	public Integer delUser(User user) throws SQLException {
+	public Integer delUser(SysUser user) throws SQLException {
 		userDao.delUser(user);
 		return null;
 	}
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService{
 	 * 修改用户
 	 * @throws SQLException 
 	 */
-	public Integer modifyUser(User user) throws SQLException {
+	public Integer modifyUser(SysUser user) throws SQLException {
 		userDao.modifyUser(user);
 		return null;
 	}

@@ -57,7 +57,7 @@
     </bean>
 
     <!-- ibatis -->
-	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean" lazy-init="false">
 		<property name="configLocation" value="classpath:sqlmap/mybatis-config.xml" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>

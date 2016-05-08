@@ -9,7 +9,7 @@ import com.bplow.netconn.base.json.CustomDateSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-public class User extends PageImpl{
+public class SysUser extends PageImpl{
 	
 	private Integer id;
 	private String userId;
@@ -26,7 +26,7 @@ public class User extends PageImpl{
 	
 	private String orgnatizeId;
 	
-	public User() {
+	public SysUser() {
 		super();
 	}
 

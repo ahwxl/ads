@@ -1,0 +1,400 @@
+<script type="text/javascript">
+ /**
+  * @module name 主机管理
+  * @module desc 主机的添加和删除
+  * @author  wxl
+  * @create  date 20151227
+  * @modify  man ***
+  * @modify  date ***
+  */
+  Ext.namespace('ServerHostMng', 'ServerHostMng.ServerHostObj');
+
+
+ //create application
+ ServerHostMng.ServerHostObj = function() {
+   // do NOT access DOM from here; elements don't exist yet
+
+   //此处定义私有属性变量
+   //var dragZone1, dragZone2;
+
+   //此处定义私有方法
+
+   //共有区
+   return {
+       //此处定义共有属性变量
+       
+
+       //共有方法
+       init: function() {
+     	  
+           //定义一些初始化行为
+    	   //获取id为"docs-文章管理"的面板
+    	    var aimobj = Ext.mainScreem.findById('docs-主机管理');
+    	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
+    	    aimobj.setLayout(lyobj);//应用布局对象
+
+    	    //aimobj.add(ServerHostMng.ServerHostObj.catalogTree);//添加目录树面板
+    	    aimobj.add(ServerHostMng.ServerHostObj.mygrid);//添加列表面板
+    	    aimobj.doLayout();//展示页面
+    	    
+    	    //加载列表数据
+    	    ServerHostMng.ServerHostObj.store.load();
+       }
+   };
+ }(); // end of app
+ 
+//数据集加载对象，给grid用的
+ ServerHostMng.ServerHostObj.store = new Ext.data.JsonStore({
+        root: 'dataroot',
+        //totalProperty: 'pageInfo.totalRowNum',
+        //idProperty: 'threadid',
+        remoteSort: true,
+        fields: [
+            'id', 'hostName', 'gmtCreate', 'gmtModify','hostIp','userName','hostStatus'
+        ],
+        url: 'aom/serverHostList'
+    });
+
+    //添加grid 数据加载前事件
+    ServerHostMng.ServerHostObj.store.on("beforeload",function (selfstore){
+    	//将form面板的查询参数  封装成  store 能接受的对象
+    	var tmpCnf = Ext.urlDecode(Ext.Ajax.serializeForm(ServerHostMng.ServerHostObj.searchPanel.getForm().getEl()));
+    	tmpCnf.start = 0;//从哪一条记录开始
+    	tmpCnf.limit = 10;//查询条数
+    	selfstore.baseParams=tmpCnf;
+
+    });
+    
+
+    function renderTopic(value, p, record){
+        return String.format(
+                '{0}',
+                value);
+    }
+    function renderLast(value, p, r){
+    	//value.dateFormat('M j, Y, g:i a')
+        return String.format('{0}<br/>by {1}',value , r.data['cnt_id']);
+    }
+    //对列表的某列作处理
+    function renderOpt(value, p, r){
+    	return String.format('<u onclick=\"doEditorCnt(\'{0}\')\" >修改</u>&nbsp;&nbsp;<u onclick=\"doDelCnt(\'{0}\')\">删除</u>&nbsp;&nbsp;',r.data['productId']);
+    }
+    //发布文章
+    function doEditorCnt(id){
+    	/**/
+    	var editerurl ='showEditorProductPage?productId='+id;
+    	Ext.mainScreem.loadClass(editerurl,"修改产品",null);
+    }
+    //发布文章
+    function doDelCnt(id){
+    	/**/
+    	Ext.Ajax.request({
+    		   url: 'delProductAction?productId='+id,
+    		   method:'post',
+    		   success: function(response, opts) {
+    			      //var obj = Ext.decode(response.responseText);
+    			      //alert(response.responseText);
+    			      Ext.Msg.alert('系统提示', response.responseText);
+    		   },
+    		   failure: function(response, opts) {
+    			      Ext.Msg.alert('系统提示', '操作失败！');
+    		   },
+    		   params: { id: id }
+    		});
+    }
+    
+    
+    //表单查询条件面板
+ServerHostMng.ServerHostObj.searchPanel =new Ext.FormPanel({
+     	region:"north",
+     	height:35,
+     	frame:false,
+     	border:false,id:"AppUserSearchForm",
+     	layout:"hbox",
+     	layoutConfig:{padding:"5",align:"middle"},
+     	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
+     	          items:[{text:"名称"},{xtype:"textfield",name:"operate_user_id",value:''},
+     	                 {text:"IP地址"},{xtype:"textfield",name:"cnt_caption",value:''},
+     	                 {text:"发布时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
+     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"},
+     	                 {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
+     	                	//ServerHostMng.ServerHostObj.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
+     	                	//alert(Ext.Ajax.serializeForm(ServerHostMng.ServerHostObj.searchPanel.getForm().getEl()) );
+     	                	ServerHostMng.ServerHostObj.store.load();
+     	                   }}
+     	                  ,{xtype:"button",text:"删除",scope:this,handler:function (){
+							var sm = ServerHostMng.ServerHostObj.mygrid.getSelectionModel();
+							var array = sm.getSelections();//records
+							var idstr ="";
+							for(var i =0;i < array.length;i++){
+							   idstr =idstr+array[i].get('id')+",";
+							}
+							if(idstr.length > 0){
+							   idstr = idstr.substr(0,idstr.length-1);
+							}else{
+							    Ext.Msg.alert('系统提示','请选择要删除的数据');
+							    return false;
+							}
+							Ext.Msg.confirm('系统提示', '你确定删除吗？', function(btn, text){
+							    if (btn == 'yes'){
+							    	ServerHostMng.ServerHostObj.doDel(idstr);
+							    }
+							});
+							}
+     	        	       
+     	        	       }
+     	                 ]});
+ServerHostMng.ServerHostObj.sm = new Ext.grid.CheckboxSelectionModel({
+	listeners:{
+			     rowselect :function(selectmodel,rowIndex,record) {
+			     }
+			}
+	});
+//创建一个列表面板
+ServerHostMng.ServerHostObj.mygrid = new Ext.grid.GridPanel({
+        //width:700,
+        //height:500,
+        //autoHeight: true,
+        //title:'分页演示',
+        tbar:[{
+        	text:'添加滚动图片',
+            id:'add_product',
+            iconCls:'silk-add',
+            handler:function (){
+            	// showAddProductPage
+            	//Ext.mainScreem.loadClass('showAddProductPage','添加产品',null);
+            	ServerHostMng.ServerHostObj.showWin(this.getEl());
+            	//Ext.mainScreem.addNewTab( Ext.getmifObj({id:'添加产品',title:'添加产品',src:'showAddProductPageIframe'}),'添加产品');
+            }
+        }],
+        listeners:{
+            'render':function () {
+            	ServerHostMng.ServerHostObj.searchPanel.render(this.tbar);
+            }
+        },
+        store:  ServerHostMng.ServerHostObj.store,
+        //renderTo: 'tree-div',
+        closable:true,
+        trackMouseOver:true,
+        disableSelection:true,
+        region : 'center',
+        loadMask: true,
+        sm: ServerHostMng.ServerHostObj.sm,
+        // grid columns
+        columns:[ServerHostMng.ServerHostObj.sm
+                 ,{
+            //id: 'topic', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
+            header: "名称",
+            dataIndex: 'id',
+            width: 50,
+            //renderer: renderTopic,
+            sortable: true
+        },{
+            header: "域名",
+            dataIndex: 'userName',
+            width: 100,
+            //hidden: true,
+            sortable: true
+        },{            
+            header: "ip地址",
+            dataIndex: 'hostIp',
+            width: 150,
+            //renderer: renderOpt,
+            sortable: true
+        },{
+            header: "创建时间",
+            dataIndex: 'gmtCreate',
+            width: 100,
+            //align: 'right',
+            sortable: true
+        },{
+            id: '修改日期',
+            header: "修改日期",
+            dataIndex: 'gmtModify',
+            width: 100,
+            //align: 'right',
+            //renderer: renderLast,
+            sortable: true
+        }],
+
+        // customize view config
+        viewConfig: {
+            forceFit:true,
+            enableRowBody:false,
+            showPreview:false,
+            getRowClass : function(record, rowIndex, p, store){
+                if(this.showPreview){
+                    p.body = '<p>'+record.data.cnt_id+'</p>';
+                    return 'x-grid3-row-expanded';
+                }
+                return 'x-grid3-row-collapsed';
+            }
+        },
+
+        // paging bar on the bottom
+        bbar: new Ext.PagingToolbar({
+            pageSize: 10,
+            store:  ServerHostMng.ServerHostObj.store,
+            displayInfo: true,
+            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            emptyMsg: "No topics to display",
+            items:[
+                '-', {
+                pressed: false,
+                enableToggle:true,
+                //text: 'Show Preview',
+                cls: 'x-btn-text-icon details',
+                toggleHandler: function(btn, pressed){
+                    //var view = mygrid.getView();
+                    //view.showPreview = pressed;
+                    //view.refresh();
+                }
+            }]
+        })
+    });
+/*添加图片窗口*/
+ServerHostMng.ServerHostObj.showWin = function(){
+	if(ServerHostMng.ServerHostObj.addwindobj == null || ServerHostMng.ServerHostObj.addwindobj == undefined){
+		ServerHostMng.ServerHostObj.addwindobj = new ServerHostMng.ServerHostObj.addImageWin();
+	}
+	ServerHostMng.ServerHostObj.addwindobj.show();
+}
+
+ServerHostMng.ServerHostObj.addImageWin = function(config){
+	this.config = config;
+}
+
+
+
+ServerHostMng.ServerHostObj.addImageWin.prototype = {
+		
+		
+		show : function(el, callback){
+			if(!this.win){
+				
+				this.fsf = new Ext.FormPanel({
+				    labelWidth: 75, // label settings here cascade unless overridden
+				    url:'addTmplPage',
+				    frame:false,
+				    title: '',
+				    region: 'center',
+				    fileUpload:true,
+				    bodyStyle:'padding:5px 5px 5px 5px',
+				    width: 500,
+
+				    items: [{
+				        xtype:'fieldset',
+				        title: ' ',
+				        collapsible: true,
+				        autoHeight:true,
+				        defaults: {width: 210},
+				        items :[{
+				        	    xtype: 'textfield',
+				                fieldLabel: '参数名称',
+				                hidden:true,
+				                name: 'PName',
+				                value: 'gundong'
+				            },{
+				            	xtype: 'textfield',
+				                fieldLabel: '描述',
+				                name: 'PDesc'
+				            },{
+				            	xtype: 'textfield',
+				                fieldLabel: '排序',
+				                name: 'POrder'
+				            },{
+				            	xtype:'fileuploadfield',
+				            	name:'file',
+				            	//id:'file',
+				            	fieldLabel: '上传文件',
+				            	buttonText: '选择图片'
+				            }
+				        ]
+				    }]
+				});
+				
+				
+				var cfg = {
+				    	title: '添加图片',
+				    	id: 'add-img-chooser-dlg',
+				    	layout: 'border',
+						width: 500,
+						height: 300,
+						modal: true,
+						closeAction: 'hide',
+						border: false,
+						items:[this.fsf],
+						buttons: [{
+							id: 'ok-btn',
+							text: '确定',
+							handler: this.submitForm,
+							scope: this
+						},{
+							text: '取消',
+							handler: function(){ this.win.hide(); },
+							scope: this
+						}],
+						keys: {
+							key: 27, // Esc key
+							handler: function(){ this.win.hide(); },
+							scope: this
+						}
+					};
+					Ext.apply(cfg, this.config);
+				    this.win = new Ext.Window(cfg);
+				
+			}
+			this.reset();
+		    this.win.show(el);
+			this.callback = callback;
+			this.animateTarget = el;
+		},
+		reset:function(){
+			;
+		},
+		doCallback:function(){
+			alert("");
+		},
+		submitForm:function(){
+			if(this.fsf.getForm().isValid()){
+			this.fsf.getForm().submit({
+                url: 'addSysUser',
+                waitMsg: '正在上传请稍等...',
+                success: function(fp, o){
+                	//alert('ok');
+                    //msg('Success', 'Processed file "'+o.result.file+'" on the server');
+                	Ext.Msg.alert('Status', '操作成功');
+                },
+                failure :function(fm,rp){	                    	
+                	Ext.Msg.alert('Status', '操作异常，请联系管理员.');
+                }
+            });
+			}
+		}
+		
+		
+}
+
+ServerHostMng.ServerHostObj.doDel = function(id){
+	/**/
+	Ext.Ajax.request({
+		   url: 'delSysUser',
+		   method:'post',
+		   success: function(response, opts) {
+			      var obj = Ext.decode(response.responseText);
+			      //if(obj.success == true){
+			      MediaDataMng.viewDataOpt.store.reload();
+			      Ext.Msg.alert('系统提示',obj.info);
+			       
+			      //}
+			      
+		   },
+		   failure: function(response, opts) {
+			   Ext.Msg.alert('系统提示', '操作失败！');
+		   },
+		   params: {'idArray': id }
+		});
+}
+    
+Ext.onReady(ServerHostMng.ServerHostObj.init, ServerHostMng.ServerHostObj);
+</script>

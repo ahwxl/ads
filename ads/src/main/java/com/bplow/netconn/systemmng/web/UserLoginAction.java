@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bplow.netconn.systemmng.dao.entity.User;
+import com.bplow.netconn.systemmng.dao.entity.SysUser;
 import com.bplow.netconn.systemmng.service.UserService;
 
 
@@ -32,7 +32,7 @@ public class UserLoginAction {
 	
 	@RequestMapping(value="/loginAction",method = RequestMethod.POST)
 	@ResponseBody
-	public String doWelcome(Map<String, Object> model,User user,HttpServletRequest request){
+	public String doWelcome(Map<String, Object> model,SysUser user,HttpServletRequest request){
 		String returnjson = "{success:true,info:'密码错误'}";
 		if(userService.loginAction(user, request)){
 			returnjson = "{success:true,info:'ok'}";
@@ -42,7 +42,7 @@ public class UserLoginAction {
 	}
 	
 	@RequestMapping(value="/loginOut")
-	public String doLoginOut(Map<String, Object> model,User user,HttpServletRequest request){
+	public String doLoginOut(Map<String, Object> model,SysUser user,HttpServletRequest request){
 		String returnjson = "{success:true,info:'密码错误'}";
 		if(userService.loginOutAction(user, request)){
 			returnjson = "{success:true,info:'ok'}";

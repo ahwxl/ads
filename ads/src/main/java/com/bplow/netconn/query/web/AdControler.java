@@ -32,7 +32,7 @@ import com.bplow.netconn.query.dao.entity.Ad;
 import com.bplow.netconn.query.dao.entity.CustomerData;
 import com.bplow.netconn.query.module.ReqForm;
 import com.bplow.netconn.query.service.Adservice;
-import com.bplow.netconn.systemmng.dao.entity.User;
+import com.bplow.netconn.systemmng.dao.entity.SysUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
@@ -134,7 +134,7 @@ public class AdControler {
 	@RequestMapping(value = "/ad/queryCustemDataAction", produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String queryCustomerDataAction(HttpServletRequest request,CustomerData customerData, Map<String, Object> model) throws SQLException, JsonProcessingException, UnsupportedEncodingException{
-		User loginUser = (User)request.getSession().getAttribute("lgu");
+		SysUser loginUser = (SysUser)request.getSession().getAttribute("lgu");
 		if(null != loginUser){
 			customerData.setLoginUserId(loginUser.getUserName());
 			customerData.setOrganizeId(loginUser.getOrgnatizeId());
@@ -148,7 +148,7 @@ public class AdControler {
 	@ResponseBody
 	public String queryCustomerDataForChart(CustomerData customerData,
 			Map<String, Object> model,HttpServletRequest request) throws SQLException, Exception, UnsupportedEncodingException {
-		User loginUser = (User)request.getSession().getAttribute("lgu");
+		SysUser loginUser = (SysUser)request.getSession().getAttribute("lgu");
 		if(null != loginUser){
 			customerData.setLoginUserId(loginUser.getUserName());
 			customerData.setOrganizeId(loginUser.getOrgnatizeId());
@@ -178,7 +178,7 @@ public class AdControler {
 	@RequestMapping(value = "/ad/exportCustemData", produces = "application/vnd.ms-excel;charset=utf-8")
 	public void exportCusterDataPage(Map<String, Object> model,CustomerData customerData,
 			HttpServletRequest request, HttpServletResponse response) throws Exception{
-		User loginUser = (User)request.getSession().getAttribute("lgu");
+		SysUser loginUser = (SysUser)request.getSession().getAttribute("lgu");
 		if(null != loginUser){
 			customerData.setLoginUserId(loginUser.getUserName());
 			customerData.setOrganizeId(loginUser.getOrgnatizeId());
