@@ -44,7 +44,7 @@ public class AdDaoImpl implements AdDao{
 	
 	@Override
 	public void insertAd(Ad ad) throws SQLException {
-		sqlMapClient.insert("insertAd",ad);
+		sqlMapClient.insert("AD.insertAd",ad);
 	}
 
 	@Override
@@ -52,21 +52,21 @@ public class AdDaoImpl implements AdDao{
 		logger.info("查询客户by id");
 		Map para = new HashMap();
 		para.put("id", id);
-		Ad ad = (Ad)sqlMapClient.queryForObject("queryAdById", id);
+		Ad ad = (Ad)sqlMapClient.queryForObject("AD.queryAdById", id);
 		return ad;
 	}
 	
 	public int delAd(int id) throws SQLException {
 		Map para = new HashMap();
 		para.put("id", id);
-		int ad = sqlMapClient.delete("delAd", id);
+		int ad = sqlMapClient.delete("AD.delAd", id);
 		return ad;
 	}
 	
 	public int upateAd(int id) throws SQLException {
 		Map para = new HashMap();
 		para.put("id", id);
-		int tmpid = sqlMapClient.update("queryAdById", id);
+		int tmpid = sqlMapClient.update("AD.queryAdById", id);
 		return tmpid;
 	}
 
@@ -74,7 +74,7 @@ public class AdDaoImpl implements AdDao{
 	public List queryAdList(Ad ad) throws SQLException {
 		logger.info("查询所有客户。");
 		//Assert.isNull(ad, "参数不合法");
-		List list = sqlMapClient.queryForList("queryAdForList",ad);
+		List list = sqlMapClient.queryForList("AD.queryAdForList",ad);
 		return list;
 	}
 

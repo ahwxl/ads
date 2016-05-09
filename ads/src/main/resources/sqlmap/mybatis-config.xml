@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
 <sqlMapConfig>
+	<settings cacheModelsEnabled="false" enhancementEnabled="false"
+		lazyLoadingEnabled="true" maxRequests="3000" maxSessions="3000"
+		maxTransactions="3000" useStatementNamespaces="true" />
 
-  <sqlMap resource="sqlmap/user.xml"/>
-  <sqlMap resource="sqlmap/ad.xml"/>
-  <sqlMap resource="sqlmap/catalog.xml"/>
-  <sqlMap resource="sqlmap/product.xml"/>
+	<sqlMap resource="sqlmap/user.xml" />
+	<sqlMap resource="sqlmap/ad.xml" />
+	<sqlMap resource="sqlmap/catalog.xml" />
+	<sqlMap resource="sqlmap/product.xml" />
+	<sqlMap resource="sqlmap/tb_server_host_SqlMap.xml" />
+	<sqlMap resource="sqlmap/tb_web_server_SqlMap.xml" />
+	<sqlMap resource="sqlmap/sys_menu_SqlMap.xml" />
+	<sqlMap resource="sqlmap/sys_organization_SqlMap.xml" />
+	<sqlMap resource="sqlmap/sys_organize_user_rel_SqlMap.xml" />
+	<sqlMap resource="sqlmap/sys_role_menu_rel_SqlMap.xml" />
+	<sqlMap resource="sqlmap/sys_role_SqlMap.xml" />
 
 </sqlMapConfig>

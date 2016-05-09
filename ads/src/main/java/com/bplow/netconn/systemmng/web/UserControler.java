@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bplow.netconn.systemmng.dao.entity.User;
+import com.bplow.netconn.systemmng.dao.entity.SysUser;
 import com.bplow.netconn.systemmng.service.UserService;
 
 
@@ -33,7 +33,7 @@ public class UserControler {
 	 * @throws SQLException 
 	 */
 	@RequestMapping(value="/sys/userList")
-	public String queryUserList(Map<String, Object> model,User user,HttpServletRequest request) 
+	public String queryUserList(Map<String, Object> model,SysUser user,HttpServletRequest request) 
 			throws SQLException{
 		
 		
@@ -48,7 +48,7 @@ public class UserControler {
 	 */
 	@RequestMapping(value="/sys/queryUserList")
 	@ResponseBody
-	public String queryUserListAction(Map<String, Object> model,User user,HttpServletRequest request) 
+	public String queryUserListAction(Map<String, Object> model,SysUser user,HttpServletRequest request) 
 			throws SQLException{
 		String start = request.getParameter("start");
 		String limit = request.getParameter("limit");

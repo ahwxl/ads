@@ -172,9 +172,9 @@ UserMng.UserObj.searchPanel =new Ext.FormPanel({
      	layout:"hbox",
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
-     	          items:[{text:"发布人"},{xtype:"textfield",name:"operate_user_id",value:''},
-     	                 {text:"标题"},{xtype:"textfield",name:"cnt_caption",value:''},
-     	                 {text:"发布时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
+     	          items:[{text:"用户编号"},{xtype:"textfield",name:"userId",value:''},
+     	                 {text:"用户名称"},{xtype:"textfield",name:"userName",value:''},
+     	                 {text:"创建时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
      	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"},
      	                 {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
      	                	//UserMng.UserObj.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
@@ -216,7 +216,7 @@ UserMng.UserObj.mygrid = new Ext.grid.GridPanel({
         //autoHeight: true,
         //title:'分页演示',
         tbar:[{
-        	text:'添加滚动图片',
+        	text:'添加用户',
             id:'add_product',
             iconCls:'silk-add',
             handler:function (){
@@ -355,32 +355,32 @@ UserMng.UserObj.addImageWin.prototype = {
 				        defaults: {width: 210},
 				        items :[{
 				        	    xtype: 'textfield',
-				                fieldLabel: '参数名称',
-				                hidden:true,
+				                fieldLabel: '用户id',
+				                hidden:false,
 				                name: 'PName',
 				                value: 'gundong'
 				            },{
 				            	xtype: 'textfield',
-				                fieldLabel: '描述',
+				                fieldLabel: '用户名称',
 				                name: 'PDesc'
 				            },{
 				            	xtype: 'textfield',
 				                fieldLabel: '排序',
 				                name: 'POrder'
-				            },{
+				            }/*,{
 				            	xtype:'fileuploadfield',
 				            	name:'file',
 				            	//id:'file',
 				            	fieldLabel: '上传文件',
 				            	buttonText: '选择图片'
-				            }
+				            }*/
 				        ]
 				    }]
 				});
 				
 				
 				var cfg = {
-				    	title: '添加图片',
+				    	title: '添加用户',
 				    	id: 'add-img-chooser-dlg',
 				    	layout: 'border',
 						width: 500,

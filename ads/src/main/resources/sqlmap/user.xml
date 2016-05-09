@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
 <sqlMap namespace="User">
-  <resultMap id="result" class="com.bplow.netconn.systemmng.dao.entity.User">
+  <resultMap id="result" class="com.bplow.netconn.systemmng.dao.entity.SysUser">
     <result property="id" column="ID" columnIndex="1"/>
     <result property="userId" column="user_id" columnIndex="2"/>
     <result property="userName" column="user_name" columnIndex="3"/>
@@ -13,7 +13,7 @@
     <result property="phoneNo" column="phone_no" columnIndex="9"/>
   </resultMap>
   
-  <resultMap id="resultUser" class="com.bplow.netconn.systemmng.dao.entity.User">
+  <resultMap id="resultUser" class="com.bplow.netconn.systemmng.dao.entity.SysUser">
     <result property="id" column="ID" columnIndex="1"/>
     <result property="userName" column="user_name" columnIndex="2"/>
     <result property="status" column="status" columnIndex="3"/>
@@ -22,12 +22,25 @@
   <select id="selectCountsForUser" resultClass="int" >
     select count(*)
     from sys_user a
+    <dynamic prepend="where">
+    <isNotEmpty prepend="and" property="userName">
+        a.user_name like "%#userName#%"
+    </isNotEmpty>
+    </dynamic>
   </select>
   
   <select id="getUserForList" resultMap="result" >
     select a.id,a.user_id,a.user_name,a.status,a.login_date,a.gmt_create,a.gmt_modify,a.email,a.phone_no 
-    from sys_user a
+    from sys_user a 
+    <dynamic prepend="where">
+    <isNotEmpty prepend="and" property="userName" >
+        a.user_name = #userName#
+    </isNotEmpty>
+    </dynamic>
+    <![CDATA[ 
+    order by a.id asc
     limit #pageNum#,#maxRowNums#
+    ]]>
   </select>
 
   <insert id="insertUser">
