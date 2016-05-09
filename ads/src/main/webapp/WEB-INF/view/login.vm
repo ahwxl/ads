@@ -157,7 +157,7 @@ Ext.onReady(function() {
 		// 把该面板绑定于wins这个DIV对象上
 		// el : 'wins',
 		// 窗口面板标题
-		title : '聚邑网络欢迎您',
+		title : '上海恒通广告传媒欢迎您',
 		// 窗口面板宽度
 		width : 600,
 		// 不容许任意伸缩大小

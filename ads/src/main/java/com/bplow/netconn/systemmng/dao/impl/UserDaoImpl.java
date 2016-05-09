@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bplow.netconn.base.dao.BaseIbatisDaoSupport;
 import com.bplow.netconn.base.dao.domain.page;
@@ -37,7 +38,7 @@ public class UserDaoImpl extends BaseIbatisDaoSupport implements UserDao{
 	@Override
 	public SysUser addUser(SysUser user) throws SQLException {
 		sqlMapClient.insert("User.insertUser", user);
-		return null;
+		return user;
 	}
 
 	@Override
@@ -50,7 +51,9 @@ public class UserDaoImpl extends BaseIbatisDaoSupport implements UserDao{
 	@Override
 	public SysUser queryUserById(SysUser user) throws SQLException {
 		
-		return null;
+		SysUser sysUser = (SysUser)sqlMapClient.queryForObject("User.delUserById", user);
+		
+		return sysUser;
 	}
 
 	@Override

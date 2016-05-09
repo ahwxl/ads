@@ -42,10 +42,26 @@
     limit #pageNum#,#maxRowNums#
     ]]>
   </select>
+  
+  <select id="queryUser" resultMap="result" >
+    select a.id,a.user_id,a.user_name,a.status,a.login_date,a.gmt_create,a.gmt_modify,a.email,a.phone_no 
+    from sys_user a 
+    <dynamic prepend="where">
+    <isNotEmpty prepend="and" property="userName" >
+        a.user_name = #userName#
+    </isNotEmpty>
+    <isNotEmpty prepend="and" property="userId" >
+        a.user_name = #userId#
+    </isNotEmpty>
+    </dynamic>
+    <![CDATA[ 
+    order by a.id asc
+    ]]>
+  </select>
 
   <insert id="insertUser">
     insert into sys_user (user_id,  user_name,  user_pwd,status,login_date,gmt_create,gmt_modify,email,phone_no ) 
-    values (#userId#, #userName#, #userPwd#,'0',now(),now(),now(),#Email#,#phoneNo#)
+    values (#userId#, #userName#, #userPwd#,'0',now(),now(),now(),#email#,#phoneNo#)
   </insert>
   
   <update  id="updateUser">

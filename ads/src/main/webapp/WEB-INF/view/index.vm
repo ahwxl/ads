@@ -37,7 +37,7 @@
     <div style="float:right; margin-top: 15px;margin-right: 10px;color: #CCC">
                     <a href="#" onclick="updateUserPassWordWin()" >欢迎$userName</a> | 
         <a href="loginOut" style="padding:5px">退出</a> | 
-        <a href="http://www.jys-media.com/" style="padding:5px" target="_black">联系我们</a>
+        <a href="http://www.shhti.com/" style="padding:5px" target="_black">联系我们</a>
         <input type="hidden" value="" id="userName">
         <input type="hidden" id="isVerifySuccess">
     </div>

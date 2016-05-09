@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.base.json.JsonHelper;
@@ -35,6 +38,9 @@ public class UserServiceImpl implements UserService{
 	private UserDao userDao;
 	
 	private String sid ="lgu";
+	
+	@Autowired
+	private TransactionTemplate transactionTemplate;
 	
 	@Override
 	public boolean loginAction(SysUser user,HttpServletRequest request) {
@@ -119,8 +125,19 @@ public class UserServiceImpl implements UserService{
 	 * 添加用户
 	 * @throws SQLException 
 	 */
-	public Integer addUser(SysUser user) throws SQLException {
-		userDao.addUser(user);
+	public Integer addUser(final SysUser user) throws SQLException {
+		
+		this.transactionTemplate.execute(new TransactionCallback<Object>() {
+			public Object doInTransaction(TransactionStatus status) {
+				try {
+					userDao.addUser(user);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return true;
+			}
+		});
+		
 		return null;
 	}
 
