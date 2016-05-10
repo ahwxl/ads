@@ -3,6 +3,7 @@ package com.bplow.netconn.systemmng.dao.entity;
 import java.util.Date;
 
 import com.bplow.netconn.base.dao.domain.PageImpl;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class SysOrganization extends PageImpl{
     /**
@@ -48,6 +49,7 @@ public class SysOrganization extends PageImpl{
      *
      * @mbggenerated Sun May 08 15:10:04 CST 2016
      */
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date gmtCreate;
 
     /**
@@ -57,6 +59,7 @@ public class SysOrganization extends PageImpl{
      *
      * @mbggenerated Sun May 08 15:10:04 CST 2016
      */
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date gmtModify;
 
     /**
