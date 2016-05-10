@@ -14,10 +14,23 @@ public class UserDomain {
 	
 	private String userId;
 	private String userName;
+	private String password;
+	private String userDesc;
 	private List<RoleDomain> roles;
 	private String organizationId;
 	
-	
+	public String getUserDesc() {
+		return userDesc;
+	}
+	public void setUserDesc(String userDesc) {
+		this.userDesc = userDesc;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getUserId() {
 		return userId;
 	}

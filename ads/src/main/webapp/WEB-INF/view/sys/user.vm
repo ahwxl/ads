@@ -339,7 +339,7 @@ UserMng.UserObj.addImageWin.prototype = {
 				
 				this.fsf = new Ext.FormPanel({
 				    labelWidth: 75, // label settings here cascade unless overridden
-				    url:'addTmplPage',
+				    url:'sys/addUser',
 				    frame:false,
 				    title: '',
 				    region: 'center',
@@ -355,18 +355,25 @@ UserMng.UserObj.addImageWin.prototype = {
 				        defaults: {width: 210},
 				        items :[{
 				        	    xtype: 'textfield',
-				                fieldLabel: '用户id',
+				                fieldLabel: '登录名',
 				                hidden:false,
-				                name: 'PName',
-				                value: 'gundong'
+				                name: 'userName',
+				                allowBlank: false,
+				                value: ''
 				            },{
 				            	xtype: 'textfield',
-				                fieldLabel: '用户名称',
-				                name: 'PDesc'
+				                fieldLabel: '登录密码',
+				                inputType: 'password',
+				                allowBlank: false,
+				                name: 'userPwd'
 				            },{
 				            	xtype: 'textfield',
-				                fieldLabel: '排序',
-				                name: 'POrder'
+				                fieldLabel: '邮箱',
+				                name: 'Email'
+				            },{
+				            	xtype: 'textfield',
+				                fieldLabel: '备注',
+				                name: 'userDesc'
 				            }/*,{
 				            	xtype:'fileuploadfield',
 				            	name:'file',
@@ -423,7 +430,7 @@ UserMng.UserObj.addImageWin.prototype = {
 		submitForm:function(){
 			if(this.fsf.getForm().isValid()){
 			this.fsf.getForm().submit({
-                url: 'addSysUser',
+                url: 'sys/addUser',
                 waitMsg: '正在上传请稍等...',
                 success: function(fp, o){
                 	//alert('ok');
