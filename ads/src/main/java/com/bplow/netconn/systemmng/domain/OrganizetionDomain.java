@@ -3,12 +3,14 @@
  */
 package com.bplow.netconn.systemmng.domain;
 
+import com.bplow.netconn.base.dao.domain.PageImpl;
+
 /**
  * @desc 
  * @author wangxiaolei
  * @date 2016年5月8日 下午5:01:50
  */
-public class OrganizetionDomain {
+public class OrganizetionDomain extends PageImpl{
 
 	private String orgId;
 	private String orgName;

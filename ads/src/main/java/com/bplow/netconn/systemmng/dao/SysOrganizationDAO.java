@@ -1,7 +1,9 @@
 package com.bplow.netconn.systemmng.dao;
 
+import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.systemmng.dao.entity.SysOrganization;
 import com.bplow.netconn.systemmng.dao.entity.SysOrganizationExample;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -93,4 +95,6 @@ public interface SysOrganizationDAO {
      * @mbggenerated Sun May 08 15:12:46 CST 2016
      */
     int updateByPrimaryKey(SysOrganization record) throws SQLException;
+    
+    IPagination queryOrgPage(SysOrganization record)throws Exception;
 }

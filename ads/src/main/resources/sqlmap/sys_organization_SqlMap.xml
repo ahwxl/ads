@@ -261,4 +261,21 @@
       gmt_modify = #gmtModify:TIMESTAMP#
     where id = #id:INTEGER#
   </update>
+  
+  <select id="selectCount" resultClass="java.lang.Integer">
+    select count(*) from sys_organization
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap">
+    select 
+    <include refid="sys_organization.Base_Column_List" />
+    from sys_organization a
+    
+    <![CDATA[ 
+    order by a.id asc
+    limit #pageNum#,#maxRowNums#
+    ]]>
+  </select>
+  
+  
 </sqlMap>
