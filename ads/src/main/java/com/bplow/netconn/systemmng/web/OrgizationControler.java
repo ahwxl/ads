@@ -49,8 +49,18 @@ public class OrgizationControler {
 	@ResponseBody
 	public String addOrgAction(Map<String, Object> model,OrganizetionDomain org,HttpServletRequest request){
 		
+		organizationService.addOrganizetion(org);
 		
-		return "";
+		return "{success:true,info:'ok'}";
+	}
+	
+	@RequestMapping(value="/sys/delOrg")
+	@ResponseBody
+	public String delOrgAction(Map<String, Object> model,OrganizetionDomain org,HttpServletRequest request){
+		
+		organizationService.addOrganizetion(org);
+		
+		return "{success:true,info:'ok'}";
 	}
 
 }

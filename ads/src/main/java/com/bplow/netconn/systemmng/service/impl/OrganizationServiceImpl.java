@@ -3,10 +3,15 @@
  */
 package com.bplow.netconn.systemmng.service.impl;
 
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.systemmng.dao.SysOrganizationDAO;
@@ -24,6 +29,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Autowired
 	private SysOrganizationDAO sysOrganizationDAO;
+	
+	@Autowired
+	private TransactionTemplate transactionTemplate;
 	
 	/* (non-Javadoc)
 	 * @see com.bplow.netconn.systemmng.service.OrganizationService#queryOrganizetionList(com.bplow.netconn.systemmng.domain.OrganizetionDomain)
@@ -48,7 +56,28 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 */
 	@Override
 	public void addOrganizetion(OrganizetionDomain org) {
-		// TODO Auto-generated method stub
+		final SysOrganization record = new SysOrganization();
+		record.setOrganizeName(org.getOrgName());
+		record.setOrganizeDesc(org.getOrgDesc());
+		record.setStatus("0");
+		record.setGmtCreate(new Date());
+		record.setGmtModify(new Date());
+		try {
+			this.transactionTemplate.execute(new TransactionCallback<Object>() {
+				public Object doInTransaction(TransactionStatus status) {
+					try {
+						sysOrganizationDAO.insert(record);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					return true;
+				}
+			});
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

@@ -345,13 +345,13 @@ OrgMng.OrgObj.addImageWin.prototype = {
 				        	    xtype: 'textfield',
 				                fieldLabel: '机构名称',
 				                hidden:false,
-				                name: 'userName',
+				                name: 'orgName',
 				                allowBlank: false,
 				                value: ''
 				            },{
 				            	xtype: 'textfield',
 				                fieldLabel: '机构描述',
-				                inputType: 'password',
+				                inputType: 'orgDesc',
 				                allowBlank: false,
 				                name: 'userPwd'
 				            }
@@ -424,7 +424,7 @@ OrgMng.OrgObj.addImageWin.prototype = {
 OrgMng.OrgObj.doDel = function(id){
 	/**/
 	Ext.Ajax.request({
-		   url: 'delSysUser',
+		   url: 'sys/delOrg',
 		   method:'post',
 		   success: function(response, opts) {
 			      var obj = Ext.decode(response.responseText);
