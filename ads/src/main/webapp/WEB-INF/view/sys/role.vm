@@ -33,8 +33,6 @@
     	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
     	    aimobj.setLayout(lyobj);//应用布局对象
 
-
-
     	    //aimobj.add(RoleMng.RoleObj.catalogTree);//添加目录树面板
     	    aimobj.add(RoleMng.RoleObj.mygrid);//添加列表面板
     	    aimobj.doLayout();//展示页面
@@ -457,9 +455,7 @@ RoleMng.RoleObj.doDel = function(id){
 			      //if(obj.success == true){
 			      MediaDataMng.viewDataOpt.store.reload();
 			      Ext.Msg.alert('系统提示',obj.info);
-			       
 			      //}
-			      
 		   },
 		   failure: function(response, opts) {
 			   Ext.Msg.alert('系统提示', '操作失败！');
