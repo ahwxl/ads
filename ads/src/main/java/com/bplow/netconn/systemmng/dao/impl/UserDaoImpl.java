@@ -2,6 +2,7 @@ package com.bplow.netconn.systemmng.dao.impl;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,14 @@ public class UserDaoImpl extends BaseIbatisDaoSupport implements UserDao{
 
 	@Override
 	public SysUser delUser(SysUser user) throws SQLException {
-		Integer id = user.getId();
-		sqlMapClient.delete("User.delUserById", id);
+		String  userIds = user.getUserId();
+		String [] userIdArray = userIds.split(",");
+	    List<Integer> userList = new ArrayList();
+	    for(String userId : userIdArray){
+	    	userList.add(Integer.parseInt(userId));
+	    }
+		sqlMapClient.delete("User.delUserById", userList);
+		
 		return null;
 	}
 

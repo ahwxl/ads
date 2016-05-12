@@ -145,8 +145,19 @@ public class UserServiceImpl implements UserService{
 	 * 删除用户
 	 * @throws SQLException 
 	 */
-	public Integer delUser(SysUser user) throws SQLException {
-		userDao.delUser(user);
+	public Integer delUser(final SysUser user) throws SQLException {
+		
+		this.transactionTemplate.execute(new TransactionCallback<Object>() {
+			public Object doInTransaction(TransactionStatus status) {
+				try {
+					userDao.delUser(user);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return true;
+			}
+		});
+		
 		return null;
 	}
 

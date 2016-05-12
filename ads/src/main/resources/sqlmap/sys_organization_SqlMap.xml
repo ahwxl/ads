@@ -272,7 +272,7 @@
     from sys_organization a
     
     <![CDATA[ 
-    order by a.id asc
+    order by a.id desc
     limit #pageNum#,#maxRowNums#
     ]]>
   </select>
