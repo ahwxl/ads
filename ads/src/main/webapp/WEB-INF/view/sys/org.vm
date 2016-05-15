@@ -32,9 +32,6 @@
     	    var aimobj = Ext.mainScreem.findById('docs-机构');
     	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
     	    aimobj.setLayout(lyobj);//应用布局对象
-
-
-
     	    //aimobj.add(OrgMng.OrgObj.catalogTree);//添加目录树面板
     	    aimobj.add(OrgMng.OrgObj.mygrid);//添加列表面板
     	    aimobj.doLayout();//展示页面
@@ -44,17 +41,6 @@
        }
    };
  }(); // end of app 
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  
 /**
  * 创建目录树对象
@@ -134,15 +120,16 @@
     	//value.dateFormat('M j, Y, g:i a')
         return String.format('{0}<br/>by {1}',value , r.data['cnt_id']);
     }
-    //对列表的某列作处理
-    function renderOpt(value, p, r){
-    	return String.format('<u onclick=\"doEditorCnt(\'{0}\')\" >修改</u>&nbsp;&nbsp;<u onclick=\"doDelCnt(\'{0}\')\">删除</u>&nbsp;&nbsp;',r.data['productId']);
+    //添加用户
+    function renderOrgOperation(value, p, r){
+    	return String.format('<u onclick=\"doEditorCnt(\'{0}\')\" >授权用户</u>&nbsp;&nbsp;&nbsp;&nbsp;',r.data['id']);
     }
     //发布文章
     function doEditorCnt(id){
-    	/**/
+    	/*
     	var editerurl ='showEditorProductPage?productId='+id;
-    	Ext.mainScreem.loadClass(editerurl,"修改产品",null);
+    	Ext.mainScreem.loadClass(editerurl,"修改产品",null);*/
+    	OrgMng.OrgObj.showSelectUserWin(id);
     }
     //发布文章
     function doDelCnt(id){
@@ -261,13 +248,15 @@ OrgMng.OrgObj.mygrid = new Ext.grid.GridPanel({
             //align: 'right',
             sortable: true
         }/* */,{
-            id: '修改日期',
             header: "修改日期",
             dataIndex: 'gmtModify',
             width: 100,
             //align: 'right',
             //renderer: renderLast,
             sortable: true
+        },{
+        header: "操作",
+        renderer: renderOrgOperation
         } ],
 
         // customize view config
@@ -317,11 +306,8 @@ OrgMng.OrgObj.addImageWin = function(config){
 	this.config = config;
 }
 
-
-
 OrgMng.OrgObj.addImageWin.prototype = {
-		
-		
+
 		show : function(el, callback){
 			if(!this.win){
 				
@@ -362,7 +348,6 @@ OrgMng.OrgObj.addImageWin.prototype = {
 				
 				var cfg = {
 				    	title: '添加机构',
-				    	id: 'add-img-chooser-dlg',
 				    	layout: 'border',
 						width: 500,
 						height: 300,
@@ -371,7 +356,6 @@ OrgMng.OrgObj.addImageWin.prototype = {
 						border: false,
 						items:[this.fsf],
 						buttons: [{
-							id: 'ok-btn',
 							text: '确定',
 							handler: this.submitForm,
 							scope: this
@@ -394,6 +378,7 @@ OrgMng.OrgObj.addImageWin.prototype = {
 		    this.win.show(el);
 			this.callback = callback;
 			this.animateTarget = el;
+			
 		},
 		reset:function(){
 			;
@@ -407,9 +392,9 @@ OrgMng.OrgObj.addImageWin.prototype = {
                 url: 'sys/addOrg',
                 waitMsg: '正在上传请稍等...',
                 success: function(fp, o){
-                	//alert('ok');
                     //msg('Success', 'Processed file "'+o.result.file+'" on the server');
                 	Ext.Msg.alert('Status', '操作成功');
+                	OrgMng.OrgObj.store.reload();
                 },
                 failure :function(fm,rp){	                    	
                 	Ext.Msg.alert('Status', '操作异常，请联系管理员.');
@@ -418,9 +403,8 @@ OrgMng.OrgObj.addImageWin.prototype = {
 			}
 		}
 		
-		
 }
-
+//删除机构
 OrgMng.OrgObj.doDel = function(id){
 	/**/
 	Ext.Ajax.request({
@@ -429,18 +413,223 @@ OrgMng.OrgObj.doDel = function(id){
 		   success: function(response, opts) {
 			      var obj = Ext.decode(response.responseText);
 			      //if(obj.success == true){
-			      MediaDataMng.viewDataOpt.store.reload();
+			      OrgMng.OrgObj.store.reload();
 			      Ext.Msg.alert('系统提示',obj.info);
-			       
 			      //}
-			      
 		   },
 		   failure: function(response, opts) {
 			   Ext.Msg.alert('系统提示', '操作失败！');
 		   },
-		   params: {'idArray': id }
+		   params: {'orgId': id }
 		});
 }
-    
+//选择用户，机构授权给用户窗口
+OrgMng.OrgObj.showSelectUserWin = function(){
+    if(OrgMng.OrgObj.showSelectUserWinObj == null || OrgMng.OrgObj.showSelectUserWinObj == undefined){
+		OrgMng.OrgObj.showSelectUserWinObj = new OrgMng.OrgObj.selectUserWin();
+	}
+	OrgMng.OrgObj.showSelectUserWinObj.show();
+}
+
+OrgMng.OrgObj.selectUserWin = function(config){
+	this.config = config;
+}
+
+OrgMng.OrgObj.selectUserWin.prototype = {
+        firstGrid:null,
+		show : function(el, callback){
+			if(!this.win){
+				
+			   leftGridStore = new Ext.data.JsonStore({
+			        root: 'data',
+			        totalProperty: 'pageInfo.totalRowNum',
+			        //idProperty: 'threadid',
+			        remoteSort: true,
+			        fields: [
+			            'id', 'userName', 'gmtCreate', 'gmtModify','email','phoneNo'
+			        ],
+			        url: 'sys/queryUserList'
+			    });
+			    
+			    var firstGrid = new Ext.grid.GridPanel({
+			    ddGroup : 'secondGridDDGroup',
+			    stripeRows       : true,
+			    enableDragDrop   : true,
+			    store: leftGridStore,
+			    width: 350,
+		        //closable:true,
+		        trackMouseOver:true,
+		        //disableSelection:true,
+		        region : 'west',
+		        loadMask: true,
+		        //sm: UserMng.UserObj.sm,
+		        columns:[{
+		            header: "编号",
+		            dataIndex: 'id',
+		            width: 50,
+		            sortable: true
+		        },{
+		            header: "用户名称",
+		            dataIndex: 'userName',
+		            width: 100,
+		            sortable: true
+		        }],
+		        // customize view config
+		        viewConfig: {
+		            forceFit:true,
+		            enableRowBody:false,
+		            showPreview:false,
+		            getRowClass : function(record, rowIndex, p, store){
+		                if(this.showPreview){
+		                    p.body = '<p>'+record.data.cnt_id+'</p>';
+		                    return 'x-grid3-row-expanded';
+		                }
+		                return 'x-grid3-row-collapsed';
+		            }
+		        },
+		        // paging bar on the bottom
+		        bbar: new Ext.PagingToolbar({
+		            pageSize: 10,
+		            store:  leftGridStore,
+		            displayInfo: true,
+		            displayMsg: 'Displaying topics {0} - {1} of {2}',
+		            emptyMsg: "No topics to display",
+		            items:[
+		                '-', {
+		                pressed: false,
+		                enableToggle:true,
+		                //text: 'Show Preview',
+		                cls: 'x-btn-text-icon details',
+		                toggleHandler: function(btn, pressed){
+		                    //var view = mygrid.getView();
+		                    //view.showPreview = pressed;
+		                    //view.refresh();
+		                }
+		            }]
+		        })
+			    });
+			    
+			    this.firstGrid = firstGrid;
+				//第二个grid
+				var fields = [
+					{name: 'name', mapping : 'id'},
+					{name: 'userName', mapping : 'userName'}
+				];
+				var cols = [
+					{ id : 'name', header: "编号", width: 160, sortable: true, dataIndex: 'id'},
+					{header: "姓名", width: 150, sortable: true, dataIndex: 'userName'}
+				];
+				var secondGridStore = new Ext.data.JsonStore({
+			        fields : fields,
+					root   : 'records'
+			    });
+			    // create the destination Grid
+			    var secondGrid = new Ext.grid.GridPanel({
+				    ddGroup          : 'firstGridDDGroup',
+			        store            : secondGridStore,
+			        width: 300,
+			        columns          : cols,
+				    enableDragDrop   : true,
+				    region           : 'east',
+			        stripeRows       : true,
+			        autoExpandColumn : 'name'
+			    });
+				this.secondGrid = secondGrid;
+				var nav = new Ext.Panel({
+		            title: '选择',
+		            region: 'center',
+		            split: true,
+		            width: 100,
+		            collapsible: false,
+		            margins:'3 0 3 3',
+		            cmargins:'3 3 3 3',
+		            html:'<u>选择</u>'
+		        });
+				
+				var cfg = {
+				    	title: '授权用户',
+				    	layout: 'border',
+						width: 800,
+						height: 600,
+						modal: true,
+						closeAction: 'hide',
+						//border: true,
+						items:[firstGrid,nav,secondGrid],
+						buttons: [{
+							text: '确定',
+							handler: this.submitForm,
+							scope: this
+						},{
+							text: '取消',
+							handler: function(){ this.win.hide(); },
+							scope: this
+						}],
+						keys: {
+							key: 27, // Esc key
+							handler: function(){ this.win.hide(); },
+							scope: this
+						}
+					};
+					Ext.apply(cfg, this.config);
+				    this.win = new Ext.Window(cfg);
+				    
+			}
+			this.reset();
+		    this.win.show(el);
+			this.callback = callback;
+			this.animateTarget = el;
+			
+			this.win.doLayout();
+	        var secondGridDropTargetEl = this.secondGrid.getView().scroller.dom;
+	        var secondGridDropTarget = new Ext.dd.DropTarget(secondGridDropTargetEl, {
+	                ddGroup    : 'secondGridDDGroup',
+	                notifyDrop : function(ddSource, e, data){
+	                        var records =  ddSource.dragData.selections;
+	                        Ext.each(records, ddSource.grid.store.remove, ddSource.grid.store);
+	                        secondGrid.store.add(records);
+	                        secondGrid.store.sort('name', 'ASC');
+	                        return true
+	                }
+	        });
+	        
+	        // This will make sure we only drop to the  view scroller element
+	        var firstGridDropTargetEl =  this.firstGrid.getView().scroller.dom;
+	        var firstGridDropTarget = new Ext.dd.DropTarget(firstGridDropTargetEl, {
+	                ddGroup    : 'firstGridDDGroup',
+	                notifyDrop : function(ddSource, e, data){
+	                        var records =  ddSource.dragData.selections;
+	                        Ext.each(records, ddSource.grid.store.remove, ddSource.grid.store);
+	                        firstGrid.store.add(records);
+	                        firstGrid.store.sort('name', 'ASC');
+	                        return true
+	                }
+	        });
+	        
+		},
+		reset:function(){
+			;
+		},
+		doCallback:function(){
+			alert("");
+		},
+		submitForm:function(){
+			if(this.fsf.getForm().isValid()){
+			this.fsf.getForm().submit({
+                url: 'sys/addOrg',
+                waitMsg: '正在上传请稍等...',
+                success: function(fp, o){
+                    //msg('Success', 'Processed file "'+o.result.file+'" on the server');
+                	Ext.Msg.alert('Status', '操作成功');
+                	OrgMng.OrgObj.store.reload();
+                },
+                failure :function(fm,rp){	                    	
+                	Ext.Msg.alert('Status', '操作异常，请联系管理员.');
+                }
+            });
+			}
+		}
+		
+}
+
 Ext.onReady(OrgMng.OrgObj.init, OrgMng.OrgObj);
 </script>

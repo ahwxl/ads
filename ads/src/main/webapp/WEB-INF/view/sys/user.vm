@@ -388,7 +388,6 @@ UserMng.UserObj.addImageWin.prototype = {
 				
 				var cfg = {
 				    	title: '添加用户',
-				    	id: 'add-img-chooser-dlg',
 				    	layout: 'border',
 						width: 500,
 						height: 300,
@@ -397,7 +396,6 @@ UserMng.UserObj.addImageWin.prototype = {
 						border: false,
 						items:[this.fsf],
 						buttons: [{
-							id: 'ok-btn',
 							text: '确定',
 							handler: this.submitForm,
 							scope: this

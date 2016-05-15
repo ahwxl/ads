@@ -20,8 +20,8 @@ public interface OrganizationService {
 	
 	public void addOrganizetion(OrganizetionDomain org);
 	
-	public void deleteOrganizetion(OrganizetionDomain org);
-	
+	public void deleteOrganizetion(OrganizetionDomain org)throws Exception;
+
 	public void updateOrganizetion(OrganizetionDomain org);
 	
 	public String queryOrganizetionListForExtGrid(OrganizetionDomain org);

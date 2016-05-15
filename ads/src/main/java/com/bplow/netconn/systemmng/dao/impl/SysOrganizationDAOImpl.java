@@ -1,20 +1,19 @@
 package com.bplow.netconn.systemmng.dao.impl;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.bplow.netconn.base.dao.BaseIbatisDaoSupport;
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.systemmng.dao.SysOrganizationDAO;
 import com.bplow.netconn.systemmng.dao.entity.SysOrganization;
 import com.bplow.netconn.systemmng.dao.entity.SysOrganizationExample;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.bplow.netconn.systemmng.domain.OrganizetionDomain;
 import com.ibatis.sqlmap.client.SqlMapClient;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component("sysOrganizationDAOImpl")
 public class SysOrganizationDAOImpl extends BaseIbatisDaoSupport implements SysOrganizationDAO {
@@ -59,8 +58,15 @@ public class SysOrganizationDAOImpl extends BaseIbatisDaoSupport implements SysO
      *
      * @mbggenerated Sun May 08 15:13:44 CST 2016
      */
-    public int deleteByExample(SysOrganizationExample example) throws SQLException {
-        int rows = sqlMapClient.delete("sys_organization.deleteByExample", example);
+    public int delete(OrganizetionDomain org) throws SQLException {
+    	String orgIds = org.getOrgId();
+		String [] orgIdArray = orgIds.split(",");
+	    List<Integer> orgList = new ArrayList();
+	    for(String orgId : orgIdArray){
+	    	orgList.add(Integer.parseInt(orgId));
+	    }
+    	
+        int rows = sqlMapClient.delete("sys_organization.deleteByExample", orgList);
         return rows;
     }
 

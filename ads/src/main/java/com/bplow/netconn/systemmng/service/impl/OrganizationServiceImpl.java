@@ -85,9 +85,23 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 * @see com.bplow.netconn.systemmng.service.OrganizationService#deleteOrganizetion(com.bplow.netconn.systemmng.domain.OrganizetionDomain)
 	 */
 	@Override
-	public void deleteOrganizetion(OrganizetionDomain org) {
-		// TODO Auto-generated method stub
-
+	public void deleteOrganizetion(final OrganizetionDomain org) throws Exception {
+		try {
+			this.transactionTemplate.execute(new TransactionCallback<Object>() {
+				public Object doInTransaction(TransactionStatus status) {
+					try {
+						sysOrganizationDAO.delete(org);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					return true;
+				}
+			});
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/* (non-Javadoc)
