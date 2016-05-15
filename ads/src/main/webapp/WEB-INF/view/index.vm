@@ -12,7 +12,7 @@
 <script type="text/javascript" src="resources/js/ext-3.4.0/ext-all.js"></script>
 <script type="text/javascript" src="resources/js/ext-lang-zh_CN.js"></script>
 <script type="text/javascript" src="module/A_sys/TabCloseMenu.js"></script>
-<script type="text/javascript" src="module/A_sys/docs.js?v=20150812"></script>
+<script type="text/javascript" src="module/A_sys/docs.js?v=20150912"></script>
 <script type="text/javascript" src="module/A_sys/tree.js?v=20160410"></script>
 <script type="text/javascript" src="resources/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="resources/js/Highcharts-4.1.7/highcharts.js"></script>
