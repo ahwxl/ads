@@ -65,10 +65,17 @@ public class SysOrganizeUserRelDAOImpl implements SysOrganizeUserRelDAO {
      *
      * @mbggenerated Sun May 08 15:13:45 CST 2016
      */
-    public int deleteByPrimaryKey(Integer id) throws SQLException {
+    public int deleteByUserId(String userId) throws SQLException {
         SysOrganizeUserRel _key = new SysOrganizeUserRel();
-        _key.setId(id);
+        _key.setUserId(userId);
         int rows = sqlMapClient.delete("sys_organize_user_rel.deleteByPrimaryKey", _key);
+        return rows;
+    }
+    
+    public int deleteByOrgId(String organizeId) throws SQLException {
+        SysOrganizeUserRel _key = new SysOrganizeUserRel();
+        _key.setOrganizeId(organizeId);
+        int rows = sqlMapClient.delete("sys_organize_user_rel.deleteByOrgId", _key);
         return rows;
     }
 

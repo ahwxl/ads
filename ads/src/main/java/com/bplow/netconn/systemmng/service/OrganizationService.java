@@ -26,7 +26,12 @@ public interface OrganizationService {
 	
 	public String queryOrganizetionListForExtGrid(OrganizetionDomain org);
 	
-	
+	/**
+	 * 授权用户到机构
+	 * @param orgDomain
+	 * @return
+	 */
+	public String authorizeOrgUser(OrganizetionDomain orgDomain) throws Exception;
 	
 	
 }

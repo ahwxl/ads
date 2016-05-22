@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bplow.netconn.systemmng.dao.entity.SysUser;
 
+/**
+ * 
+ * @desc 系统管理
+ * @author wangxiaolei
+ * @date 2016年5月22日 上午10:21:29
+ */
 
 @Controller
 public class SystemControl {

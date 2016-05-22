@@ -15,7 +15,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.systemmng.dao.SysOrganizationDAO;
+import com.bplow.netconn.systemmng.dao.SysOrganizeUserRelDAO;
 import com.bplow.netconn.systemmng.dao.entity.SysOrganization;
+import com.bplow.netconn.systemmng.dao.entity.SysOrganizeUserRel;
 import com.bplow.netconn.systemmng.domain.OrganizetionDomain;
 import com.bplow.netconn.systemmng.service.OrganizationService;
 
@@ -29,6 +31,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 	@Autowired
 	private SysOrganizationDAO sysOrganizationDAO;
+	
+	@Autowired
+	private SysOrganizeUserRelDAO sysOrganizeUserRelDAO;
 	
 	@Autowired
 	private TransactionTemplate transactionTemplate;
@@ -131,6 +136,35 @@ public class OrganizationServiceImpl implements OrganizationService {
 			e.printStackTrace();
 		}
 		return str;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.bplow.netconn.systemmng.service.OrganizationService#authorizeOrgUser(com.bplow.netconn.systemmng.domain.OrganizetionDomain)
+	 */
+	@Override
+	public String authorizeOrgUser(final OrganizetionDomain orgDomain) {
+		
+		this.transactionTemplate.execute(new TransactionCallback<Object>() {
+			public Object doInTransaction(TransactionStatus status) {
+				try {
+					sysOrganizeUserRelDAO.deleteByOrgId(orgDomain.getOrgId());
+					
+					String userId = orgDomain.getUserId();
+					String[] userArray = userId.split(",");
+					for(String userIdtmp : userArray){
+						SysOrganizeUserRel record = new SysOrganizeUserRel();
+						record.setOrganizeId(orgDomain.getOrgId());
+						record.setUserId(userIdtmp);
+						sysOrganizeUserRelDAO.insert(record);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return true;
+			}
+		});
+		
+		return "";
 	}
 
 }

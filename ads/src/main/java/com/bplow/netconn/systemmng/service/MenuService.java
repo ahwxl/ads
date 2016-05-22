@@ -19,12 +19,14 @@ public interface MenuService {
 
 	public MenuDomain queryMenuById(String menuId) throws SQLException;
 
+	
+
+	public String obtainUserMenuForExtTree(MenuDomain menu) throws SQLException;
+	
 	public void addMenu(MenuDomain menu) throws SQLException;
 
 	public void deleteMenu() throws SQLException;
 
 	public void updateMenu() throws SQLException;
-
-	public String obtainUserMenuForExtTree(MenuDomain menu) throws SQLException;
 
 }

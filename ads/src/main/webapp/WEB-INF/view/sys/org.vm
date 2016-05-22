@@ -310,7 +310,6 @@ OrgMng.OrgObj.addImageWin.prototype = {
 
 		show : function(el, callback){
 			if(!this.win){
-				
 				this.fsf = new Ext.FormPanel({
 				    labelWidth: 75, // label settings here cascade unless overridden
 				    url:'sys/addUser',
@@ -424,11 +423,11 @@ OrgMng.OrgObj.doDel = function(id){
 		});
 }
 //选择用户，机构授权给用户窗口
-OrgMng.OrgObj.showSelectUserWin = function(){
+OrgMng.OrgObj.showSelectUserWin = function(selectId){
     if(OrgMng.OrgObj.showSelectUserWinObj == null || OrgMng.OrgObj.showSelectUserWinObj == undefined){
-		OrgMng.OrgObj.showSelectUserWinObj = new OrgMng.OrgObj.selectUserWin();
+		OrgMng.OrgObj.showSelectUserWinObj = new OrgMng.OrgObj.selectUserWin({selectId:selectId});
 	}
-	OrgMng.OrgObj.showSelectUserWinObj.show();
+	OrgMng.OrgObj.showSelectUserWinObj.show(this,null,{selectId:selectId});
 }
 
 OrgMng.OrgObj.selectUserWin = function(config){
@@ -437,9 +436,9 @@ OrgMng.OrgObj.selectUserWin = function(config){
 
 OrgMng.OrgObj.selectUserWin.prototype = {
         firstGrid:null,
-		show : function(el, callback){
+		show : function(el, callback,opt){
+		    this.config.selectId=opt.selectId;
 			if(!this.win){
-				
 			   leftGridStore = new Ext.data.JsonStore({
 			        root: 'data',
 			        totalProperty: 'pageInfo.totalRowNum',
@@ -457,12 +456,11 @@ OrgMng.OrgObj.selectUserWin.prototype = {
 			    enableDragDrop   : true,
 			    store: leftGridStore,
 			    width: 350,
-		        //closable:true,
 		        trackMouseOver:true,
-		        //disableSelection:true,
 		        region : 'west',
 		        loadMask: true,
 		        //sm: UserMng.UserObj.sm,
+		        
 		        columns:[{
 		            header: "编号",
 		            dataIndex: 'id',
@@ -545,6 +543,17 @@ OrgMng.OrgObj.selectUserWin.prototype = {
 		            cmargins:'3 3 3 3',
 		            html:'<u>选择</u>'
 		        });
+		        
+		        var myform = new Ext.FormPanel({
+				    labelWidth: 75,
+				    url:'sys/addUser',
+				    frame:false,
+				    region: 'south',
+				    fileUpload:false,
+				    disabled:false,
+				    width: 100
+				    });
+				this.fsf = myform;
 				
 				var cfg = {
 				    	title: '授权用户',
@@ -554,7 +563,7 @@ OrgMng.OrgObj.selectUserWin.prototype = {
 						modal: true,
 						closeAction: 'hide',
 						//border: true,
-						items:[firstGrid,nav,secondGrid],
+						items:[firstGrid,nav,secondGrid,myform],
 						buttons: [{
 							text: '确定',
 							handler: this.submitForm,
@@ -576,6 +585,7 @@ OrgMng.OrgObj.selectUserWin.prototype = {
 			}
 			this.reset();
 		    this.win.show(el);
+		    this.win.setTitle("授权用户给机构"+this.config.selectId);
 			this.callback = callback;
 			this.animateTarget = el;
 			
@@ -604,7 +614,6 @@ OrgMng.OrgObj.selectUserWin.prototype = {
 	                        return true
 	                }
 	        });
-	        
 		},
 		reset:function(){
 			;
@@ -613,9 +622,18 @@ OrgMng.OrgObj.selectUserWin.prototype = {
 			alert("");
 		},
 		submitForm:function(){
+		    var selectStore = this.secondGrid.getStore();
+		    var idArray = new Array();
+		    selectStore.each(function(record){
+		      idArray.push(record.get("userName"));
+		    });
+		    var idstr = idArray.join(',');
+		    var selectOrgId = this.config.selectId;
+		    //alert(this.config.selectId);
+		    //alert(idstr);
 			if(this.fsf.getForm().isValid()){
 			this.fsf.getForm().submit({
-                url: 'sys/addOrg',
+                url: 'sys/authoriseOrgUser?orgId='+selectOrgId+"&userId="+idstr,
                 waitMsg: '正在上传请稍等...',
                 success: function(fp, o){
                     //msg('Success', 'Processed file "'+o.result.file+'" on the server');

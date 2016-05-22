@@ -16,6 +16,7 @@ public class OrganizetionDomain extends PageImpl{
 	private String orgName;
 	private String orgDesc;
 	private String parentOrgId;
+	private String userId;
 	
 	public String getOrgId() {
 		return orgId;
@@ -40,6 +41,12 @@ public class OrganizetionDomain extends PageImpl{
 	}
 	public void setParentOrgId(String parentOrgId) {
 		this.parentOrgId = parentOrgId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 }
