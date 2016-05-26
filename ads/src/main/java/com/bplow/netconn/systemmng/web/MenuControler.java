@@ -27,7 +27,7 @@ public class MenuControler {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
+	//@Autowired
 	private MenuService menuService;
 	
 	@RequestMapping(value = "/sys/menuMng")
