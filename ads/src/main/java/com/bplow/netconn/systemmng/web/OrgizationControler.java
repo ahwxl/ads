@@ -33,6 +33,8 @@ public class OrgizationControler {
 	@RequestMapping(value = "/sys/orgMng")
 	public String orgList(Map<String, Object> model, OrganizetionDomain org,
 			HttpServletRequest request) {
+	    
+	    request.getSession().setAttribute("zhangsan", "展示");
 
 		return "sys/org";
 	}
@@ -42,6 +44,9 @@ public class OrgizationControler {
 	public String queryOrgList(Map<String, Object> model,
 			OrganizetionDomain org, HttpServletRequest request) {
 		logger.info("查询机构列表：{}", org);
+		
+		String obj = (String)request.getSession().getAttribute("zhangsan");
+		logger.info("{}",obj);
 
 		String start = request.getParameter("start");
 		String limit = request.getParameter("limit");
