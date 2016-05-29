@@ -303,7 +303,12 @@
   <select id="selectPage" parameterClass="com.bplow.netconn.aom.dao.entity.TbWebServer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_web_server
+    from tb_web_server a
+    
+    <![CDATA[ 
+    order by a.id desc
+    limit #pageNum#,#maxRowNums#
+    ]]>
   </select>
   
 </sqlMap>
