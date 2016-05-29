@@ -64,10 +64,10 @@
 .x-window-tl .x-window-header {
 	FONT: bold 12px tahoma, arial, verdana, sans-serif;
 }
-
+/*
 .x-layout-split-west .x-layout-mini {
 	BACKGROUND-IMAGE: url(../images/mini-left.jpg);
-}
+}*/
 
 .ext-ie .x-form-text {
 	margin-top: 0px;

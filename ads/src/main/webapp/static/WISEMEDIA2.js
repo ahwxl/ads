@@ -1,15 +1,9 @@
 (function(h, d, b) {
     var e = {
-            baseUrl: "http://cmarket.kejet.net/exchange2.js?a=RDFDNzM4OTlDQzU5NEJB",
             prefix: "WISEMEDIA2"
-        };
+    };
     b.WISEMEDIA2 = {
         invoke: function(f, g) {
-        	//alert(c.height);
-            //a._kexchange  = a._kexchange  || [];
-            //var _kenid = 'F2FOC3YQDHUXVZEDNZ8Z_'+Math.random();
-            //a._kexchange.push(['_addSlot',_kenid,'300','250','2','9']);
-            
             var c = b.merge(b.merge({},e), f),
                     a = d.getElementById(g.target);
                     a.innerHTML = "";
@@ -17,8 +11,10 @@
                     a = document.getElementById(c.prefix + "_if");
                     a = a.contentDocument || a.contentWindow.document;
                     a.open();
-                    a.write(b.format('<script> var _kexchange = _kexchange || [];var _dmid="{{_dmid}}";_kexchange.push(["_setAccount", _dmid]);  document.write(\'<script type="text/javascript" charset="utf-8" src="{{baseUrl}}"></scr\'+\'ipt>\');var _kenid = "{{_kenid}}_"+Math.random();_kexchange.push(["_addSlot",_kenid,"300","250","2","9"]);   \x3c/script>', c))
-        
+                    a.write(b.format('<script> var _kexchange = _kexchange || [];var _dmid="{{_dmid}}";_kexchange.push(["_setAccount", _dmid]);  document.write(\'<script type="text/javascript" charset="utf-8" src="http://cmarket.kejet.net/exchange2.js?a={{_dmid}}"></scr\'+\'ipt>\');var _kenid = "{{_kenid}}_"+Math.random();_kexchange.push(["_addSlot",_kenid,"{{width}}","{{height}}","2","9"]);   \x3c/script>', c))
+             h._huntsCallback = function() {
+                b.nextPush(g)
+            }
         }
     }
 })(window, document, window.jyswads || {});

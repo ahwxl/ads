@@ -1,0 +1,359 @@
+<script type="text/javascript">
+ /**
+  * @module name web服务管理
+  * @module desc web服务的添加和删除、构建（下载代码、build、启动）应用、重启、关闭
+  * @author  wxl
+  * @create  date 20160529
+  * @modify  man ***
+  * @modify  date ***
+  */
+/***
+如果你是在创建一个新的应用，请替换掉WebServerMng 和 WebServerObj 写成你自己定义的名称，不然会覆盖掉别人的对象
+****/
+Ext.namespace('WebServerMng', 'WebServerMng.WebServerObj');
+
+WebServerMng.WebServerObj = function() {
+   /**
+   *do NOT access DOM from here; elements don't exist yet
+   *不要在这里获取dom，elements对象也不存在
+   *这里定义私有方法、和属性
+   *数据集加载对象，给grid用的
+   */
+    var gridStore = new Ext.data.JsonStore({
+        root: 'data',
+        totalProperty: 'pageInfo.totalRowNum',
+        //idProperty: 'threadid',
+        remoteSort: true,
+        fields: [
+            'id', 'hostId','serverName','webPath','warName','serverStatus', 'gmtCreate', 'gmtModify'
+        ],
+        url: 'aom/webServerList'
+    });
+//复选框对象
+var sm = new Ext.grid.CheckboxSelectionModel({
+	listeners:{
+			   rowselect :function(selectmodel,rowIndex,record) {}
+	}
+});
+
+//定义列
+var columns = [sm,
+       {
+            header: "名称",
+            dataIndex: 'id',
+            width: 50,
+            sortable: true
+        },{
+            header: "服务名称",
+            dataIndex: 'serverName',
+            width: 100,
+            sortable: true
+        },{            
+            header: "项目地址",
+            dataIndex: 'webPath',
+            width: 150,
+            sortable: true
+        },{            
+            header: "war包名称",
+            dataIndex: 'warName',
+            width: 150,
+            sortable: true
+        },{
+            header: "创建时间",
+            dataIndex: 'gmtCreate',
+            width: 100,
+            sortable: true
+        },{
+            id: '修改日期',
+            header: "修改日期",
+            dataIndex: 'gmtModify',
+            width: 100,
+            sortable: true
+        }];
+
+
+    //添加grid 数据加载前事件
+    gridStore.on("beforeload",function (selfstore){
+    	//将form面板的查询参数  封装成  store 能接受的对象
+    	var tmpCnf = Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
+    	tmpCnf.start = 0;//从哪一条记录开始显示
+    	tmpCnf.limit = 10;//查询条数(每页显示的条数)
+    	selfstore.baseParams=tmpCnf;
+
+    });
+
+//表单查询条件面板
+var searchPanel = new Ext.FormPanel({
+     	frame:false,
+     	border:true,
+     	layout:"hbox",
+     	layoutConfig:{padding:"5",align:"middle"},
+     	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
+     	          items:[{text:"名称"},{xtype:"textfield",name:"operate_user_id",value:''},
+     	                 {text:"IP地址"},{xtype:"textfield",name:"cnt_caption",value:''},
+     	                 {text:"发布时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
+     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"},
+     	                 {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
+     	                	//WebServerMng.WebServerObj.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
+     	                	//alert(Ext.Ajax.serializeForm(WebServerMng.WebServerObj.searchPanel.getForm().getEl()) );
+     	                	WebServerMng.WebServerObj.store.load();
+     	                   }}
+     	                  ,{xtype:"button",text:"删除",scope:this,handler:function (){
+							var sm = WebServerMng.WebServerObj.mygrid.getSelectionModel();
+							var array = sm.getSelections();//records
+							var idstr ="";
+							for(var i =0;i < array.length;i++){
+							   idstr =idstr+array[i].get('id')+",";
+							}
+							if(idstr.length > 0){
+							   idstr = idstr.substr(0,idstr.length-1);
+							}else{
+							    Ext.Msg.alert('系统提示','请选择要删除的数据');
+							    return false;
+							}
+							Ext.Msg.confirm('系统提示', '你确定删除吗？', function(btn, text){
+							    if (btn == 'yes'){
+							    	WebServerMng.WebServerObj.doDel(idstr);
+							    }
+							});
+							}
+     	        	       
+     	        	       }
+     	                 ]});
+
+//创建一个列表面板
+var mygrid = new Ext.grid.GridPanel({
+        autoHeight: false,
+        tbar:[{
+        	text:'添加',
+            iconCls:'silk-add',
+            handler:function (){
+            	showWin(this.getEl());
+            }
+        },{
+        	text:'构建',
+            iconCls:'silk-table-refresh',
+            handler:function (){
+            	showWin(this.getEl());
+            }
+        },{
+        	text:'重启',
+            iconCls:'silk-building',
+            handler:function (){
+            	showWin(this.getEl());
+            }
+        },{
+        	text:'关闭',
+            iconCls:'silk-group-delete',
+            handler:function (){
+            	showWin(this.getEl());
+            }
+        }],
+        listeners:{
+            'render':function () {
+            	searchPanel.render(this.tbar);
+            }
+        },
+        store: gridStore,
+        closable:true,
+        trackMouseOver:true,
+        disableSelection:true,
+        region : 'center',
+        loadMask: true,
+        sm:sm,
+        columns:columns,
+        viewConfig: {
+            forceFit:true,
+            enableRowBody:false,
+            showPreview:false,
+            getRowClass : function(record, rowIndex, p, store){
+                if(this.showPreview){
+                    p.body = '<p>'+record.data.cnt_id+'</p>';
+                    return 'x-grid3-row-expanded';
+                }
+                return 'x-grid3-row-collapsed';
+            }
+        },
+        bbar: new Ext.PagingToolbar({
+            pageSize: 10,
+            store: gridStore,
+            displayInfo: true,
+            displayMsg: 'Displaying topics {0} - {1} of {2}',
+            emptyMsg: "No topics to display",
+            items:[
+                '-', {
+                pressed: false,
+                enableToggle:true,
+                cls: 'x-btn-text-icon details',
+                toggleHandler: function(btn, pressed){
+                }
+            }]
+        })
+    });
+
+/*添加图片窗口*/
+var addwinobj = null;
+var showWin = function(){
+	if(addwinobj == undefined || addwinobj == null){
+		addwinobj = new addImageWin();
+	}
+	addwinobj.show();
+}
+var addImageWin = function(config){
+	this.config = config;
+}
+addImageWin.prototype = {
+		show : function(el, callback){
+			if(!this.win){
+				/*添加web server 表单*/
+				this.fsf = new Ext.FormPanel({
+				    labelWidth: 75,
+				    url:'addTmplPage',
+				    frame:false,
+				    title: '',
+				    region: 'center',
+				    fileUpload:true,
+				    bodyStyle:'padding:5px 5px 5px 5px',
+				    width: 500,
+
+				    items: [{
+				        xtype:'fieldset',
+				        title: ' ',
+				        collapsible: true,
+				        autoHeight:true,
+				        defaults: {width: 210},
+				        items :[{
+				        	    xtype: 'textfield',
+				                fieldLabel: '参数名称',
+				                hidden:true,
+				                name: 'PName',
+				                value: 'gundong'
+				            },{
+				            	xtype: 'textfield',
+				                fieldLabel: '描述',
+				                name: 'PDesc'
+				            },{
+				            	xtype: 'textfield',
+				                fieldLabel: '排序',
+				                name: 'POrder'
+				            },{
+				            	xtype:'fileuploadfield',
+				            	name:'file',
+				            	//id:'file',
+				            	fieldLabel: '上传文件',
+				            	buttonText: '选择图片'
+				            }
+				        ]
+				    }]
+				});
+				
+				
+				var cfg = {
+				    	title: '添加web应用',
+				    	id: 'add-img-chooser-dlg',
+				    	layout: 'border',
+						width: 500,
+						height: 300,
+						modal: true,
+						closeAction: 'hide',
+						border: false,
+						items:[this.fsf],
+						buttons: [{
+							id: 'ok-btn',
+							text: '确定',
+							handler: this.submitForm,
+							scope: this
+						},{
+							text: '取消',
+							handler: function(){ this.win.hide(); },
+							scope: this
+						}],
+						keys: {
+							key: 27, // Esc key
+							handler: function(){ this.win.hide(); },
+							scope: this
+						}
+					};
+					Ext.apply(cfg, this.config);
+				    this.win = new Ext.Window(cfg);
+				
+			}
+			this.reset();
+		    this.win.show(el);
+			this.callback = callback;
+			this.animateTarget = el;
+		},
+		reset:function(){
+			;
+		},
+		doCallback:function(){
+			alert("");
+		},
+		submitForm:function(){
+			if(this.fsf.getForm().isValid()){
+			this.fsf.getForm().submit({
+                url: 'addSysUser',
+                waitMsg: '正在上传请稍等...',
+                success: function(fp, o){
+                    //msg('Success', 'Processed file "'+o.result.file+'" on the server');
+                	Ext.Msg.alert('Status', '操作成功');
+                },
+                failure :function(fm,rp){	                    	
+                	Ext.Msg.alert('Status', '操作异常，请联系管理员.');
+                }
+            });
+			}
+		}
+}
+/*删除应用*/
+var doDel = function(id){
+	
+	Ext.Ajax.request({
+		   url: 'delSysUser',
+		   method:'post',
+		   success: function(response, opts) {
+			      var obj = Ext.decode(response.responseText);
+			      //if(obj.success == true){
+			      MediaDataMng.viewDataOpt.store.reload();
+			      Ext.Msg.alert('系统提示',obj.info);
+			       
+			      //}
+			      
+		   },
+		   failure: function(response, opts) {
+			   Ext.Msg.alert('系统提示', '操作失败！');
+		   },
+		   params: {'idArray': id }
+		});
+}
+
+   //共有区
+   return {
+       //此处定义共有属性变量
+       
+
+       //共有方法
+       init: function() {
+     	   //此方法内部是可以获取到私用属性和方法
+           //定义一些初始化行为
+    	   //获取id为"docs-文章管理"的面板
+    	    var aimobj = Ext.mainScreem.findById('docs-web服务器');
+    	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
+    	    aimobj.setLayout(lyobj);
+    	    aimobj.add(mygrid);//添加列表面板
+    	    aimobj.doLayout();//展示页面
+    	    
+    	    //加载列表数据
+    	    mygrid.getStore().reload();
+
+            //当用户关闭页签后删除对象
+            aimobj.addListener("destroy",function(){
+               Ext.destroy(mygrid);
+            });
+
+       }
+   };
+ }(); // end of app
+
+Ext.onReady(WebServerMng.WebServerObj.init, WebServerMng.WebServerObj);
+</script>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bplow.netconn.aom.dao.entity.TbServerHost;
+import com.bplow.netconn.aom.dao.entity.TbWebServer;
 import com.bplow.netconn.aom.service.ServerHostSevice;
 import com.bplow.netconn.aom.service.WebSeverService;
 
@@ -113,7 +114,7 @@ public class AutoMainControler {
 	
 	/**********************应用服务器管理**************************/
 
-	/* 主机列表页面 */
+	/* 主页面 */
 	@RequestMapping(value = "/aom/webServer", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String webServerListPage(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -122,38 +123,50 @@ public class AutoMainControler {
 	}
 	
 	/* 主机列表页面 */
-	@RequestMapping(value = "/aom/webServerList", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = "/aom/webServerList", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String querywebServerList(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,TbWebServer tbWebServer) throws Exception {
+		String start = request.getParameter("start");
+		String limit = request.getParameter("limit");
+		tbWebServer.setPageNum(Integer.parseInt(start));
+		tbWebServer.setMaxRowNums(Integer.parseInt(limit));
+		
+		String str = webSeverService.queryWebServerList(tbWebServer);
 
-		return "aom/webServer";
+		return str;
 	}
 
 	/* 添加主机 */
 	@RequestMapping(value = "/aom/addwebServer", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String addwebServer(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,TbWebServer tbWebServer) throws Exception  {
+		
+		webSeverService.addWebServer(tbWebServer);
 
-		return "aom/webServer";
+		return "{success:true,info:'ok'}";
 	}
 
 	/* 查询主机 */
 	@RequestMapping(value = "/aom/querywebServer", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String querywebServer(HttpServletRequest request,
-			HttpServletResponse response) {
+	public TbWebServer querywebServer(HttpServletRequest request,
+			HttpServletResponse response,TbWebServer tbWebServer) throws SQLException {
 
-		return "aom/webServer";
+		TbWebServer webServer = webSeverService.queryWebServerById(tbWebServer.getId());
+		
+		return webServer;
 	}
 
 	/* 修改主机 */
 	@RequestMapping(value = "/aom/modifywebServer", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String modifywebServer(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,TbWebServer tbWebServer) throws SQLException {
 
+		webSeverService.updateWebServer(tbWebServer);
+		
 		return "aom/webServer";
 	}
 
@@ -161,8 +174,10 @@ public class AutoMainControler {
 	@RequestMapping(value = "/aom/delwebServer", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String deletewebServer(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,TbWebServer tbWebServer) throws SQLException {
 
+		webSeverService.deleteWebServer(tbWebServer);
+		
 		return "aom/webServer";
 	}
 	

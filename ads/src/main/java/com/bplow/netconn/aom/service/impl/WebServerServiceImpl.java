@@ -3,6 +3,7 @@
  */
 package com.bplow.netconn.aom.service.impl;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,8 +16,11 @@ import com.bplow.netconn.aom.dao.TbWebServerDAO;
 import com.bplow.netconn.aom.dao.entity.TbWebServer;
 import com.bplow.netconn.aom.dao.entity.TbWebServerExample;
 import com.bplow.netconn.aom.service.WebSeverService;
+import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.base.json.JsonHelper;
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 /**
@@ -37,19 +41,15 @@ public class WebServerServiceImpl implements WebSeverService{
 	 * @see com.bplow.netconn.aom.service.WebSeverService#queryWebServerList(com.bplow.netconn.aom.dao.entity.TbWebServer)
 	 */
 	@Override
-	public String queryWebServerList(TbWebServer tbWebServer) throws SQLException {
+	public String queryWebServerList(TbWebServer tbWebServer) throws Exception {
 		TbWebServerExample criteria = new TbWebServerExample();
-		criteria.createCriteria().andGmtCreateIsNotNull().andGmtModifyIsNotNull();
-		List<TbWebServer> list = tbWebServerDao.selectByExample(criteria);
-		
+		criteria.createCriteria().andGmtCreateIsNotNull()
+				.andGmtModifyIsNotNull();
+		IPagination page = tbWebServerDao.queryWebServerForpage(tbWebServer);
+
 		String resultStr = null;
-		try {
-			resultStr = JsonHelper.convertToStr(list);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		resultStr = page.getJsonByList();
+
 		return resultStr;
 	}
 

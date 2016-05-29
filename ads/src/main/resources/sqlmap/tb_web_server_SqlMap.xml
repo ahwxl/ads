@@ -293,4 +293,17 @@
       gmt_modify = #gmtModify:TIMESTAMP#
     where id = #id:VARCHAR#
   </update>
+  
+  <select id="selectCounts" parameterClass="com.bplow.netconn.aom.dao.entity.TbWebServer" resultClass="java.lang.Integer">
+    select 
+    count(*)
+    from tb_web_server
+  </select>
+  
+  <select id="selectPage" parameterClass="com.bplow.netconn.aom.dao.entity.TbWebServer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_web_server
+  </select>
+  
 </sqlMap>

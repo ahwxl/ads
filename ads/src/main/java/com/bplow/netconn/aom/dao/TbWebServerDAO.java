@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.bplow.netconn.aom.dao.entity.TbWebServer;
 import com.bplow.netconn.aom.dao.entity.TbWebServerExample;
+import com.bplow.netconn.base.dao.pagination.IPagination;
 
 public interface TbWebServerDAO {
     /**
@@ -95,4 +96,6 @@ public interface TbWebServerDAO {
      * @mbggenerated Sat Apr 23 12:36:53 CST 2016
      */
     int updateByPrimaryKey(TbWebServer record) throws SQLException;
+    
+    IPagination queryWebServerForpage(TbWebServer record) throws SQLException;
 }

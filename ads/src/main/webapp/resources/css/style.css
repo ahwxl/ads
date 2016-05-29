@@ -59,7 +59,7 @@ html, body {
     top:35%;
     left:43%;
     color:#444;
-    background-image:url(images/default/shared/large-loading.gif);
+    background-image:url(../images/default/shared/large-loading.gif);
     background-repeat: no-repeat;
     background-position:left 5px;
     padding:10px 10px 10px 38px;

@@ -15,11 +15,11 @@ import com.bplow.netconn.aom.dao.entity.TbWebServer;
 public interface WebSeverService {
 	
 	/**
-	 * 
+	 * 分页查询
 	 * @param tbWebServer
 	 * @return
 	 */
-	public String queryWebServerList(TbWebServer tbWebServer)throws SQLException;
+	public String queryWebServerList(TbWebServer tbWebServer)throws Exception;
 	
 	/**
 	 * 
