@@ -41,22 +41,22 @@
 	</appender>
 
 	<logger name="system_error" additivity="false">
-		<priority value="INFO" />
+        <level value="INFO" />
 		<appender-ref ref="error" />
 	</logger>
 
 	<logger name="system_request" additivity="false">
-		<priority value="INFO" />
+		<level value="INFO" />
 		<appender-ref ref="userRequest" />
 	</logger>
 
 	<logger name="common-digest" additivity="false">
-		<priority value="INFO" />
+		<level value="INFO" />
 		<appender-ref ref="digest" />
 	</logger>
 	
 	<logger name="media-digest" additivity="false">
-		<priority value="INFO" />
+		<level value="INFO" />
 		<appender-ref ref="mediaDigest" />
 	</logger>
 	

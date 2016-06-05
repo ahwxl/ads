@@ -1,6 +1,6 @@
 package com.bplow.netconn;
 
-import redis.clients.jedis.Jedis;
+//import redis.clients.jedis.Jedis;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -38,10 +38,10 @@ public class AppTest
     }
     
     public void testRedis(){
-        Jedis jedis = new Jedis("192.168.3.240",6379);
+       /* Jedis jedis = new Jedis("192.168.3.240",6379);
         jedis.set("foo", "bar");
         String value = jedis.get("foo");
         
-        System.out.println(value);
+        System.out.println(value);*/
     }
 }
