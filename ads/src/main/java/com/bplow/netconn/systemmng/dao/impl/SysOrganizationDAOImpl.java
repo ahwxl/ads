@@ -23,9 +23,6 @@ public class SysOrganizationDAOImpl extends BaseIbatisDaoSupport implements SysO
      *
      * @mbggenerated Sun May 08 15:13:44 CST 2016
      */
-	@Autowired
-    private SqlMapClient sqlMapClient;
-
     public SysOrganizationDAOImpl() {
 		super();
 	}

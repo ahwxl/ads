@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bplow.netconn.base.dao.BaseIbatisDaoSupport;
-import com.bplow.netconn.base.dao.domain.page;
+import com.bplow.netconn.base.dao.domain.Page;
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.systemmng.dao.UserDao;
 import com.bplow.netconn.systemmng.dao.entity.SysUser;

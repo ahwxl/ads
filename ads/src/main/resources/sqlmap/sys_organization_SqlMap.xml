@@ -272,9 +272,14 @@
   <select id="selectList" resultMap="BaseResultMap">
     select 
     <include refid="sys_organization.Base_Column_List" />
-    from sys_organization a
+	from sys_organization a
+	<dynamic>
+		<isNotEmpty prepend="AND" property="id">
+			id = #id#
+		</isNotEmpty>
+	</dynamic>
     
-    <![CDATA[ 
+    <![CDATA[
     order by a.id desc
     limit #pageNum#,#maxRowNums#
     ]]>

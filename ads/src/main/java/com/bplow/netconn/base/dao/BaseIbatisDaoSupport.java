@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bplow.netconn.base.dao.domain.page;
+import com.bplow.netconn.base.dao.domain.Page;
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.base.dao.pagination.SimplePagination;
 import com.ibatis.sqlmap.client.SqlMapClient;
@@ -21,9 +21,9 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 public class BaseIbatisDaoSupport {
 	
 	@Autowired
-	private SqlMapClient sqlMapClient;
+	public  SqlMapClient sqlMapClient;
 	
-	public IPagination queryForPagenation(String qCounts,String qResults,page page) throws SQLException{
+	public IPagination queryForPagenation(String qCounts,String qResults,Page page) throws SQLException{
 		IPagination pagination = new SimplePagination(page.getPageNum(), page.getMaxRowNums());
 		
 		/**

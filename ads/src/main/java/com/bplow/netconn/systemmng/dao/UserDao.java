@@ -3,7 +3,7 @@ package com.bplow.netconn.systemmng.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.bplow.netconn.base.dao.domain.page;
+import com.bplow.netconn.base.dao.domain.Page;
 import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.systemmng.dao.entity.SysUser;
 

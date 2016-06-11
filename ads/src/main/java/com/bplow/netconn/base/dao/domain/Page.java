@@ -1,6 +1,6 @@
 package com.bplow.netconn.base.dao.domain;
 
-public interface page {
+public interface Page {
 	
 	/*显示第几页*/
 	int getPageNum();

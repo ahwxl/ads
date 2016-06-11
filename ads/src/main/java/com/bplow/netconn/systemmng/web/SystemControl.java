@@ -43,7 +43,7 @@ public class SystemControl {
                     "{'href':'sys/userList','text':'系统用户','id':'系统用户','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
                     "{'href':'sys/menuList','text':'菜单','id':'菜单','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
                     "{'href':'sys/modulList','text':'模块','id':'模块','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
-                    "{'href':'sys/roleList','text':'角色','id':'角色','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," +
+                    "{'href':'sys/roleMng','text':'角色管理','id':'角色管理','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," +
                     "{'href':'sys/orgMng','text':'机构','id':'机构','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}" +
                     "]}"+
      		"]";

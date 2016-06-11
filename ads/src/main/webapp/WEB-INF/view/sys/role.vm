@@ -1,186 +1,95 @@
 <script type="text/javascript">
  /**
-  * @module name 用户管理
-  * @module desc 用户的添加和删除
+  * @module name 角色管理
+  * @module desc 
   * @author  wxl
-  * @create  date 20151227
+  * @create  date 20160529
   * @modify  man ***
   * @modify  date ***
   */
-  Ext.namespace('RoleMng', 'RoleMng.RoleObj');
+/***
+如果你是在创建一个新的应用，请替换掉RoleMng 和 roleObj 写成你自己定义的名称，不然会覆盖掉别人的对象
+****/
+Ext.namespace('RoleMng', 'RoleMng.roleObj');
 
-
- //create application
- RoleMng.RoleObj = function() {
-   // do NOT access DOM from here; elements don't exist yet
-
-   //此处定义私有属性变量
-   //var dragZone1, dragZone2;
-
-   //此处定义私有方法
-
-   //共有区
-   return {
-       //此处定义共有属性变量
-       
-
-       //共有方法
-       init: function() {
-     	  
-           //定义一些初始化行为
-    	   //获取id为"docs-文章管理"的面板
-    	    var aimobj = Ext.mainScreem.findById('docs-角色');
-    	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
-    	    aimobj.setLayout(lyobj);//应用布局对象
-
-    	    //aimobj.add(RoleMng.RoleObj.catalogTree);//添加目录树面板
-    	    aimobj.add(RoleMng.RoleObj.mygrid);//添加列表面板
-    	    aimobj.doLayout();//展示页面
-    	    
-    	    //加载列表数据
-    	    RoleMng.RoleObj.store.load();
-       }
-   };
- }(); // end of app 
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-/**
- * 创建目录树对象
- */
- RoleMng.RoleObj.catalogTree = new Ext.tree.TreePanel({
-	    //renderTo: 'tree-div',
-	    title:'目录树',
-	    useArrows: true,
-	    autoScroll: true,
-	    animate: true,
-	    region: 'west',
-	    //enableDD: true,
-	    containerScroll: true,
-	    width : 180,
-	    border: true,
-	    // auto create TreeLoader
-	    loader: new Ext.tree.TreeLoader({dataUrl:'showCatalogTree'}),//请求的url地址
-	    tools : [{
-			id : 'refresh',
-			handler : function() {
-				RoleMng.RoleObj.catalogTree.root.reload()
-			}
-		}],
-	    //dataUrl: '',
-	    root: {
-	        nodeType: 'async',
-	        text: '目录树',
-	        draggable: false,
-	        id: '0000'
-	    }
-	});
-//添加目录树节点点击事件，添加别的事件也是这种方式，以此类推
- RoleMng.RoleObj.catalogTree.on('click', function(node,e) {
-		e.stopEvent();
-		node.expand();
-		deptid = node.attributes.id;
-		RoleMng.RoleObj.store.load({
-					params : {
-						start : 0,
-						limit : 10,
-						catalogId : deptid
-					}
-				});
-	});
- 
- 
- 
-//数据集加载对象，给grid用的
- RoleMng.RoleObj.store = new Ext.data.JsonStore({
+RoleMng.roleObj = function() {
+   /**
+   *do NOT access DOM from here; elements don't exist yet
+   *不要在这里获取dom，elements对象也不存在
+   *这里定义私有方法、和属性
+   *数据集加载对象，给grid用的
+   */
+    var gridStore = new Ext.data.JsonStore({
         root: 'data',
         totalProperty: 'pageInfo.totalRowNum',
         //idProperty: 'threadid',
         remoteSort: true,
         fields: [
-            'id', 'userName', 'gmtCreate', 'gmtModify','email','phoneNo'
+            'roleId', 'roleName','roleDesc','roleType', 'gmtCreate', 'gmtModify'
         ],
-        url: 'sys/queryUserList'
+        url: 'sys/roleList'
     });
+//复选框对象
+var sm = new Ext.grid.CheckboxSelectionModel({
+	listeners:{
+			   rowselect :function(selectmodel,rowIndex,record) {}
+	}
+});
+
+//定义列
+var columns = [sm,
+       {
+            header: "编号",
+            dataIndex: 'roleId',
+            width: 50,
+            sortable: true
+        },{
+            header: "名称",
+            dataIndex: 'roleName',
+            width: 100,
+            sortable: true
+        },{
+            header: "创建时间",
+            dataIndex: 'gmtCreate',
+            width: 100,
+            sortable: true
+        },{
+            id: '修改日期',
+            header: "修改日期",
+            dataIndex: 'gmtModify',
+            width: 100,
+            sortable: true
+        }];
+
 
     //添加grid 数据加载前事件
-    RoleMng.RoleObj.store.on("beforeload",function (selfstore){
+    gridStore.on("beforeload",function (selfstore){
     	//将form面板的查询参数  封装成  store 能接受的对象
-    	var tmpCnf = Ext.urlDecode(Ext.Ajax.serializeForm(RoleMng.RoleObj.searchPanel.getForm().getEl()));
-    	tmpCnf.start = 0;//从哪一条记录开始
-    	tmpCnf.limit = 10;//查询条数
+    	var tmpCnf = Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
+    	tmpCnf.start = 0;//从哪一条记录开始显示
+    	tmpCnf.limit = 10;//查询条数(每页显示的条数)
     	selfstore.baseParams=tmpCnf;
 
     });
-    
 
-    function renderTopic(value, p, record){
-        return String.format(
-                '{0}',
-                value);
-    }
-    function renderLast(value, p, r){
-    	//value.dateFormat('M j, Y, g:i a')
-        return String.format('{0}<br/>by {1}',value , r.data['cnt_id']);
-    }
-    //对列表的某列作处理
-    function renderOpt(value, p, r){
-    	return String.format('<u onclick=\"doEditorCnt(\'{0}\')\" >修改</u>&nbsp;&nbsp;<u onclick=\"doDelCnt(\'{0}\')\">删除</u>&nbsp;&nbsp;',r.data['productId']);
-    }
-    //发布文章
-    function doEditorCnt(id){
-    	/**/
-    	var editerurl ='showEditorProductPage?productId='+id;
-    	Ext.mainScreem.loadClass(editerurl,"修改产品",null);
-    }
-    //发布文章
-    function doDelCnt(id){
-    	/**/
-    	Ext.Ajax.request({
-    		   url: 'delProductAction?productId='+id,
-    		   method:'post',
-    		   success: function(response, opts) {
-    			      //var obj = Ext.decode(response.responseText);
-    			      //alert(response.responseText);
-    			      Ext.Msg.alert('系统提示', response.responseText);
-    		   },
-    		   failure: function(response, opts) {
-    			      Ext.Msg.alert('系统提示', '操作失败！');
-    		   },
-    		   params: { id: id }
-    		});
-    }
-    
-    
-    //表单查询条件面板
-RoleMng.RoleObj.searchPanel =new Ext.FormPanel({
-     	region:"north",
-     	height:35,
+//表单查询条件面板
+var searchPanel = new Ext.FormPanel({
      	frame:false,
-     	border:false,id:"AppUserSearchForm",
+     	border:true,
      	layout:"hbox",
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
-     	          items:[{text:"用户编号"},{xtype:"textfield",name:"userId",value:''},
-     	                 {text:"用户名称"},{xtype:"textfield",name:"userName",value:''},
-     	                 {text:"创建时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
-     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"},
+     	          items:[{text:"编号"},{xtype:"textfield",name:"roleId",value:''},
+     	                 {text:"名称"},{xtype:"textfield",name:"roleName",value:''},
+     	                 {text:"创建时间:从"},{xtype:"datefield",format:"Y-m-d",name:"gmtCreate2"},
+     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"gmtCreate3"},
      	                 {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
-     	                	//RoleMng.RoleObj.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
-     	                	//alert(Ext.Ajax.serializeForm(RoleMng.RoleObj.searchPanel.getForm().getEl()) );
-     	                	RoleMng.RoleObj.store.load();
+     	                	//RoleMng.roleObj.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
+     	                	//alert(Ext.Ajax.serializeForm(RoleMng.roleObj.searchPanel.getForm().getEl()) );
+     	                	gridStore.load();
      	                   }}
      	                  ,{xtype:"button",text:"删除",scope:this,handler:function (){
-							var sm = RoleMng.RoleObj.mygrid.getSelectionModel();
+							var sm = RoleMng.roleObj.mygrid.getSelectionModel();
 							var array = sm.getSelections();//records
 							var idstr ="";
 							for(var i =0;i < array.length;i++){
@@ -194,93 +103,49 @@ RoleMng.RoleObj.searchPanel =new Ext.FormPanel({
 							}
 							Ext.Msg.confirm('系统提示', '你确定删除吗？', function(btn, text){
 							    if (btn == 'yes'){
-							    	RoleMng.RoleObj.doDel(idstr);
+							    	RoleMng.roleObj.doDel(idstr);
 							    }
 							});
 							}
      	        	       
      	        	       }
      	                 ]});
-RoleMng.RoleObj.sm = new Ext.grid.CheckboxSelectionModel({
-	listeners:{
-			     rowselect :function(selectmodel,rowIndex,record) {
-			     }
-			}
-	});
+
 //创建一个列表面板
-RoleMng.RoleObj.mygrid = new Ext.grid.GridPanel({
-        //width:700,
-        //height:500,
-        //autoHeight: true,
-        //title:'分页演示',
+var mygrid = new Ext.grid.GridPanel({
+        autoHeight: false,
         tbar:[{
-        	text:'添加用户',
-            id:'add_product',
+        	text:'添加',
             iconCls:'silk-add',
             handler:function (){
-            	// showAddProductPage
-            	//Ext.mainScreem.loadClass('showAddProductPage','添加产品',null);
-            	RoleMng.RoleObj.showWin(this.getEl());
-            	//Ext.mainScreem.addNewTab( Ext.getmifObj({id:'添加产品',title:'添加产品',src:'showAddProductPageIframe'}),'添加产品');
+            	showWin(this.getEl());
+            }
+        },{
+        	text:'删除',
+            iconCls:'silk-table-refresh',
+            handler:function (){
+            	showWin(this.getEl());
+            }
+        },{
+        	text:'修改',
+            iconCls:'silk-building',
+            handler:function (){
+            	showWin(this.getEl());
             }
         }],
         listeners:{
             'render':function () {
-            	RoleMng.RoleObj.searchPanel.render(this.tbar);
+            	searchPanel.render(this.tbar);
             }
         },
-        store:  RoleMng.RoleObj.store,
-        //renderTo: 'tree-div',
+        store: gridStore,
         closable:true,
         trackMouseOver:true,
         disableSelection:true,
         region : 'center',
         loadMask: true,
-        sm: RoleMng.RoleObj.sm,
-        // grid columns
-        columns:[RoleMng.RoleObj.sm
-                 ,{
-            //id: 'topic', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
-            header: "编号",
-            dataIndex: 'id',
-            width: 50,
-            //renderer: renderTopic,
-            sortable: true
-        },{
-            header: "用户名称",
-            dataIndex: 'userName',
-            width: 100,
-            //hidden: true,
-            sortable: true
-        },{
-            header: "创建时间",
-            dataIndex: 'gmtCreate',
-            width: 100,
-            //align: 'right',
-            sortable: true
-        }/* */,{
-            id: '修改日期',
-            header: "修改日期",
-            dataIndex: 'gmtModify',
-            width: 100,
-            //align: 'right',
-            //renderer: renderLast,
-            sortable: true
-        } ,{            
-            header: "邮箱",
-            dataIndex: 'email',
-            width: 150,
-            //renderer: renderOpt,
-            sortable: true
-        },{            
-            header: "手机号",
-            dataIndex: 'phoneNo',
-            width: 150,
-            //renderer: renderOpt,
-            sortable: true
-        }],
-
-        // customize view config
+        sm:sm,
+        columns:columns,
         viewConfig: {
             forceFit:true,
             enableRowBody:false,
@@ -293,11 +158,9 @@ RoleMng.RoleObj.mygrid = new Ext.grid.GridPanel({
                 return 'x-grid3-row-collapsed';
             }
         },
-
-        // paging bar on the bottom
         bbar: new Ext.PagingToolbar({
             pageSize: 10,
-            store:  RoleMng.RoleObj.store,
+            store: gridStore,
             displayInfo: true,
             displayMsg: 'Displaying topics {0} - {1} of {2}',
             emptyMsg: "No topics to display",
@@ -305,39 +168,31 @@ RoleMng.RoleObj.mygrid = new Ext.grid.GridPanel({
                 '-', {
                 pressed: false,
                 enableToggle:true,
-                //text: 'Show Preview',
                 cls: 'x-btn-text-icon details',
                 toggleHandler: function(btn, pressed){
-                    //var view = mygrid.getView();
-                    //view.showPreview = pressed;
-                    //view.refresh();
                 }
             }]
         })
     });
-/*添加图片窗口*/
-RoleMng.RoleObj.showWin = function(){
-	if(RoleMng.RoleObj.addwindobj == null || RoleMng.RoleObj.addwindobj == undefined){
-		RoleMng.RoleObj.addwindobj = new RoleMng.RoleObj.addImageWin();
-	}
-	RoleMng.RoleObj.addwindobj.show();
-}
 
-RoleMng.RoleObj.addImageWin = function(config){
+/*添加图片窗口*/
+var addwinobj = null;
+var showWin = function(){
+	if(addwinobj == undefined || addwinobj == null){
+		addwinobj = new addImageWin();
+	}
+	addwinobj.show();
+}
+var addImageWin = function(config){
 	this.config = config;
 }
-
-
-
-RoleMng.RoleObj.addImageWin.prototype = {
-		
-		
+addImageWin.prototype = {
 		show : function(el, callback){
 			if(!this.win){
-				
+				/*添加web server 表单*/
 				this.fsf = new Ext.FormPanel({
-				    labelWidth: 75, // label settings here cascade unless overridden
-				    url:'sys/addUser',
+				    labelWidth: 75,
+				    url:'addTmplPage',
 				    frame:false,
 				    title: '',
 				    region: 'center',
@@ -353,40 +208,22 @@ RoleMng.RoleObj.addImageWin.prototype = {
 				        defaults: {width: 210},
 				        items :[{
 				        	    xtype: 'textfield',
-				                fieldLabel: '登录名',
-				                hidden:false,
-				                name: 'userName',
-				                allowBlank: false,
+				                fieldLabel: '角色名称',
+				                //hidden:true,
+				                name: 'roleName',
 				                value: ''
 				            },{
 				            	xtype: 'textfield',
-				                fieldLabel: '登录密码',
-				                inputType: 'password',
-				                allowBlank: false,
-				                name: 'userPwd'
-				            },{
-				            	xtype: 'textfield',
-				                fieldLabel: '邮箱',
-				                name: 'Email'
-				            },{
-				            	xtype: 'textfield',
-				                fieldLabel: '备注',
-				                name: 'userDesc'
-				            }/*,{
-				            	xtype:'fileuploadfield',
-				            	name:'file',
-				            	//id:'file',
-				            	fieldLabel: '上传文件',
-				            	buttonText: '选择图片'
-				            }*/
+				                fieldLabel: '角色描述',
+				                name: 'roleDesc'
+				            }
 				        ]
 				    }]
 				});
 				
 				
 				var cfg = {
-				    	title: '添加用户',
-				    	id: 'add-img-chooser-dlg',
+				    	title: '添加角色',
 				    	layout: 'border',
 						width: 500,
 						height: 300,
@@ -428,10 +265,9 @@ RoleMng.RoleObj.addImageWin.prototype = {
 		submitForm:function(){
 			if(this.fsf.getForm().isValid()){
 			this.fsf.getForm().submit({
-                url: 'sys/addUser',
+                url: 'sys/addRole',
                 waitMsg: '正在上传请稍等...',
                 success: function(fp, o){
-                	//alert('ok');
                     //msg('Success', 'Processed file "'+o.result.file+'" on the server');
                 	Ext.Msg.alert('Status', '操作成功');
                 },
@@ -441,12 +277,10 @@ RoleMng.RoleObj.addImageWin.prototype = {
             });
 			}
 		}
-		
-		
 }
-
-RoleMng.RoleObj.doDel = function(id){
-	/**/
+/*删除应用*/
+var doDel = function(id){
+	
 	Ext.Ajax.request({
 		   url: 'delSysUser',
 		   method:'post',
@@ -455,7 +289,9 @@ RoleMng.RoleObj.doDel = function(id){
 			      //if(obj.success == true){
 			      MediaDataMng.viewDataOpt.store.reload();
 			      Ext.Msg.alert('系统提示',obj.info);
+			       
 			      //}
+			      
 		   },
 		   failure: function(response, opts) {
 			   Ext.Msg.alert('系统提示', '操作失败！');
@@ -464,5 +300,33 @@ RoleMng.RoleObj.doDel = function(id){
 		});
 }
 
-Ext.onReady(RoleMng.RoleObj.init, RoleMng.RoleObj);
+   //共有区
+   return {
+       //此处定义共有属性变量
+       
+
+       //共有方法
+       init: function() {
+     	   //此方法内部是可以获取到私用属性和方法
+           //定义一些初始化行为
+    	   //获取id为"docs-文章管理"的面板
+    	    var aimobj = Ext.mainScreem.findById('docs-角色管理');
+    	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
+    	    aimobj.setLayout(lyobj);
+    	    aimobj.add(mygrid);//添加列表面板
+    	    aimobj.doLayout();//展示页面
+    	    
+    	    //加载列表数据
+    	    mygrid.getStore().reload();
+
+            //当用户关闭页签后删除对象
+            aimobj.addListener("destroy",function(){
+               Ext.destroy(mygrid);
+            });
+
+       }
+   };
+ }(); // end of app
+
+Ext.onReady(RoleMng.roleObj.init, RoleMng.roleObj);
 </script>

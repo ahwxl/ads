@@ -1,6 +1,6 @@
 package com.bplow.netconn.base.dao.domain;
 
-public class PageImpl implements page{
+public class PageImpl implements Page{
 	
 	private int pageNum;
 	private int maxRowNums;

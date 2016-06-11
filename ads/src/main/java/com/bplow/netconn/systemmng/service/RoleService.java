@@ -5,6 +5,8 @@ package com.bplow.netconn.systemmng.service;
 
 import java.util.List;
 
+import com.bplow.netconn.base.dao.pagination.IPagination;
+import com.bplow.netconn.systemmng.dao.entity.SysRole;
 import com.bplow.netconn.systemmng.domain.MenuDomain;
 import com.bplow.netconn.systemmng.domain.RoleDomain;
 import com.bplow.netconn.systemmng.domain.UserDomain;
@@ -20,11 +22,13 @@ public interface RoleService {
 	
 	public RoleDomain queryRole(String roleId);
 	
-	public void addRole(RoleDomain role);
+	public IPagination queryRolePage(SysRole record)throws Exception;
 	
-	public void updateRole(RoleDomain role);
+	public void addRole(RoleDomain role)throws Exception;
 	
-	public void deleteRole(RoleDomain role);
+	public void updateRole(RoleDomain role)throws Exception;
+	
+	public void deleteRole(RoleDomain role)throws Exception;
 	/**
 	 * 查询用户角色
 	 * @param user
