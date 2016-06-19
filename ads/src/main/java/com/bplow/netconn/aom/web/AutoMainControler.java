@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bplow.netconn.aom.dao.entity.TbServerHost;
 import com.bplow.netconn.aom.dao.entity.TbWebServer;
 import com.bplow.netconn.aom.service.ServerHostSevice;
-import com.bplow.netconn.aom.service.WebSeverService;
+import com.bplow.netconn.aom.service.WebServerService;
 
 /**
  * @desc
@@ -35,7 +35,7 @@ public class AutoMainControler {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private WebSeverService webSeverService;
+	private WebServerService webSeverService;
 	
 	@Autowired
 	private ServerHostSevice serverHostSevice;

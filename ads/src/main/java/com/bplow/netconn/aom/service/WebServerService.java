@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import com.bplow.netconn.aom.dao.entity.TbWebServer;
 
 /**
- * @desc 
+ * @desc 上传war包、构建服务
  * @author wangxiaolei
  * @date 2016年4月23日 下午12:41:24
  */
-public interface WebSeverService {
+public interface WebServerService {
 	
 	/**
 	 * 分页查询

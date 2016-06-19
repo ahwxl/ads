@@ -571,6 +571,7 @@ Ext.onReady(function(){
     
     api.expandPath('/root/apidocs');
     api.expandPath('/root/sysmng');
+    api.expandPath('/root/atuomanage');
     api.expandPath('/root/processMng');
 	
 });

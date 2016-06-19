@@ -39,7 +39,7 @@
       status = #status:CHAR#
     where role_id = #roleId:VARCHAR#
   </update>
-  <select id="selectForPage" resultMap="BaseResultMap">
+  <select id="selectForPage" resultMap="BaseResultMap" >
      select role_id, role_name, role_desc, role_type, gmt_create, gmt_modify, status
  from sys_role
     <dynamic>

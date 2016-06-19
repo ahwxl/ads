@@ -1,4 +1,4 @@
-package com.bplow.netconn.aom.service.impl;
+package com.bplow.netconn.aom.command;
 
 import java.io.IOException;
 import java.io.InputStream;

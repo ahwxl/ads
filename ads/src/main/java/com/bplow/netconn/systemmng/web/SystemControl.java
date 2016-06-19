@@ -39,7 +39,7 @@ public class SystemControl {
                     + "{'href':'aom/webServer','text':'web服务器','id':'web服务器','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}"
                     + ""
                     + "]}"+
-                    ",{'id':'systemmanage','iconCls':'icon-docs','text':'系统管理','singleClickExpand':true,'leaf':false,'children':[" + 
+                    ",{'id':'sysmng','iconCls':'icon-docs','text':'系统管理','singleClickExpand':true,'leaf':false,'children':[" + 
                     "{'href':'sys/userList','text':'系统用户','id':'系统用户','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
                     "{'href':'sys/menuList','text':'菜单','id':'菜单','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
                     "{'href':'sys/modulList','text':'模块','id':'模块','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 

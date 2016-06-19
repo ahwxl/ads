@@ -3,24 +3,18 @@
  */
 package com.bplow.netconn.aom.service.impl;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bplow.netconn.aom.dao.TbServerHostDAO;
 import com.bplow.netconn.aom.dao.TbWebServerDAO;
 import com.bplow.netconn.aom.dao.entity.TbWebServer;
 import com.bplow.netconn.aom.dao.entity.TbWebServerExample;
-import com.bplow.netconn.aom.service.WebSeverService;
+import com.bplow.netconn.aom.service.WebServerService;
 import com.bplow.netconn.base.dao.pagination.IPagination;
-import com.bplow.netconn.base.json.JsonHelper;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 /**
@@ -29,7 +23,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * @date 2016年4月23日 下午4:07:26
  */
 @Service
-public class WebServerServiceImpl implements WebSeverService{
+@Transactional
+public class WebServerServiceImpl implements WebServerService{
 	
 	@Autowired
 	TbServerHostDAO tbServerHostDAO;
@@ -57,26 +52,25 @@ public class WebServerServiceImpl implements WebSeverService{
 	 * @see com.bplow.netconn.aom.service.WebSeverService#queryWebServerById(java.lang.String)
 	 */
 	@Override
-	public TbWebServer queryWebServerById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public TbWebServer queryWebServerById(String id) throws SQLException {
+		TbWebServer result = this.tbWebServerDao.selectByPrimaryKey(id);
+		return result;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.bplow.netconn.aom.service.WebSeverService#addWebServer(com.bplow.netconn.aom.dao.entity.TbWebServer)
 	 */
 	@Override
-	public void addWebServer(TbWebServer tbWebServer) {
-		// TODO Auto-generated method stub
-		
+	public void addWebServer(TbWebServer tbWebServer) throws SQLException {
+		tbWebServerDao.insert(tbWebServer);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.bplow.netconn.aom.service.WebSeverService#updateWebServer(com.bplow.netconn.aom.dao.entity.TbWebServer)
 	 */
 	@Override
-	public void updateWebServer(TbWebServer tbWebServer) {
-		// TODO Auto-generated method stub
+	public void updateWebServer(TbWebServer tbWebServer) throws SQLException {
+		this.tbWebServerDao.updateByPrimaryKey(tbWebServer);
 		
 	}
 
@@ -84,8 +78,9 @@ public class WebServerServiceImpl implements WebSeverService{
 	 * @see com.bplow.netconn.aom.service.WebSeverService#deleteWebServer(com.bplow.netconn.aom.dao.entity.TbWebServer)
 	 */
 	@Override
-	public void deleteWebServer(TbWebServer tbWebServer) {
-		// TODO Auto-generated method stub
+	public void deleteWebServer(TbWebServer tbWebServer) throws SQLException {
+
+		this.tbWebServerDao.deleteByPrimaryKey(tbWebServer.getId());
 		
 	}
 
