@@ -11,7 +11,7 @@
                     a = document.getElementById(c.prefix + "_if");
                     a = a.contentDocument || a.contentWindow.document;
                     a.open();
-                    a.write(b.format('<script> var _kexchange = _kexchange || [];var _dmid="{{_dmid}}";_kexchange.push(["_setAccount", _dmid]);  document.write(\'<script type="text/javascript" charset="utf-8" src="http://cmarket.kejet.net/exchange2.js?a={{_dmid}}"></scr\'+\'ipt>\');var _kenid = "{{_kenid}}_"+Math.random();_kexchange.push(["_addSlot",_kenid,"{{width}}","{{height}}","2","9"]);   \x3c/script>', c))
+                    a.write(b.format('<script> var _kexchange = _kexchange || [];var _dmid="{{_dmid}}";_kexchange.push(["_setAccount", _dmid]);  document.write(\'<script type="text/javascript" charset="utf-8" src="http://cmarket.kejet.net/exchange2.js?a={{_dmid}}"></scr\'+\'ipt>\');var _kenid = "{{_kenid}}_"+Math.random();_kexchange.push(["_addSlot",_kenid,"{{width}}","{{height}}","{{tag1}}","{{tag2}}"]);   \x3c/script>', c))
              h._huntsCallback = function() {
                 b.nextPush(g)
             }
