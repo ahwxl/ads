@@ -8,6 +8,9 @@
 	<import resource="security/applicationContext-shiro.xml" />-->
 
 	<!-- optional -->
+	
+	<import resource="spring/consumer.xml" />
+	
 	<import resource="cache/applicationContext-ehcache.xml" />
 	
 	<import resource="spring/system/applicationContext_system.xml"/>

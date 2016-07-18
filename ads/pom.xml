@@ -6,7 +6,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>ads</name>
-	
+
 	<properties>
 		<springframework.version>4.1.6.RELEASE</springframework.version>
 		<java.version>1.6</java.version>
@@ -55,11 +55,8 @@
 			</exclusions>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity-tools</artifactId>
-			<version>2.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.apache.velocity</groupId> <artifactId>velocity-tools</artifactId> 
+			<version>2.0</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -137,6 +134,10 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.apache.ibatis</groupId>
+					<artifactId>ibatis-sqlmap</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -180,6 +181,11 @@
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>20030825.184428</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
@@ -235,29 +241,14 @@
 			<artifactId>jaxen</artifactId>
 			<version>1.1.6</version>
 		</dependency>
-		
-		<!-- mybatis -->
-		<!-- <dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.2.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-ehcache</artifactId>
-			<version>1.0.0</version>
-		</dependency>
 
-		<dependency>
-			<groupId>com.ibatis</groupId>
-			<artifactId>ibatis-sqlmap</artifactId>
-			<version>2.1.0.565</version>
-		</dependency> -->
+		<!-- mybatis -->
+		<!-- <dependency> <groupId>org.mybatis</groupId> <artifactId>mybatis</artifactId> 
+			<version>3.2.8</version> </dependency> <dependency> <groupId>org.mybatis</groupId> 
+			<artifactId>mybatis-spring</artifactId> <version>1.2.2</version> </dependency> 
+			<dependency> <groupId>org.mybatis</groupId> <artifactId>mybatis-ehcache</artifactId> 
+			<version>1.0.0</version> </dependency> <dependency> <groupId>com.ibatis</groupId> 
+			<artifactId>ibatis-sqlmap</artifactId> <version>2.1.0.565</version> </dependency> -->
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -279,11 +270,8 @@
 			<scope>compile</scope>
 		</dependency>
 
-<!-- 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>${jettyVersion}</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-server</artifactId> 
+			<version>${jettyVersion}</version> </dependency> -->
 
 		<!-- Dandelion -->
 		<dependency>
@@ -313,6 +301,18 @@
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker.version}</version>
 		</dependency>
+		<!-- dubbo begin -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.5.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.101tec</groupId>
+		    <artifactId>zkclient</artifactId>
+		    <version>0.2</version>
+		</dependency>
+		<!-- dubbo end -->
 
 		<!-- SOAP begin -->
 		<dependency>
@@ -394,10 +394,35 @@
 			<artifactId>jsch</artifactId>
 			<version>0.1.53</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+		</dependency>
 		<!-- <dependency> <groupId>org.springframework.session</groupId> <artifactId>spring-session</artifactId> 
 			<version>1.2.0.RC2</version> </dependency> <dependency> <groupId>org.springframework.session</groupId> 
 			<artifactId>spring-session-data-redis</artifactId> <version>1.2.0.RC2</version> 
 			</dependency> -->
+		<dependency>
+		    <groupId>org.javassist</groupId>
+		    <artifactId>javassist</artifactId>
+		    <version>3.20.0-GA</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.jboss.netty</groupId>
+		    <artifactId>netty</artifactId>
+		    <version>3.2.10.Final</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.zookeeper</groupId>
+		    <artifactId>zookeeper</artifactId>
+		    <version>3.3.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>dubbo</artifactId>
+		    <version>2.5.3</version>
+		</dependency>
 
 	</dependencies>
 

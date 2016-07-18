@@ -59,6 +59,11 @@
 		<level value="INFO" />
 		<appender-ref ref="mediaDigest" />
 	</logger>
+
+	<logger name="com.ibatis" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="userRequest" />
+	</logger>
 	
 	<root>
 		<priority value="info" />
@@ -72,12 +77,14 @@
 	
 	<category name="com.ibatis">
         <priority value="debug"/>
-        <appender-ref ref="STDOUT" />
+        <level value="debug" />
+        <appender-ref ref="userRequest" />
     </category>
     
-    <category name="com.ibatis.common.jdbc.SimpleDataSource">
+    <category name="com.ibatis.common">
         <priority value="debug"/>
-        <appender-ref ref="STDOUT" />
+        <level value="debug" />
+        <appender-ref ref="userRequest" />
     </category>
 
 </log4j:configuration>

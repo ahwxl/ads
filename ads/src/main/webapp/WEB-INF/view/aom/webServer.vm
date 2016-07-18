@@ -89,14 +89,14 @@ var searchPanel = new Ext.FormPanel({
      	layout:"hbox",
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
-     	          items:[{text:"名称"},{xtype:"textfield",name:"operate_user_id",value:''},
-     	                 {text:"IP地址"},{xtype:"textfield",name:"cnt_caption",value:''},
+     	          items:[{text:"应用名称"},{xtype:"textfield",name:"serverName",value:''},
+     	                 {text:"项目名称"},{xtype:"textfield",name:"webPath",value:''},
      	                 {text:"发布时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
      	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"},
      	                 {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
      	                	//WebServerMng.WebServerObj.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
      	                	//alert(Ext.Ajax.serializeForm(WebServerMng.WebServerObj.searchPanel.getForm().getEl()) );
-     	                	WebServerMng.WebServerObj.store.load();
+     	                	gridStore.load();
      	                   }}
      	                  ,{xtype:"button",text:"删除",scope:this,handler:function (){
 							var sm = WebServerMng.WebServerObj.mygrid.getSelectionModel();

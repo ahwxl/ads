@@ -3,6 +3,8 @@
  */
 package com.bplow.netconn.systemmng.web;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bplow.netconn.base.dao.pagination.IPagination;
 import com.bplow.netconn.systemmng.domain.MenuDomain;
 import com.bplow.netconn.systemmng.service.MenuService;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * @desc 菜单管理
@@ -27,7 +32,7 @@ public class MenuControler {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	//@Autowired
+	@Autowired
 	private MenuService menuService;
 	
 	@RequestMapping(value = "/sys/menuMng")
@@ -35,23 +40,31 @@ public class MenuControler {
 			HttpServletRequest request){
 		logger.info("展示菜单列表页面,{}",menu);
 		
-		return "";
+		return "sys/menu";
 	}
 	
 	@RequestMapping(value = "/sys/menuList")
 	@ResponseBody
 	public String menulist(Map<String, Object> model, MenuDomain menu,
-			HttpServletRequest request){
+			HttpServletRequest request) throws Exception{
+		String start = request.getParameter("start");
+		String limit = request.getParameter("limit");
+		menu.setPageNum(Integer.parseInt(start));
+		menu.setMaxRowNums(Integer.parseInt(limit));
 		
-		return "";
+		IPagination pagination = menuService.queryMenuPage(menu);
+		
+		return pagination.getJsonByList();
 	}
 	
 	@RequestMapping(value = "/sys/addMenu")
 	@ResponseBody
 	public String addMenu(Map<String, Object> model, MenuDomain menu,
-			HttpServletRequest request){
+			HttpServletRequest request) throws SQLException{
+		
+		menuService.addMenu(menu);
 	
-		return "";
+		return "{success:true,info:'ok'}";
 	}
 	
 	@RequestMapping(value = "/sys/deleteMenu")
