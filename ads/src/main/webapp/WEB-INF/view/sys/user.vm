@@ -239,20 +239,26 @@ UserMng.UserObj.mygrid = new Ext.grid.GridPanel({
         region : 'center',
         loadMask: true,
         sm: UserMng.UserObj.sm,
-        // grid columns
         columns:[UserMng.UserObj.sm
                  ,{
-            //id: 'topic', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
             header: "编号",
             dataIndex: 'id',
             width: 50,
-            //renderer: renderTopic,
             sortable: true
         },{
             header: "用户名称",
             dataIndex: 'userName',
             width: 100,
-            //hidden: true,
+            sortable: true
+        },{            
+            header: "邮箱",
+            dataIndex: 'email',
+            width: 150,
+            sortable: true
+        },{            
+            header: "手机号",
+            dataIndex: 'phoneNo',
+            width: 150,
             sortable: true
         },{
             header: "创建时间",
@@ -260,25 +266,13 @@ UserMng.UserObj.mygrid = new Ext.grid.GridPanel({
             width: 100,
             //align: 'right',
             sortable: true
-        }/* */,{
+        },{
             id: '修改日期',
             header: "修改日期",
             dataIndex: 'gmtModify',
             width: 100,
             //align: 'right',
             //renderer: renderLast,
-            sortable: true
-        } ,{            
-            header: "邮箱",
-            dataIndex: 'email',
-            width: 150,
-            //renderer: renderOpt,
-            sortable: true
-        },{            
-            header: "手机号",
-            dataIndex: 'phoneNo',
-            width: 150,
-            //renderer: renderOpt,
             sortable: true
         }],
 
@@ -374,13 +368,11 @@ UserMng.UserObj.addImageWin.prototype = {
 				            	xtype: 'textfield',
 				                fieldLabel: '备注',
 				                name: 'userDesc'
-				            }/*,{
-				            	xtype:'fileuploadfield',
-				            	name:'file',
-				            	//id:'file',
-				            	fieldLabel: '上传文件',
-				            	buttonText: '选择图片'
-				            }*/
+				            },{
+				            	xtype:'textfield',
+				            	name:'phoneNo',
+				            	fieldLabel: '手机号'
+				            }
 				        ]
 				    }]
 				});

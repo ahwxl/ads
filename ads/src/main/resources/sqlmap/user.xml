@@ -24,7 +24,7 @@
     from sys_user a
     <dynamic prepend="where">
     <isNotEmpty prepend="and" property="userName">
-        a.user_name like "%#userName#%"
+        a.user_name like '%$userName$%'
     </isNotEmpty>
     </dynamic>
   </select>
@@ -34,7 +34,7 @@
     from sys_user a 
     <dynamic prepend="where">
     <isNotEmpty prepend="and" property="userName" >
-        a.user_name = #userName#
+        a.user_name like '%$userName$%'
     </isNotEmpty>
     </dynamic>
     <![CDATA[ 
