@@ -30,6 +30,7 @@ public class ServiceProcessExcepLogInterceptor implements MethodInterceptor, Ser
 		try {
 			obj = invocation.proceed();
 		} catch (Exception e) {
+		    e.printStackTrace();
 			if(logConfigService.canWriteLog()){
 				log.error("[{},{}]",traceNo, e);
 			}

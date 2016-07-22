@@ -91,6 +91,7 @@ public class AdDaoImpl implements AdDao{
 						ps.setDouble(4, data.get(i).getShowNum());
 						ps.setDouble(5, data.get(i).getClickNum());
 						ps.setDouble(6, data.get(i).getIncome());
+						logger.info("{}",data.get(i).getUploadData());
 						ps.setDate(7, new java.sql.Date(data.get(i).getUploadData().getTime()));
 					}
 

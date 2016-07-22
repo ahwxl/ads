@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import javax.swing.ProgressMonitor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
@@ -26,23 +28,30 @@ import com.jcraft.jsch.SftpProgressMonitor;
  */
 @Service
 public class UploadFileCommand implements Command,InitializingBean{
+    
+    private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private ChannelSftp channelSftp;
 	
-	private String desPath = "/home/wangxiaolei";
+	private String      descFileName;
+	
+	private String host;
+	
+	private String password;
+	
+	private String userName;
+	
+	private String desPath;
+	
+	private int port;
 	
 	private InputStream srcFileInput = null;
 	
 	public void init() throws JSchException{
+	    
 		JSch jsch=new JSch();
-		String host="115.28.182.11";
-		int port = 22;
-		String user= "root";
-		String password = "ang6789355";
-
-		Session sshSession = jsch.getSession(user, host, port);
-		System.out.println("Session created.");
-		sshSession.setPassword(password);
+		Session sshSession = jsch.getSession(this.userName, this.host, this.port);
+		sshSession.setPassword(this.password);
 		Properties sshConfig = new Properties();
 		sshConfig.put("StrictHostKeyChecking", "no");
 		sshSession.setConfig(sshConfig);
@@ -50,25 +59,26 @@ public class UploadFileCommand implements Command,InitializingBean{
 		// username and password will be given via UserInfo interface.
 		//session.setUserInfo(ui);
 		//session.setPassword(password);
-		
 
 		Channel channel = sshSession.openChannel("sftp");
 		channel.connect();
 		channelSftp = (ChannelSftp) channel;
 
-		java.io.InputStream in = System.in;
-		java.io.PrintStream out = System.out;
+		/*java.io.InputStream in = System.in;
+		java.io.PrintStream out = System.out;*/
 		
 	}
 
 	@Override
 	public boolean execute() {
+	    logger.info("上传文件{}到{}",descFileName,desPath);
+	    
 		boolean result = false;
-	    SftpProgressMonitor monitor=new MyProgressMonitor();
-		int mode=ChannelSftp.OVERWRITE;
+	    //SftpProgressMonitor monitor=new MyProgressMonitor();
+		//int mode=ChannelSftp.OVERWRITE;
 		try {
 			channelSftp.cd(desPath);
-			channelSftp.put(srcFileInput, "log4j.xml");
+			channelSftp.put(srcFileInput, this.descFileName);
 			result = true;
 		} catch (SftpException e) {
 			e.printStackTrace();
@@ -142,5 +152,44 @@ public class UploadFileCommand implements Command,InitializingBean{
 		
 	}
 
-	
+    public String getDescFileName() {
+        return descFileName;
+    }
+
+    public void setDescFileName(String descFileName) {
+        this.descFileName = descFileName;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
 }

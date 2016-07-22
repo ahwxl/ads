@@ -405,6 +405,7 @@ public class AdServiceImpl implements Adservice{
 					adDao.delMediaData(id);
 				} catch (Exception e) {
 					e.printStackTrace();
+					logger.info("{}",e);
 					return false;
 				}
 				return true;
