@@ -15,6 +15,7 @@
    // do NOT access DOM from here; elements don't exist yet
 
    //此处定义私有属性变量
+   var moduleId ='docs-系统用户';
    //此处定义私有方法
 /**
  * 创建目录树对象
@@ -67,13 +68,11 @@ var gridStore = new Ext.data.JsonStore({
         totalProperty: 'pageInfo.totalRowNum',
         //idProperty: 'threadid',
         remoteSort: true,
-        fields: [
-            'id', 'userName', 'gmtCreate', 'gmtModify','email','phoneNo'
-        ],
+        fields: ['id', 'userName', 'gmtCreate', 'gmtModify','email','phoneNo'],
         url: 'sys/queryUserList'
     });
 
-    //添加grid 数据加载前事件
+//添加grid 数据加载前事件
 gridStore.on("beforeload",function (selfstore){
     	//将form面板的查询参数  封装成  store 能接受的对象
     	var tmpCnf = Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
@@ -85,63 +84,90 @@ gridStore.on("beforeload",function (selfstore){
 
 //表单查询条件面板
 var searchPanel =new Ext.FormPanel({
-     	height:35,
+     	//height:35,
      	frame:false,
      	border:true,
      	layout:"hbox",
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
-     	          items:[{text:"用户编号"},{xtype:"textfield",name:"userId",value:''},
+     	          items:[{text:"用户编号"},{xtype:"textfield",name:"id",value:''},
      	                 {text:"用户名称"},{xtype:"textfield",name:"userName",value:''},
      	                 {text:"创建时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
-     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"},
-     	                 {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
-     	                	gridStore.load();
-     	                   }}
-     	                  ,{xtype:"button",text:"删除",scope:this,handler:function (){
-							var sm = mygrid.getSelectionModel();
-							var array = sm.getSelections();//records
-							var idstr ="";
-							for(var i =0;i < array.length;i++){
-							   idstr =idstr+array[i].get('id')+",";
-							}
-							if(idstr.length > 0){
-							   idstr = idstr.substr(0,idstr.length-1);
-							}else{
-							    Ext.Msg.alert('系统提示','请选择要删除的数据');
-							    return false;
-							}
-							Ext.Msg.confirm('系统提示', '你确定删除吗？', function(btn, text){
-							    if (btn == 'yes'){
-							    	doDel(idstr);
-							    }
-							});
-							}
-     	        	       
-     	        	       }
+     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"}
      	                 ]});
 
 
 var sm = new Ext.grid.CheckboxSelectionModel({
 	listeners:{
-			     rowselect :function(selectmodel,rowIndex,record) {
-			     }
+			     rowselect :function(selectmodel,rowIndex,record) {}
 			}
 	});
 //创建一个列表面板
 var mygrid = new Ext.grid.GridPanel({
         //width:700,
         //height:500,
-        //autoHeight: true,
-        //title:'分页演示',
+        autoHeight: true,
         tbar:[{
-        	text:'添加用户',
+        	text:'添加',
             id:'add_product',
-            iconCls:'silk-add',
+            iconCls:'silk-user-add',
             handler:function (){
-            	//Ext.mainScreem.loadClass('showAddProductPage','添加产品',null);
             	showWin(this.getEl());
-            	//Ext.mainScreem.addNewTab( Ext.getmifObj({id:'添加产品',title:'添加产品',src:'showAddProductPageIframe'}),'添加产品');
+            }
+        },{
+        	text:'修改',
+            id:'modify',
+            iconCls:'silk-user-edit',
+            handler:function (){
+                var sm = mygrid.getSelectionModel();
+				var array = sm.getSelections();//records
+				var idstr ="";
+				
+				if(array.length > 1){
+				   Ext.Msg.alert('系统提示','请选择一个要修改的记录');
+				   return false;
+				}
+				
+				for(var i =0;i < array.length;i++){
+				   idstr =idstr+array[i].get('id')+",";
+				}
+				if(idstr.length > 0){
+				   idstr = idstr.substr(0,idstr.length-1);
+				}else{
+				    Ext.Msg.alert('系统提示','请选择要删除的数据');
+				    return false;
+				}
+            	showWin({action:'modify',id:idstr});
+            }
+        },{
+        	text:'删除',
+            id:'delete',
+            iconCls:'silk-user-delete',
+            handler:function (){
+            	var sm = mygrid.getSelectionModel();
+				var array = sm.getSelections();//records
+				var idstr ="";
+				for(var i =0;i < array.length;i++){
+				   idstr =idstr+array[i].get('id')+",";
+				}
+				if(idstr.length > 0){
+				   idstr = idstr.substr(0,idstr.length-1);
+				}else{
+				    Ext.Msg.alert('系统提示','请选择要删除的数据');
+				    return false;
+				}
+				Ext.Msg.confirm('系统提示', '你确定删除吗？', function(btn, text){
+				    if (btn == 'yes'){
+				    	doDel(idstr);
+				    }
+				});
+            }
+        },{
+        	text:'查询',
+            id:'query_product',
+            iconCls:'silk-user-comment',
+            handler:function (){
+            	gridStore.load();
             }
         }],
         listeners:{
@@ -192,8 +218,6 @@ var mygrid = new Ext.grid.GridPanel({
             //renderer: renderLast,
             sortable: true
         }],
-
-        // customize view config
         viewConfig: {
             forceFit:true,
             enableRowBody:false,
@@ -230,23 +254,26 @@ var mygrid = new Ext.grid.GridPanel({
     });
 
 
-/*添加图片窗口*/
+
+
+var showWin = function(actiontype){
+	if(addwindobj == null || addwindobj == undefined){
+		addwindobj = new addImageWin();
+	}
+	addwindobj.show(actiontype);
+}
+
+/*添加用户窗口*/
 var addwindobj = null;
 var addImageWin = function(config){
 	this.config = config;
 }
 
-var showWin = function(){
-	if(addwindobj == null || addwindobj == undefined){
-		addwindobj = new addImageWin();
-	}
-	addwindobj.show();
-}
-
 addImageWin.prototype = {
 		
-		
+		action :'add',
 		show : function(el, callback){
+		
 			if(!this.win){
 				
 				this.fsf = new Ext.FormPanel({
@@ -258,6 +285,16 @@ addImageWin.prototype = {
 				    fileUpload:true,
 				    bodyStyle:'padding:5px 5px 5px 5px',
 				    width: 500,
+				    reader:new Ext.data.JsonReader({
+					    root: 'data',
+					    fields:[
+					       {name: 'id', mapping: 'id'},
+					       {name: 'userName', mapping: 'userName'},
+					       {name: 'Email', mapping: 'email'},
+					       {name: 'phoneNo', mapping: 'phoneNo'},
+					       {name: 'status', mapping: 'status'},
+					    ]
+				    }),
 
 				    items: [{
 				        xtype:'fieldset',
@@ -266,6 +303,13 @@ addImageWin.prototype = {
 				        autoHeight:true,
 				        defaults: {width: 210},
 				        items :[{
+				        	    xtype: 'textfield',
+				                fieldLabel: '编号',
+				                hidden:false,
+				                name: 'id',
+				                allowBlank: false,
+				                value: ''
+				            },{
 				        	    xtype: 'textfield',
 				                fieldLabel: '登录名',
 				                hidden:false,
@@ -284,8 +328,8 @@ addImageWin.prototype = {
 				                name: 'Email'
 				            },{
 				            	xtype: 'textfield',
-				                fieldLabel: '备注',
-				                name: 'userDesc'
+				                fieldLabel: '状态',
+				                name: 'status'
 				            },{
 				            	xtype:'textfield',
 				            	name:'phoneNo',
@@ -294,7 +338,6 @@ addImageWin.prototype = {
 				        ]
 				    }]
 				});
-				
 				
 				var cfg = {
 				    	title: '添加用户',
@@ -328,6 +371,12 @@ addImageWin.prototype = {
 		    this.win.show(el);
 			this.callback = callback;
 			this.animateTarget = el;
+			
+			if(el && el.action == 'modify'){
+		       this.fsf.getForm().load({url:'sys/queryUserInfo?id='+el.id, waitMsg:'Loading'});
+		       this.action = 'modify';
+		    }
+		    
 		},
 		reset:function(){
 			;
@@ -337,8 +386,12 @@ addImageWin.prototype = {
 		},
 		submitForm:function(){
 			if(this.fsf.getForm().isValid()){
+			var url = 'sys/addUser';
+			if(this.action == 'modify'){
+			    url = 'sys/updateUserInfo';
+			}
 			this.fsf.getForm().submit({
-                url: 'sys/addUser',
+                url: url,
                 waitMsg: '正在上传请稍等...',
                 success: function(fp, o){
                 	//alert('ok');
@@ -387,11 +440,9 @@ var doDel = function(id){
      	  
            //定义一些初始化行为
     	   //获取id为"docs-文章管理"的面板
-    	    var aimobj = Ext.mainScreem.findById('docs-系统用户');
+    	    var aimobj = Ext.mainScreem.findById(moduleId);
     	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
     	    aimobj.setLayout(lyobj);//应用布局对象
-
-
 
     	    //aimobj.add(UserMng.UserObj.catalogTree);//添加目录树面板
     	    aimobj.add(mygrid);//添加列表面板
@@ -407,31 +458,6 @@ var doDel = function(id){
        }
    };
  }(); // end of app 
-
-    
-    //发布文章
-    function doEditorCnt(id){
-    	/**/
-    	var editerurl ='showEditorProductPage?productId='+id;
-    	Ext.mainScreem.loadClass(editerurl,"修改产品",null);
-    }
-    //发布文章
-    function doDelCnt(id){
-    	/**/
-    	Ext.Ajax.request({
-    		   url: 'delProductAction?productId='+id,
-    		   method:'post',
-    		   success: function(response, opts) {
-    			      //var obj = Ext.decode(response.responseText);
-    			      //alert(response.responseText);
-    			      Ext.Msg.alert('系统提示', response.responseText);
-    		   },
-    		   failure: function(response, opts) {
-    			      Ext.Msg.alert('系统提示', '操作失败！');
-    		   },
-    		   params: { id: id }
-    		});
-    }
     
 Ext.onReady(UserMng.UserObj.init, UserMng.UserObj);
 </script>

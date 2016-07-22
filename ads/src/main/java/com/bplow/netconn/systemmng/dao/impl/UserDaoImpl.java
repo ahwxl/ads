@@ -65,7 +65,7 @@ public class UserDaoImpl extends BaseIbatisDaoSupport implements UserDao{
 
 	@Override
 	public SysUser modifyUser(SysUser user) throws SQLException {
-		sqlMapClient.update("updateUser",user);
+		sqlMapClient.update("User.updateUser",user);
 		return null;
 	}
 

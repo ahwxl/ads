@@ -40,10 +40,11 @@ public class SystemControl {
                     + ""
                     + "]}"+
                     ",{'id':'sysmng','iconCls':'icon-docs','text':'系统管理','singleClickExpand':true,'leaf':false,'children':[" + 
-                    "{'href':'sys/userList','text':'系统用户','id':'系统用户','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
+                    "{'href':'sys/userList','text':'用户','id':'系统用户','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
                     "{'href':'sys/menuMng','text':'菜单','id':'菜单','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
                     "{'href':'sys/moduleMng','text':'模块','id':'模块','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," + 
-                    "{'href':'sys/roleMng','text':'角色管理','id':'角色管理','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," +
+                    "{'href':'sys/roleMng','text':'角色','id':'角色管理','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," +
+                    "{'href':'sys/roleMng','text':'权限','id':'角色管理','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}," +
                     "{'href':'sys/orgMng','text':'机构','id':'机构','isClass':true,'iconCls':'icon-cls','cls':'cls','leaf':true}" +
                     "]}"+
      		"]";

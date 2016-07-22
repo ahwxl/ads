@@ -29,20 +29,19 @@ public class UserControler {
 	private UserService userService;
 	
 	/**
-	 * 展示用户列表
+	 * 系统用户管理页面
 	 * @throws SQLException 
 	 */
 	@RequestMapping(value="/sys/userList")
 	public String queryUserList(Map<String, Object> model,SysUser user,HttpServletRequest request) 
 			throws SQLException{
 		
-		
-		
 		return "sys/user";
 	}
 	
 	
 	/**
+	 * 分页查询
 	 * 展示用户列表
 	 * @throws SQLException 
 	 */
@@ -92,10 +91,8 @@ public class UserControler {
 	@ResponseBody
 	public String queryUserInfo(Map<String, Object> model,SysUser user,HttpServletRequest request) 
 			throws SQLException{
-		String start = request.getParameter("start");
-		String limit = request.getParameter("limit");
-		user.setPageNum(Integer.parseInt(start));
-		user.setMaxRowNums(Integer.parseInt(limit));
+		user.setPageNum(0);
+		user.setMaxRowNums(10);
 		String resposeStr = userService.queryUserList(user);
 		
 		return resposeStr;
@@ -108,13 +105,10 @@ public class UserControler {
 	@ResponseBody
 	public String updateUserInfoAction(Map<String, Object> model,SysUser user,HttpServletRequest request) 
 			throws SQLException{
-		String start = request.getParameter("start");
-		String limit = request.getParameter("limit");
-		user.setPageNum(Integer.parseInt(start));
-		user.setMaxRowNums(Integer.parseInt(limit));
-		String resposeStr = userService.queryUserList(user);
+
+		userService.modifyUser(user);
 		
-		return resposeStr;
+		return "{success:true,info:'操作成功!'}";
 	}
 	
 	/**

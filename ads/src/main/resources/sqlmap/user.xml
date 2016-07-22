@@ -23,6 +23,9 @@
     select count(*)
     from sys_user a
     <dynamic prepend="where">
+    <isNotEmpty prepend="and" property="id" >
+        a.id = #id#
+    </isNotEmpty>
     <isNotEmpty prepend="and" property="userName">
         a.user_name like '%$userName$%'
     </isNotEmpty>
@@ -33,6 +36,9 @@
     select a.id,a.user_id,a.user_name,a.status,a.login_date,a.gmt_create,a.gmt_modify,a.email,a.phone_no 
     from sys_user a 
     <dynamic prepend="where">
+    <isNotEmpty prepend="and" property="id" >
+        a.id = #id#
+    </isNotEmpty>
     <isNotEmpty prepend="and" property="userName" >
         a.user_name like '%$userName$%'
     </isNotEmpty>
@@ -65,7 +71,8 @@
   </insert>
   
   <update  id="updateUser">
-    update sys_user set user_id=#userId#
+    update sys_user set user_id=#userId#,user_name=#userName#,user_pwd=#userPwd#,email=#Email#,phone_no=#phoneNo#,
+    gmt_modify = now()
     where id = #id#
   </update>
   
@@ -75,9 +82,7 @@
     <iterate conjunction="," open="(" close=")" >
        #id[]#
     </iterate>
-    
   </delete>
-  
   
   <select id="queryUserByPwd" resultMap="resultUser">
     select a.id,a.user_name,a.status from sys_user a
