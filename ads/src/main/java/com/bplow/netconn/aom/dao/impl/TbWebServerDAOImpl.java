@@ -201,7 +201,7 @@ public class TbWebServerDAOImpl extends BaseIbatisDaoSupport implements
 			throws SQLException {
 		IPagination page = this.queryForPagenation(
 				"tb_web_server.countForPage", "tb_web_server.selectForPage",
-				record);
+				record,record.getPageNum(),record.getMaxRowNums());
 		return page;
 	}
 }

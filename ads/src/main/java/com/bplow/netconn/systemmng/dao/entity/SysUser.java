@@ -2,12 +2,8 @@ package com.bplow.netconn.systemmng.dao.entity;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.bplow.netconn.base.dao.domain.PageImpl;
-import com.bplow.netconn.base.json.CustomDateSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class SysUser extends PageImpl{
 	

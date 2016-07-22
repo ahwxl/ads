@@ -49,32 +49,32 @@
   <select id="selectForPage" resultMap="BaseResultMap">
      select id, host_id, server_name, web_path, server_port, war_name, server_status, gmt_create, gmt_modify
  from tb_web_server
-    <dynamic>
-      <isNotEmpty prepend="ADD" property="id">
+    <dynamic prepend="where">
+      <isNotEmpty prepend="and" property="id">
         id = #id#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="hostId">
+      <isNotEmpty prepend="and" property="hostId">
         host_id = #hostId#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="serverName">
-        server_name = #serverName#
+      <isNotEmpty prepend="and" property="serverName" > 
+        server_name like '%$serverName$%'
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="webPath">
-        web_path = #webPath#
+      <isNotEmpty prepend="and" property="webPath">
+        web_path = #webPath:VARCHAR#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="serverPort">
+      <isNotEmpty prepend="and" property="serverPort">
         server_port = #serverPort#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="warName">
+      <isNotEmpty prepend="and" property="warName">
         war_name = #warName#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="serverStatus">
+      <isNotEmpty prepend="and" property="serverStatus">
         server_status = #serverStatus#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="gmtCreate">
+      <isNotEmpty prepend="and" property="gmtCreate">
         gmt_create = #gmtCreate#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="gmtModify">
+      <isNotEmpty prepend="and" property="gmtModify">
         gmt_modify = #gmtModify#
       </isNotEmpty>
     </dynamic>
@@ -83,32 +83,32 @@
   </select>
   <select id="countForPage" resultClass="java.lang.Integer">
      select count(0) from tb_web_server
-    <dynamic>
-      <isNotEmpty prepend="ADD" property="id">
+    <dynamic prepend="where">
+      <isNotEmpty prepend="and" property="id">
         id = #id#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="hostId">
+      <isNotEmpty prepend="and" property="hostId">
         host_id = #hostId#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="serverName">
-        server_name = #serverName#
+      <isNotEmpty prepend="and" property="serverName">
+        server_name like '%$serverName$%'
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="webPath">
-        web_path = #webPath#
+      <isNotEmpty prepend="and" property="webPath">
+      web_path=#webPath:VARCHAR#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="serverPort">
+      <isNotEmpty prepend="and" property="serverPort">
         server_port = #serverPort#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="warName">
+      <isNotEmpty prepend="and" property="warName">
         war_name = #warName#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="serverStatus">
+      <isNotEmpty prepend="and" property="serverStatus">
         server_status = #serverStatus#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="gmtCreate">
+      <isNotEmpty prepend="and" property="gmtCreate">
         gmt_create = #gmtCreate#
       </isNotEmpty>
-      <isNotEmpty prepend="ADD" property="gmtModify">
+      <isNotEmpty prepend="and" property="gmtModify">
         gmt_modify = #gmtModify#
       </isNotEmpty>
     </dynamic>

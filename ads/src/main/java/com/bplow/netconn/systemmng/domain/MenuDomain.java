@@ -5,12 +5,14 @@ package com.bplow.netconn.systemmng.domain;
 
 import java.util.List;
 
+import com.bplow.netconn.base.dao.domain.PageImpl;
+
 /**
  * @desc 功能菜单
  * @author wangxiaolei
  * @date 2016年5月8日 下午4:19:09
  */
-public class MenuDomain {
+public class MenuDomain extends PageImpl{
 	
 	private String userId;
 	private String id;
