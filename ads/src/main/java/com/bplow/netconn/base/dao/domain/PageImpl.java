@@ -1,5 +1,6 @@
 package com.bplow.netconn.base.dao.domain;
 
+
 public class PageImpl implements Page{
 	
 	private int pageNum;

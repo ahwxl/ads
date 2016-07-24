@@ -19,7 +19,9 @@ MenuMng.MenuObj = function() {
    *这里定义私有方法、和属性
    *数据集加载对象，给grid用的
    */
-    var gridStore = new Ext.data.JsonStore({
+   var moduleId ='docs-菜单';
+   
+   var gridStore = new Ext.data.JsonStore({
         root: 'data',
         totalProperty: 'pageInfo.totalRowNum',
         //idProperty: 'threadid',
@@ -89,36 +91,10 @@ var searchPanel = new Ext.FormPanel({
      	layout:"hbox",
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
-     	          items:[{text:"应用名称"},{xtype:"textfield",name:"serverName",value:''},
-     	                 {text:"项目名称"},{xtype:"textfield",name:"webPath",value:''},
-     	                 {text:"发布时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
-     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"},
-     	                 {xtype:"button",text:"查询",iconCls:"search",scope:this,handler:function (){
-     	                	//MenuMng.MenuObj.store.baseParams=Ext.urlDecode(Ext.Ajax.serializeForm(searchPanel.getForm().getEl()));
-     	                	//alert(Ext.Ajax.serializeForm(MenuMng.MenuObj.searchPanel.getForm().getEl()) );
-     	                	gridStore.load();
-     	                   }}
-     	                  ,{xtype:"button",text:"删除",scope:this,handler:function (){
-							var sm = MenuMng.MenuObj.mygrid.getSelectionModel();
-							var array = sm.getSelections();//records
-							var idstr ="";
-							for(var i =0;i < array.length;i++){
-							   idstr =idstr+array[i].get('id')+",";
-							}
-							if(idstr.length > 0){
-							   idstr = idstr.substr(0,idstr.length-1);
-							}else{
-							    Ext.Msg.alert('系统提示','请选择要删除的数据');
-							    return false;
-							}
-							Ext.Msg.confirm('系统提示', '你确定删除吗？', function(btn, text){
-							    if (btn == 'yes'){
-							    	MenuMng.MenuObj.doDel(idstr);
-							    }
-							});
-							}
-     	        	       
-     	        	       }
+     	          items:[{text:"菜单名称"},{xtype:"textfield",name:"serverName",value:''},
+     	                 {text:"模块名称"},{xtype:"textfield",name:"webPath",value:''},
+     	                 {text:"创建时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
+     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"}
      	                 ]});
 
 //创建一个列表面板
@@ -140,7 +116,30 @@ var mygrid = new Ext.grid.GridPanel({
         	text:'删除',
             iconCls:'silk-building',
             handler:function (){
-            	showWin(this.getEl());
+            	var sm = mygrid.getSelectionModel();
+				var array = sm.getSelections();
+				var idstr ="";
+				for(var i =0;i < array.length;i++){
+				   idstr =idstr+array[i].get('id')+",";
+				}
+				if(idstr.length > 0){
+				   idstr = idstr.substr(0,idstr.length-1);
+				}else{
+				    Ext.Msg.alert('系统提示','请选择要删除的数据');
+				    return false;
+				}
+				Ext.Msg.confirm('系统提示', '你确定删除吗？', function(btn, text){
+				    if (btn == 'yes'){
+				    	doDel(idstr);
+				    }
+				});
+            }
+        },{
+        	text:'查询',
+        	xtype:'button',
+            iconCls:'silk-building',
+            handler:function (){
+            	gridStore.load();
             }
         }],
         listeners:{
@@ -296,14 +295,13 @@ addImageWin.prototype = {
 var doDel = function(id){
 	
 	Ext.Ajax.request({
-		   url: 'delSysUser',
+		   url: 'sys/deleteMenu',
 		   method:'post',
 		   success: function(response, opts) {
 			      var obj = Ext.decode(response.responseText);
 			      //if(obj.success == true){
-			      MediaDataMng.viewDataOpt.store.reload();
+			      gridStore.reload();
 			      Ext.Msg.alert('系统提示',obj.info);
-			       
 			      //}
 			      
 		   },
@@ -324,7 +322,7 @@ var doDel = function(id){
      	   //此方法内部是可以获取到私用属性和方法
            //定义一些初始化行为
     	   //获取id为"docs-文章管理"的面板
-    	    var aimobj = Ext.mainScreem.findById('docs-菜单');
+    	    var aimobj = Ext.mainScreem.findById(moduleId);
     	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
     	    aimobj.setLayout(lyobj);
     	    aimobj.add(mygrid);//添加列表面板

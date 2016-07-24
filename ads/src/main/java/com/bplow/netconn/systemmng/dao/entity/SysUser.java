@@ -2,6 +2,8 @@ package com.bplow.netconn.systemmng.dao.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.bplow.netconn.base.dao.domain.PageImpl;
 import com.fasterxml.jackson.annotation.JsonFormat;
 

@@ -16,10 +16,18 @@
             <mvc:mapping path="/**"  />
             <ref bean="userAccessInterceptor" />
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"  />
+            <ref bean="paginationInterceptor" />
+        </mvc:interceptor>
     </mvc:interceptors>
  
     <bean id="userAccessInterceptor"
         class="com.bplow.netconn.query.interceptor.RequestStatisIntercaptor">
+    </bean>
+    
+    <bean id="paginationInterceptor" class="com.bplow.netconn.base.web.interceptor.PaginationInterceptor">
+    
     </bean>
     
     <!--

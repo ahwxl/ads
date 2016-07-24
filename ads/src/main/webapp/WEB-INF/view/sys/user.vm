@@ -10,8 +10,8 @@
   Ext.namespace('UserMng', 'UserMng.UserObj');
 
 
- //create application
- UserMng.UserObj = function() {
+//create application
+UserMng.UserObj = function() {
    // do NOT access DOM from here; elements don't exist yet
 
    //此处定义私有属性变量
@@ -79,7 +79,6 @@ gridStore.on("beforeload",function (selfstore){
     	tmpCnf.start = 0;//从哪一条记录开始
     	tmpCnf.limit = 10;//查询条数
     	selfstore.baseParams=tmpCnf;
-
     });
 
 //表单查询条件面板
@@ -92,10 +91,9 @@ var searchPanel =new Ext.FormPanel({
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
      	          items:[{text:"用户编号"},{xtype:"textfield",name:"id",value:''},
      	                 {text:"用户名称"},{xtype:"textfield",name:"userName",value:''},
-     	                 {text:"创建时间:从"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_GT"},
-     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"Q_accessionTime_D_LT"}
+     	                 {text:"创建时间:从"},{xtype:"datefield",format:"Y-m-d",name:"gmtCreate"},
+     	                 {text:"至"},{xtype:"datefield",format:"Y-m-d",name:"gmtModify"}
      	                 ]});
-
 
 var sm = new Ext.grid.CheckboxSelectionModel({
 	listeners:{
@@ -106,7 +104,7 @@ var sm = new Ext.grid.CheckboxSelectionModel({
 var mygrid = new Ext.grid.GridPanel({
         //width:700,
         //height:500,
-        autoHeight: true,
+        //autoHeight: true,
         tbar:[{
         	text:'添加',
             id:'add_product',
@@ -175,7 +173,7 @@ var mygrid = new Ext.grid.GridPanel({
             	searchPanel.render(this.tbar);
             }
         },
-        store:  gridStore,
+        store: gridStore,
         closable:true,
         trackMouseOver:true,
         disableSelection:true,
@@ -253,9 +251,6 @@ var mygrid = new Ext.grid.GridPanel({
         })
     });
 
-
-
-
 var showWin = function(actiontype){
 	if(addwindobj == null || addwindobj == undefined){
 		addwindobj = new addImageWin();
@@ -270,7 +265,6 @@ var addImageWin = function(config){
 }
 
 addImageWin.prototype = {
-		
 		action :'add',
 		show : function(el, callback){
 		
@@ -409,9 +403,9 @@ addImageWin.prototype = {
 		
 		
 }
-
+//删除
 var doDel = function(id){
-	/**/
+
 	Ext.Ajax.request({
 		   url: 'sys/delUser',
 		   method:'post',
@@ -457,7 +451,7 @@ var doDel = function(id){
             });
        }
    };
- }(); // end of app 
+ }(); // end of app
     
 Ext.onReady(UserMng.UserObj.init, UserMng.UserObj);
 </script>
