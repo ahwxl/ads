@@ -10,13 +10,13 @@ import com.bplow.netconn.systemmng.dao.entity.SysMenuExample;
 public interface SysMenuDAO {
     int countByExample(SysMenuExample example) throws SQLException;
 
-    int deleteByPrimaryKey(String id) throws SQLException;
+    int deleteByPrimaryKey(SysMenu sysMenu) throws SQLException;
 
     void insert(SysMenu record) throws SQLException;
 
     List<SysMenu> selectByExample(SysMenuExample example) throws SQLException;
 
-    SysMenu selectByPrimaryKey(String id) throws SQLException;
+    SysMenu selectByPrimaryKey(SysMenu sysMenu) throws SQLException;
 
     int updateByPrimaryKey(SysMenu record) throws SQLException;
 

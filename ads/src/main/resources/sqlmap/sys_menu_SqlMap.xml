@@ -27,7 +27,7 @@
     insert into sys_menu (id, menu_name, menu_desc, uri, module_id, 
       gmt_create, gmt_modify)
     values (#id:VARCHAR#, #menuName:VARCHAR#, #menuDesc:VARCHAR#, #uri:VARCHAR#, #moduleId:VARCHAR#, 
-      #gmtCreate:TIMESTAMP#, #gmtModify:TIMESTAMP#)
+      now(), now())
   </insert>
   <update id="updateByPrimaryKey" parameterClass="com.bplow.netconn.systemmng.dao.entity.SysMenu">
     update sys_menu
@@ -35,8 +35,7 @@
       menu_desc = #menuDesc:VARCHAR#,
       uri = #uri:VARCHAR#,
       module_id = #moduleId:VARCHAR#,
-      gmt_create = #gmtCreate:TIMESTAMP#,
-      gmt_modify = #gmtModify:TIMESTAMP#
+      gmt_modify = now()
     where id = #id:VARCHAR#
   </update>
   <select id="selectForPage" resultMap="BaseResultMap">

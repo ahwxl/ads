@@ -21,6 +21,7 @@ public class MenuDomain extends PageImpl{
 	private boolean isClass;
 	private String iconCls;
 	private String cls;
+	private String parentId;
 	private boolean leaf;
 	private List<MenuDomain>  children;
 	private List<RoleDomain> roles;
@@ -84,6 +85,12 @@ public class MenuDomain extends PageImpl{
 	}
 	public void setRoles(List<RoleDomain> roles) {
 		this.roles = roles;
+	}
+	public String getParentId() {
+		return parentId;
+	}
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 	
 }

@@ -110,7 +110,25 @@ var mygrid = new Ext.grid.GridPanel({
         	text:'修改',
             iconCls:'silk-table-refresh',
             handler:function (){
-            	showWin(this.getEl());
+            	var sm = mygrid.getSelectionModel();
+				var array = sm.getSelections();//records
+				var idstr ="";
+				
+				if(array.length > 1){
+				   Ext.Msg.alert('系统提示','请选择一个要修改的记录');
+				   return false;
+				}
+				
+				for(var i =0;i < array.length;i++){
+				   idstr =idstr+array[i].get('id')+",";
+				}
+				if(idstr.length > 0){
+				   idstr = idstr.substr(0,idstr.length-1);
+				}else{
+				    Ext.Msg.alert('系统提示','请选择要删除的数据');
+				    return false;
+				}
+            	showWin({action:'modify',id:idstr});
             }
         },{
         	text:'删除',
@@ -186,16 +204,17 @@ var mygrid = new Ext.grid.GridPanel({
 
 /*添加图片窗口*/
 var addwinobj = null;
-var showWin = function(){
+var showWin = function(actiontype){
 	if(addwinobj == undefined || addwinobj == null){
 		addwinobj = new addImageWin();
 	}
-	addwinobj.show();
+	addwinobj.show(actiontype);
 }
 var addImageWin = function(config){
 	this.config = config;
 }
 addImageWin.prototype = {
+        action :'add',
 		show : function(el, callback){
 			if(!this.win){
 				/*添加web server 表单*/
@@ -208,6 +227,15 @@ addImageWin.prototype = {
 				    fileUpload:true,
 				    bodyStyle:'padding:5px 5px 5px 5px',
 				    width: 500,
+				    reader:new Ext.data.JsonReader({
+					    root: 'data',
+					    fields:[
+					       {name: 'id', mapping: 'id'},
+					       {name: 'text', mapping: 'menuName'},
+					       {name: 'href', mapping: 'uri'},
+					       {name: 'parentId', mapping: 'moduleId'}
+					    ]
+				    }),
 
 				    items: [{
 				        xtype:'fieldset',
@@ -217,9 +245,20 @@ addImageWin.prototype = {
 				        defaults: {width: 210},
 				        items :[{
 				        	    xtype: 'textfield',
+				                fieldLabel: '编号',
+				                hidden:false,
+				                name: 'id',
+				                allowBlank: false,
+				                value: ''
+				            },{
+				        	    xtype: 'textfield',
 				                fieldLabel: '菜单名称',
 				                hidden:false,
 				                name: 'text'
+				            },{
+				            	xtype: 'textfield',
+				                fieldLabel: '模块',
+				                name: 'parentId'
 				            },{
 				            	xtype: 'textfield',
 				                fieldLabel: '描述',
@@ -268,6 +307,11 @@ addImageWin.prototype = {
 		    this.win.show(el);
 			this.callback = callback;
 			this.animateTarget = el;
+			
+			if(el && el.action == 'modify'){
+		       this.fsf.getForm().load({url:'sys/queryMenu?id='+el.id, waitMsg:'Loading'});
+		       this.action = 'modify';
+		    }
 		},
 		reset:function(){
 			;
@@ -276,13 +320,19 @@ addImageWin.prototype = {
 			alert("");
 		},
 		submitForm:function(){
+		
+		    var url = 'sys/addMenu';
+			if(this.action == 'modify'){
+			    url = 'sys/modifyMenu';
+			}
 			if(this.fsf.getForm().isValid()){
 			this.fsf.getForm().submit({
-                url: 'sys/addMenu',
+                url: url,
                 waitMsg: '正在上传请稍等...',
                 success: function(fp, o){
                     //msg('Success', 'Processed file "'+o.result.file+'" on the server');
                 	Ext.Msg.alert('Status', '操作成功');
+                	gridStore.reload();
                 },
                 failure :function(fm,rp){	                    	
                 	Ext.Msg.alert('Status', '操作异常，请联系管理员.');
@@ -308,7 +358,7 @@ var doDel = function(id){
 		   failure: function(response, opts) {
 			   Ext.Msg.alert('系统提示', '操作失败！');
 		   },
-		   params: {'idArray': id }
+		   params: {'id': id }
 		});
 }
 

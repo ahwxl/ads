@@ -20,9 +20,8 @@ public class SysMenuDAOImpl extends BaseIbatisDaoSupport implements SysMenuDAO {
 		return count;
 	}
 
-	public int deleteByPrimaryKey(String id) throws SQLException {
-		SysMenu _key = new SysMenu();
-		_key.setId(id);
+	public int deleteByPrimaryKey(SysMenu _key) throws SQLException {
+
 		int rows = sqlMapClient.delete("sys_menu.deleteByPrimaryKey", _key);
 		return rows;
 	}
@@ -39,12 +38,10 @@ public class SysMenuDAOImpl extends BaseIbatisDaoSupport implements SysMenuDAO {
 		return list;
 	}
 
-	public SysMenu selectByPrimaryKey(String id) throws SQLException {
-		SysMenu _key = new SysMenu();
-		_key.setId(id);
-		SysMenu record = (SysMenu) sqlMapClient.queryForObject(
-				"sys_menu.selectByPrimaryKey", _key);
-		return record;
+	public SysMenu selectByPrimaryKey(SysMenu record) throws SQLException {
+		SysMenu sysMenu = (SysMenu) sqlMapClient.queryForObject(
+				"sys_menu.selectByPrimaryKey", record);
+		return sysMenu;
 	}
 
 	public int updateByPrimaryKey(SysMenu record) throws SQLException {

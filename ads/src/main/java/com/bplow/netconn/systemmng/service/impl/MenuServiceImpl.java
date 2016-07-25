@@ -85,8 +85,10 @@ public class MenuServiceImpl implements MenuService{
 	 * @see com.bplow.netconn.systemmng.service.MenuService#deleteMenu()
 	 */
 	@Override
-	public void deleteMenu() throws SQLException {
-		// TODO Auto-generated method stub
+	public void deleteMenu(MenuDomain menu) throws SQLException {
+		SysMenu sysMenu = new SysMenu();
+		sysMenu.setId(menu.getId());
+		sysMenuDAO.deleteByPrimaryKey(sysMenu);
 		
 	}
 
@@ -94,9 +96,15 @@ public class MenuServiceImpl implements MenuService{
 	 * @see com.bplow.netconn.systemmng.service.MenuService#updateMenu()
 	 */
 	@Override
-	public void updateMenu() throws SQLException {
-		// TODO Auto-generated method stub
+	public void updateMenu(MenuDomain menu) throws SQLException {
+		SysMenu sysMenu = new SysMenu();
+		sysMenu.setId(menu.getId());
+		sysMenu.setMenuName(menu.getText());
+		sysMenu.setUri(menu.getHref());
+		sysMenu.setMenuDesc(menu.getText());
+		sysMenu.setModuleId(menu.getParentId());
 		
+		sysMenuDAO.updateByPrimaryKey(sysMenu);
 	}
 
 }

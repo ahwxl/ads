@@ -388,7 +388,6 @@ addImageWin.prototype = {
                 url: url,
                 waitMsg: '正在上传请稍等...',
                 success: function(fp, o){
-                	//alert('ok');
                     //msg('Success', 'Processed file "'+o.result.file+'" on the server');
                 	Ext.Msg.alert('Status', '操作成功');
                 	//Ext.example.msg('系统提示', '操作成功');

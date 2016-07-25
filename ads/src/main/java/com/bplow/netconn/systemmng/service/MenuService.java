@@ -26,8 +26,8 @@ public interface MenuService {
 
 	public void addMenu(MenuDomain menu) throws SQLException;
 
-	public void deleteMenu() throws SQLException;
+	public void deleteMenu(MenuDomain menu) throws SQLException;
 
-	public void updateMenu() throws SQLException;
+	public void updateMenu(MenuDomain menu) throws SQLException;
 
 }
