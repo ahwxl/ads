@@ -10,7 +10,7 @@ import java.util.List;
 public interface SysRoleDAO {
     int countByExample(SysRoleExample example) throws SQLException;
 
-    int deleteByPrimaryKey(String roleId) throws SQLException;
+    int deleteByPrimaryKey(SysRole sysRole) throws SQLException;
 
     void insert(SysRole record) throws SQLException;
 

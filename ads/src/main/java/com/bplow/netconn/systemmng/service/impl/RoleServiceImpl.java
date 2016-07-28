@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -27,6 +28,7 @@ import com.bplow.netconn.systemmng.service.RoleService;
  * @date 2016年6月11日 下午4:54:55
  */
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService{
 	
 	@Autowired
@@ -94,8 +96,11 @@ public class RoleServiceImpl implements RoleService{
 	 * @see com.bplow.netconn.systemmng.service.RoleService#updateRole(com.bplow.netconn.systemmng.domain.RoleDomain)
 	 */
 	@Override
-	public void updateRole(RoleDomain role) {
-		// TODO Auto-generated method stub
+	public void updateRole(RoleDomain role) throws SQLException {
+		SysRole sysRole = new SysRole();
+		sysRole.setRoleName(role.getRoleName());
+		sysRole.setRoleDesc(role.getRoleDesc());
+		sysRoleDAO.updateByPrimaryKey(sysRole);
 		
 	}
 
@@ -103,8 +108,12 @@ public class RoleServiceImpl implements RoleService{
 	 * @see com.bplow.netconn.systemmng.service.RoleService#deleteRole(com.bplow.netconn.systemmng.domain.RoleDomain)
 	 */
 	@Override
-	public void deleteRole(RoleDomain role) {
-		// TODO Auto-generated method stub
+	public void deleteRole(RoleDomain role) throws SQLException {
+		
+		SysRole sysRole = new SysRole();
+		sysRole.setRoleId(role.getRoleId());
+		
+		sysRoleDAO.deleteByPrimaryKey(sysRole);
 		
 	}
 

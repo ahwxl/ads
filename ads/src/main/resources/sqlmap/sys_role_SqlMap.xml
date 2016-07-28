@@ -27,15 +27,14 @@
     insert into sys_role (role_id, role_name, role_desc, role_type, 
       gmt_create, gmt_modify, status)
     values (#roleId:VARCHAR#, #roleName:VARCHAR#, #roleDesc:VARCHAR#, #roleType:VARCHAR#, 
-      #gmtCreate:TIMESTAMP#, #gmtModify:TIMESTAMP#, #status:CHAR#)
+      now(), now(), #status:CHAR#)
   </insert>
   <update id="updateByPrimaryKey" parameterClass="com.bplow.netconn.systemmng.dao.entity.SysRole">
     update sys_role
     set role_name = #roleName:VARCHAR#,
       role_desc = #roleDesc:VARCHAR#,
       role_type = #roleType:VARCHAR#,
-      gmt_create = #gmtCreate:TIMESTAMP#,
-      gmt_modify = #gmtModify:TIMESTAMP#,
+      gmt_modify = now(),
       status = #status:CHAR#
     where role_id = #roleId:VARCHAR#
   </update>

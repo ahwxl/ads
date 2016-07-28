@@ -76,17 +76,26 @@ public class RoleMngControler {
 	@RequestMapping(value = "/sys/deleteRole")
 	@ResponseBody
 	public String deleletRole(Map<String, Object> model, RoleDomain role,
-			HttpServletRequest request){
+			HttpServletRequest request) throws Exception{
 		
-		return "";
+		roleService.deleteRole(role);
+		
+		return "{success:true,info:'ok'}";
 	}
 	
 	@RequestMapping(value = "/sys/queryRole")
 	@ResponseBody
-	public String queryRoleById(Map<String, Object> model, RoleDomain role,
-			HttpServletRequest request){
+	public String queryRoleById(Map<String, Object> model, SysRole role,
+			HttpServletRequest request) throws Exception{
 		
-		return "";
+		String start = request.getParameter("start");
+		String limit = request.getParameter("limit");
+		role.setPageNum(Integer.parseInt(start));
+		role.setMaxRowNums(Integer.parseInt(limit));
+		
+		IPagination page = roleService.queryRolePage(role);
+		
+		return page.getJsonByList();
 	}
 	
 	/**

@@ -20,10 +20,8 @@ public class SysRoleDAOImpl extends BaseIbatisDaoSupport implements SysRoleDAO {
         return count;
     }
 
-    public int deleteByPrimaryKey(String roleId) throws SQLException {
-        SysRole _key = new SysRole();
-        _key.setRoleId(roleId);
-        int rows = sqlMapClient.delete("sys_role.deleteByPrimaryKey", _key);
+    public int deleteByPrimaryKey(SysRole sysRole) throws SQLException {
+        int rows = sqlMapClient.delete("sys_role.deleteByPrimaryKey", sysRole);
         return rows;
     }
 
