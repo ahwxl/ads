@@ -75,7 +75,9 @@ var columns = [sm,
 //表单查询条件面板
 var searchPanel = new Ext.FormPanel({
      	frame:false,
-     	border:true,
+     	border:false,
+     	//height:50,
+     	region:'north',
      	layout:"hbox",
      	layoutConfig:{padding:"5",align:"middle"},
      	defaults:{xtype:"label",border:false,margins:{top:0,right:4,bottom:4,left:4}},
@@ -113,7 +115,7 @@ var searchPanel = new Ext.FormPanel({
 
 //创建一个列表面板
 var mygrid = new Ext.grid.GridPanel({
-        autoHeight: false,
+        autoHeight: true,
         tbar:[{
         	text:'添加',
             iconCls:'silk-add',

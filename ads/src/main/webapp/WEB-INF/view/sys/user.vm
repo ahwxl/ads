@@ -22,8 +22,9 @@ UserMng.UserObj = function() {
  */
 var catalogTree = new Ext.tree.TreePanel({
 	    //renderTo: 'tree-div',
-	    title:'目录树',
+	    title:'目录',
 	    useArrows: true,
+	    autoHeight: false,
 	    autoScroll: true,
 	    animate: true,
 	    region: 'west',
@@ -42,7 +43,7 @@ var catalogTree = new Ext.tree.TreePanel({
 	    //dataUrl: '',
 	    root: {
 	        nodeType: 'async',
-	        text: '目录树',
+	        text: '组织机构',
 	        draggable: false,
 	        id: '0000'
 	    }
@@ -104,7 +105,7 @@ var sm = new Ext.grid.CheckboxSelectionModel({
 var mygrid = new Ext.grid.GridPanel({
         //width:700,
         //height:500,
-        //autoHeight: true,
+        autoHeight: true,
         tbar:[{
         	text:'添加',
             id:'add_product',
@@ -437,7 +438,7 @@ var doDel = function(id){
     	    var lyobj = new Ext.layout.BorderLayout();//创建面板布局对象
     	    aimobj.setLayout(lyobj);//应用布局对象
 
-    	    //aimobj.add(UserMng.UserObj.catalogTree);//添加目录树面板
+    	    aimobj.add(catalogTree);//添加目录树面板
     	    aimobj.add(mygrid);//添加列表面板
     	    aimobj.doLayout();//展示页面
     	    

@@ -9,7 +9,7 @@
 
 	<!-- optional -->
 	
-	<import resource="spring/consumer.xml" />
+	<!-- <import resource="spring/consumer.xml" /> -->
 	
 	<import resource="cache/applicationContext-ehcache.xml" />
 	
